@@ -1,0 +1,1512 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 1 - De C à C++</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/vs.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!----------          TITLE          ---------->
+      <section>
+        <h1>
+          Chapitre 1
+        </h1>
+        <h2>
+          De C à C++
+        </h2>
+        <div class="container">
+          <div class="col-left">
+            <p>1. Introduction</p>
+            <p>2. Espaces de noms</p>
+            <p>3. Entrées/sorties standards</p>
+            <p>4. Passage de paramètres</p>
+            <p>5. Valeurs par défaut des paramètres</p>
+          </div>
+          <div class="col-right">
+            <p>6. Surcharge des fonctions</p>
+            <p>7. Allocation dynamique</p>
+            <p>8. La classe <inline-code>std::string</inline-code></p>
+            <p>9. Divers : auto, range-for. etc.</p>
+            <p>10. Bibliothèque standard</p>
+          </div>
+        </div>
+      </section>
+
+      <!----------          INTRODUCTION          ---------->
+      <section>
+
+        <section>
+          <h2>1.1 Historique du langage</h2>
+          <p><b>1979</b> - <highlight>C avec des classes</highlight> : premières extensions au langage C</p>
+          <p><b>1983</b> - le nom C++ est créé pour "C incrémenté"</p>
+          <p><b>1998</b> - Le langage C++ est normalisée par l'ISO</p>
+          <p><b>2011</b> - <highlight>C++11, C++ moderne</highlight> : nouvelle norme du langage</p>
+          <p><b>2014</b> - C++14 : mise à jour mineure</p>
+          <p><b>2017</b> - C++17 : mise à jour majeure (amélioration des templates, etc)</p>
+          <p><b>2020</b> - C++20 : mise à jour majeure (module, coroutines, etc.)</p>
+          <p><b>2023</b> - C++23 : mise à jour mineure, version courante</p>
+          <p><b>2026</b> - version en cours de développement</p>
+          <br><br>
+          <p><a href="https://en.wikipedia.org/wiki/C++#Standardization">📚 Historique de C++ (Wikipedia)</a></p>
+        </section>
+
+        <section>
+          <h2>1.1 Introduction</h2>
+          <p>
+            <warning>⚠️ Ce cours ne revient pas sur le C !</warning>
+          </p>
+          <br>
+          <p><s>Le C++ est une extension du langage C</s> (un compilateur C++ peut compiler du code C)</p>
+          <p>Le C++ est libre de droit</p>
+          <p>Au delà de ~50'000 lignes de code, le C ne suffit plus</p>
+        </section>
+
+        <section>
+          <h2>1.1 C++ est-il un langage objet ?</h2>
+          <h3>Oui</h3>
+          <p>C++ contient la notion de classe, d'instances, d'héritage, etc.</p>
+          <br>
+          <h3>Non</h3>
+          <p>C++ est surtout un langage multiparadigme</p>
+          <p>C++ est entièrement compatible avec C qui n'est pas un langage objet</p>
+          <p>On peut écrire un programme « C++ » sans jamais utiliser la notion d'objet</p>
+        </section>
+
+        <section>
+          <h2>1.1 Lien avec C</h2>
+          <p>Pour programmer en C++, il « faut » connaître le langage C (notions & syntaxe)</p>
+          <p>En C++, il est possible :</p>
+          <ul>
+            <li>de ne pas du tout utiliser les objets (on fait du C)</li>
+            <li>de toujours utiliser les objets (on fait du C++ pur)</li>
+            <li>de mélanger des objets avec de la programmation non-objet</li>
+          </ul>
+          <br>
+          <p>Le C++ peut ne pas être "propre" : il hérite du C, de notions inutiles en POO</p>
+          <br>
+          <p>
+            <error>⛔ Éviter de mélanger du C avec du C++</error>
+          </p>
+          <p>
+            <success>✅ Préférer le C++ pur</success>
+          </p>
+        </section>
+
+        <section>
+          <h2>Pourquoi le C++</h2>
+          <iframe src="https://www.tiobe.com/tiobe-index/" width="1600px" height="800px"></iframe>
+        </section>
+
+        <section>
+          <h2>1.1 Un premier exemple</h2>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.4em;"
+            data-line-numbers="">
+
+            #include &#60;iostream&#62;
+            
+            int main()
+            {
+              std::cout << "Hello world++!\n";
+              return 0;
+            }</code></pre>
+
+          <br>
+          <p>Des fonctionnalités évoluées sont accessibles avec la bibliothèque standard C++</p>
+          <p><inline-code>std</inline-code> Espace de noms (namespace)</p>
+          <p><inline-code>::</inline-code> Opérateur de portée</p>
+          <p><inline-code>cout</inline-code> Flux de sortie</p>
+          <p><inline-code><< </inline-code> Opérateur d'insertion
+        </section>
+
+        <section>
+          <h2>1.1 Déclaration de variables</h2>
+          <p>Les variables peuvent être déclarées n'importe où (comme en C99)</p>
+
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.4em;"
+            data-line-numbers="">
+
+            for (int i = 0; i < 10; i++)
+            {
+              std::cout << i;
+            }</code></pre>
+
+          <br><br><br>
+
+          <h3><success>✅ Initialiser les variables à la déclaration</success></h3>
+        </section>
+
+        <section>
+          <h2>1.1 Booléens</h2>
+
+          <p>Une variable de type <inline-code>bool</inline-code> a 2 valeurs : <inline-code>true</inline-code> et
+            <inline-code>false</inline-code>
+          </p>
+          <br>
+          <b>
+            <p>Conversions implicites avec les <inline-code>int</inline-code></p>
+          </b>
+          <p><inline-code>true</inline-code> : 1</p>
+          <p><inline-code>false</inline-code> : 0</p>
+          <p>Entier non-nul : <inline-code>true</inline-code></p>
+          <p>0 : <inline-code>false</inline-code></p>
+          <br>
+          <b>
+            <p>Conversions implicites avec les pointeurs</p>
+          </b>
+          <p>pointeur non-nul : <inline-code>true</inline-code></p>
+          <p>pointeur nul : <inline-code>false</inline-code></p>
+          <br>
+          <p>
+            <success>✅ Ne pas utiliser ces conversions implicites (lisibilité)</success>
+          </p>
+          <p><inline-code>if (x != 0)</inline-code> plutôt que <s><inline-code>if (x)</inline-code></s></p>
+        </section>
+
+      </section>
+
+      <!----------          ESPACES DE NOMS          ---------->
+      <section>
+
+        <section>
+          <h2>1.2 Espace de noms</h2>
+          <p>Dans les grands projets, le risque d'utiliser les mêmes noms pour des variables ou fonctions est grand</p>
+          <p>On confine donc les noms d'un module dans un <highlight>espace de noms</highlight> (namespace)</p>
+          <br>
+          <p><inline-code>namespace XX{...}</inline-code> : définit un nouvel espace de noms</p>
+          <p><inline-code>namespace XX::YY{...}</inline-code> : nouvel espace de noms imbriqués (C++17)</p>
+          <p><inline-code>using namespace XX</inline-code> : ouvre l'espace de noms XX</p>
+          <p><inline-code>::</inline-code> : opérateur de résolution de portée</p>
+        </section>
+
+        <section>
+          <h2>1.2 Espace de noms - Exemple</h2>
+
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+            
+            namespace language::english
+            {
+              char *color[]={"White", "Red", "Black"};              
+              void colorName(int index)
+              {
+                std::cout<<"The color is" << color[index];
+              }
+            }
+
+            namespace language
+            {
+              namespace french
+              {
+                char *color[]={"Blanc", "Rouge", "Noir"};
+                void colorName(int index)
+                {
+                  std::cout<<"La couleur est" << color[index];
+                }
+              }
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.2 Espace de noms - Exemple</h2>
+
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">            
+
+            ...
+
+            // Promote english namespace to global namespace
+            using namespace language::english;
+            
+            int main()
+            {
+              colorName(1); // "Red"
+              language::french::colorName(1); // "Rouge"
+              
+              return 0;
+            }</code></pre>
+        </section>
+
+      </section>
+
+      <!----------          Entrées/sorties standards          ---------->
+      <section>
+
+        <section>
+          <h2>1.3 Entrées / Sorties</h2>
+          <h3>Entrées / Sorties avec les variables prédéfinies</h3>
+          <p><inline-code>std::cin</inline-code> est une source de flux de données, en général <highlight>le clavier
+            </highlight>
+          </p>
+          <p><inline-code>std::cout</inline-code> est une destination de flux de données, en général <highlight>l'écran
+            </highlight>
+          </p>
+          <br>
+          <h3>On utilise les opérateurs</h3>
+          <p><inline-code>>></inline-code> extraction d'un flux source</p>
+          <p><inline-code><<</inline-code> insertion dans un flux destination</p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+            #include &#60;iostream&#62;
+
+            ...
+            
+            int n;
+            std::cin >> n; // Read from keyboard
+            std::cout << "val " << n; // Print to screen
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>1.3 Entrées / Sorties</h2>
+          <p>Inclure <inline-code>iostream</inline-code></p>
+          <p>Accessibles dans l'espace de noms <inline-code>std</inline-code></p>
+          <br>
+          <h3>Exemples</h3>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.2em;"
+                data-line-numbers="">
+                #include &#60;iostream&#62;
+    
+
+
+                int main()
+                {
+    
+                  ...
+               
+                  std::cout << "val " << n; // Print to screen
+                }
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.2em;"
+                data-line-numbers="">
+                #include &#60;iostream&#62;
+    
+                using namespace std;
+    
+                int main()
+                {
+    
+                  ...
+               
+                  cout << "val " << n; // Print to screen
+                }
+              </code></pre>
+            </div>
+          </div>
+
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/io">📚 Input/output library (cppreference)</a></p>
+
+        </section>
+
+        <section>
+          <h2>1.3 Manipulateurs d'E/S standard</h2>
+          <h3>Les manipulateurs permettent de modifier un flux</h3>
+          <p><inline-code>std::endl</inline-code> : fin de ligne</p>
+          <p><inline-code>std::dec</inline-code>, <inline-code>std::oct</inline-code>,
+            <inline-code>std::hex</inline-code> : changement de base
+          </p>
+          <p><inline-code>std::[no]uppercase</inline-code> : changement de casse</p>
+          <p><inline-code>std::[no]showpos</inline-code> : force l'affichage du signe +</p>
+          <p><inline-code>std::[no]boolalpha</inline-code> : affichage booléen (persistant)</p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+            #include &#60;iostream&#62;
+
+            ...
+
+            int j = 10;
+            std::cout << std::hex << std::nouppercase << j << std::endl;
+            std::cout << std::hex << std::uppercase << j << std::endl;
+            std::cout << std::dec << std::showpos << j << std::endl;
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>1.3 Manipulateurs d'E/S standard</h2>
+          <p>
+            <warning>⚠️ Attention : </warning>les manipulateurs qui prennent des arguments appartiennent à la
+            bibliothèque <inline-code>iomanip</inline-code>
+          </p>
+          </p>
+          <br>
+          <p><inline-code>setprecision(int)</inline-code> : nombre de chiffres significatifs</p>
+          <p><inline-code>fixed</inline-code> : représentation à virgule fixe</p>
+          <p><inline-code>scientific</inline-code> : représentation scientifique</p>
+          <p><inline-code>defaultfloat</inline-code> : représentation par défaut</p>
+          <p><inline-code>setw(int)</inline-code> : nombre de caractères utilisés</p>
+          <p><inline-code>setfill(char)</inline-code> : caractère de remplissage</p>
+          <br><br>
+          <p><a href="https://en.cppreference.com/w/cpp/io/manip">📚 Input/output manipulators (cppreference)</a></p>
+        </section>
+
+        <section>
+          <h2>1.3 Manipulateurs d'E/S standard</h2>
+          <h3>Opérations de saisie et de contrôle de buffer</h3>
+          <p><inline-code>>></inline-code> : renvoie une valeur qui peut être testée (comme <inline-code>scanf</inline-code>)</p>
+          <!-- TODO: check if not better to use cin.fail() instead -->
+          <p>L'expression <inline-code>(cin >> nombre)</inline-code> est nulle (=0) en cas d'échec</p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+
+            if ( (cin >> nombre) == 0 )
+            {
+              std::cout << "error while reading";
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.3 Manipulateurs d'E/S standard</h2>
+          <h3>Remise en état du buffer après une erreur</h3>
+          <p>Utiliser la fontion <inline-code>istream& ignore(streamsize n=1, int delim = EOF)</inline-code></p>
+          <p>Cette fonction vide le buffer d'entrée.
+            L'extraction s'arrête après n caractères ou quand le caractère <inline-code>delim</inline-code> est trouvé.
+          </p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+
+            #include &#60;iostream&#62;
+            #include &#60;limits&#62; // For numeric_limits
+
+            ...
+
+            if ( (cin >> nombre) == 0 )
+            {
+              std::cout << "error while reading";
+              cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.3 Manipulateurs d'E/S standard</h2>
+          <h3>Contrôler l'état du flux d'entrée et agir</h3>
+          <p><inline-code>cin.fail()</inline-code> : problème dans le flux d'entrée, saisie incorrecte</p>
+          <p><inline-code>cin.clear()</inline-code> : remet les bits de contrôle du flux à OK</p>
+          <p><inline-code>cin.eof()</inline-code> : fin du flux d'entrée</p>
+        </section>
+
+        <section>
+          <h2>1.3 Manipulateurs d'E/S standard</h2>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+
+            int N = 0;
+            std::cout << "Entrez un chiffre entre 1 et 6 : " ;
+            while ( !( std::cin >> N ) || N < 1 || N > 6 )
+            {
+              if ( std::cin.fail() ) 
+              { 
+                std::cout << "Saisie incorrecte, recommencez : ";    
+                std::cin.clear(); 
+                std::cin.ignore(256, '\n' ); 
+              } 
+              else
+              {
+                std::cout << "Le chiffre n'est pas entre 1 et 6: ";
+              } 
+            }</code></pre>
+          <br>
+          <h3>Affichage</h3>
+          <pre style="width: 1400px;"><code
+              class="shell"
+              data-trim
+              data-noescape
+              style="font-size: 1.2em;">
+  
+              Entrez un chiffre entre 1 et 6 : abcdef 
+              Saisie incorrecte, recommencez : -3 
+              Le chiffre n'est pas entre 1 et 6: 17 
+              Le chiffre n'est pas entre 1 et 6: 5
+              </code></pre>
+        </section>
+
+      </section>
+
+      <!----------          Entrées/sorties standards          ---------->
+      <section>
+
+        <section>
+          <h2>1.4 Passage par référence</h2>
+          <p>Une référence à une variable de type <inline-code>T</inline-code> est de type <inline-code>T&</inline-code>
+          </p>
+          <br>
+          <p>
+            <highlight>Une référence est constante</highlight> : elle ne peut être modifiée qu'à sa déclaration
+          </p>
+
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+
+            int i;
+            int &r = i; // r is a reference to i
+            r = j; // affects j to i
+          </code></pre>
+          <br>
+          <p>Ce sont une alternative aux pointeurs pour manipuler des adresses</p>
+          <p>Surtout utilisées pour les passages de paramètres</p>
+          <p>
+            <warning>⚠️ Attention : </warning>on ne dispose pas de l'arithmétique des pointeurs !
+          </p>
+
+          <p>
+            <warning>⚠️ Attention : </warning>la signification des opérateurs <inline-code>*</inline-code> et
+            <inline-code>&</inline-code> dépend du contexte !
+          </p>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/language/reference">📚 La déclaration de références en C++</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>1.4 Modes de passage des paramètres</h2>
+          <h3>Par valeur</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          void fn(int par_formel){...}
+          fn(par_effectif);
+        </code></pre>
+          <br>
+          <h3>Par adresse</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          void fn(int *par_formel){...}
+          fn(&par_effectif);
+        </code></pre>
+          <br>
+          <h3>Par référence</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          void fn(int &par_formel){...}
+          fn(par_effectif);
+        </code></pre>
+          <br>
+          <h3>Par référence sur une constante</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          void fn(const int &par_formel){...}
+          fn(par_effectif);
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>1.4 Passage par référence II</h2>
+          <p>Passer des paramètres modifiables aux fonctions, sans utiliser les pointeurs</p>
+          <br>
+          <h3>Déclaration et définition</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          void swap(int &a, int &b)
+          {
+            int t = a;
+            a = b;
+            b = t;
+          }
+        </code></pre>
+          <br>
+          <h3>Appel</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          int x=2, y=3;
+          swap(x, y);
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>1.4 Références sur des données constantes</h2>
+          <p>L'argument <inline-code>pasTouche</inline-code> est nécessaire mais ne doit pas pouvoir être modifié dans
+            une fonction</p>
+          <br>
+          <h3>Passage par valeur</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          double CalculerTout(monType pasTouche)
+          {
+            ...
+          }
+        </code></pre>
+          <p></p>
+
+          <p>
+            <error>⛔ création d'une copie du l'argument</error>
+          </p>
+
+          <br>
+          <h3>Passage par référence constante</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.2em;"
+          data-line-numbers="">
+
+          double CalculerTout(const monType &maRef)
+          {
+            ...
+          }
+        </code></pre>
+
+          <p>
+            <success>✅ L'argument n'est pas copié, et ne peut être modifié</success>
+          </p>
+        </section>
+
+        <section>
+          <h2>1.4 Références</h2>
+          <p>
+            <warning>⚠️ Attention à l'opérateur <inline-code>&</inline-code></warning>
+          </p>
+          <p>3 significations différentes selon le contexte</p>
+          <br>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 3em;"
+          data-line-numbers="">
+
+          int &r = i; // ?
+
+          p = &i; // ?
+          
+          z = a&b; // ?
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>🌶️ 1.4 Fonction renvoyant une référence</h2>
+          <h3>Exemple</h3>
+          <!-- TODO: maybe post-increment first line, then show that static local variable has been changed? -->
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.6em;"
+          data-line-numbers="">
+
+          int& getRefOnCount()
+          {
+            static int count = 0;
+            return count;
+          }
+
+          int main()
+          {
+            std::cout << "Count: " << getRefOnCount()  << std::endl;
+            std::cout << "Count: " << ++getRefOnCount() << std::endl;
+          }
+        </code></pre>
+          <br>
+          <h3>Affichage</h3>
+          <pre style="width: 1400px;"><code
+          class="shell"
+          data-trim
+          data-noescape
+          style="font-size: 2em;">
+
+          Count: 0
+          Count: 1
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>🌶️ 1.4 Fonction renvoyant une référence</h2>
+          <h3>Manipulation au travers d'une fonction-sécurité</h3>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 940px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 1.6em;"
+              data-line-numbers="">
+    
+              #include &#60;iostream&#62;
+              #include &#60;string&#62;
+    
+              const int N=2;
+              std::string tabNoms[N] = {"Bob", "John"};
+              int tabAges[N] = {20, 30};
+    
+              int& age(string nom)
+              {
+                for (int i = 0; i < N; ++i)
+                {
+                  if (nom == tabNoms[i])
+                  {
+                    return tabAges[i];
+                  }
+                }
+              } 
+            </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 600px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 1.6em;"
+              data-line-numbers="">
+   
+              ...
+    
+              int main()
+              {
+                age("Bob") = 50;
+                age("John")++;
+
+                return 0;
+              }
+            </code></pre>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!----------          Valeurs par défaut des paramètres          ---------->
+      <section>
+
+        <section>
+          <h2>1.5 Valeur par défaut des paramètres</h2>
+          <p>Les valeurs sont précisées à la déclaration et non à la définition</p>
+          <p>Les paramètres peuvent être omis à l'appel</p>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.6em;"
+          data-line-numbers="">
+          
+          void trier(void *tab, int nbr, int size=100, bool up=true);
+        </code></pre>
+          <br>
+          <p>Appels possibles</p>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.6em;"
+          data-line-numbers="">
+          
+          trier(tab, nb, 4); // => size=4, up=true
+          trier(tab,nb); // => size=100, up=true
+          </code></pre>
+          <br>
+          <p>
+            <warning>⚠️ Attention : </warning>les paramètres par défaut doivent être à la fin de la liste
+          </p>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/language/default_arguments">📚 Paramètres par défaut (cppreference)</a></p>
+        </section>
+
+      </section>
+
+      <!----------          1.6 Surcharge des fonctions          ---------->
+      <section>
+
+        <section>
+          <h2>1.6 Surcharge des fonctions</h2>
+          <p>
+            <highlight>Signature</highlight> d'une fonction : liste des types des paramètres d'une fonction
+          </p>
+          <p>
+            <highlight>Surcharge</highlight> d'une fonction : écriture de plusieurs fonctions de même nom, mais de
+            signature différente
+          </p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                
+                int minimum(int a, int b)
+                { 
+                  return a < b ? a : b;
+                } 
+                
+                int minimum(int a, int b, int c)
+                {
+                  return minimum(a, minimum(b, c));
+                }
+              </code></pre>
+        </section>
+      </section>
+
+
+      <!----------          1.7 Allocation dynamique          ---------->
+      <section>
+
+        <section>
+          <h2>1.7 Allocation dynamique de mémoire</h2>
+
+          <p>
+            <inline-code><highlight>new</highlight></inline-code> : est suivi d'un type et réserve de la mémoire pour ce type et renvoie un
+            pointeur (ou une exception)
+          </p>
+          <div style="display: flex; justify-content: center; font-size: 1.4em;">
+            <p><inline-code><highlight>new T ≡ malloc (sizeof(T))</highlight></inline-code></p>
+          </div>
+          <br>
+          <p>
+            <highlight>delete</highlight> : est suivi d'une variable contenant une adresse et il libère cette mémoire
+          </p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          double *ptr = nullptr;
+          ptr = new double; // Réservation de mémoire
+          delete ptr;       // Libération de mémoire
+          ptr = nullptr;    // Sécurité
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>1.7 Allocation dynamique de tableaux</h2>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          int *pTableau = nullptr;
+          pTableau = new int[10]; 
+          delete [] pTableau;
+          pTableau = nullptr;
+        </code></pre>
+          <br>
+          <p><inline-code>new int[10]</inline-code> alloue de la place pour 10 entiers (40 bytes)</p>
+          <p>
+            <warning>⚠️ Attention :</warning> ne pas oublier les <inline-code>[]</inline-code>. Sinon, seul le 1er élément du tableau est libéré ⇒ fuite mémoire
+          </p>
+        </section>
+
+        <section>
+          <h2>1.7 Allocation dynamique : gestion d'erreurs</h2>
+          <p>En cas d'échec d'allocation de new, une exception <inline-code>std::bad_alloc</inline-code> est levée</p>
+          <br>
+          <p> <inline-code>new(std::nothrow)</inline-code> se contente de renvoyer un pointeur nul (nullptr), en cas d'échec.</p>
+          <br>
+          <h3>Exemple</h3>
+          <pre style="width: 1400px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.8em;"
+          data-line-numbers="">
+          int *ptr = new (std::nothrow) int[1024];
+          if(ptr == nullptr)
+          {
+            ...
+          }
+        </code></pre>
+        <br>
+        <p><a href="https://en.cppreference.com/w/cpp/memory/new/operator_new">📚 new (cppreference)</a></p>
+        </section>
+
+      </section>
+
+      <!----------          1.8 La classe std::string          ---------->
+      <section>
+      
+        <section>
+          <h2>1.8 La classe <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span></h2>
+          <p>Nouveau type (classe) pour les chaînes : <inline-code>std::string</inline-code></p>
+          <p>Plus simple et plus sûr d'utilisation que <inline-code>char*</inline-code> :</p>
+          <!-- FIXME: how to decrease padding for list items here??? -->
+          <ul>
+            <li>Gestion automatique/dynamique de la taille</li>
+            <li>Opérateurs et fonction dédiées</li>
+          </ul>
+      
+          <p><inline-code>std::string</inline-code> est visible dans l'espace de noms <inline-code>std</inline-code></p>
+          <p><inline-code>std::string</inline-code> est déclaré dans <inline-code>&#60;string&#62;</inline-code></p>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                #include &#60;string&#62;
+                
+                int main()
+                {
+                  std::string x = "toto";
+                  std::string y("toto");
+                }
+              </code></pre>
+      
+        </section>
+
+        <section>
+          <h2>1.8 La classe <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span></h2>
+          <b>
+            <p>Opérateurs</p>
+          </b>
+          <div style="font-size: 0.8em;">
+            <p>Affectation : <inline-code>=</inline-code></p>
+            <p>Concaténation : <inline-code>+</inline-code>, <inline-code>+=</inline-code></p>
+            <p>Comparaisons : <inline-code>==</inline-code>, <inline-code>&lt;</inline-code>, <inline-code>&gt;</inline-code>,
+              <inline-code>&lt;=</inline-code>, <inline-code>&gt;=</inline-code></p>
+          </div>
+          <b>
+            <p>Méthodes</p>
+          </b>
+          <div style="font-size: 0.8em;">
+            <p><inline-code>int size()</inline-code> : renvoie le nombre de caractères</p>
+            <p><inline-code>int length()</inline-code> : renvoie le nombre de caractères</p>
+            <p><inline-code>int capacity()</inline-code> : taille possible sans réallocation</p>
+            <p><inline-code>bool empty()</inline-code> : vrai si la chaîne est vide, faux sinon</p>
+            <p><inline-code>int find(string s, int pos)</inline-code> : position de la chaine <inline-code>s</inline-code> dans la chaine courante à partir de <inline-code>pos</inline-code></p>
+            <p><inline-code>string substr(int start, int length)</inline-code> : sous-chaine de longueur <inline-code>length</inline-code> à partir de <inline-code>start</inline-code></p>
+          </div>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/string">📚 std::string (cppreference)</a></p>
+        </section>
+
+        <section>
+          <h2>1.8 La classe <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span></h2>
+          <b><p>Exemple</p></b>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+                #include &#60;iostream&#62;
+                #include &#60;string&#62;
+                
+                int main()
+                {
+                  std::string x = "toto";
+                  std::string y = x;
+                  std::string z = x + "_" + y;
+                  std::cout << x << " " << y << " " << z << std::endl;
+                  std::cout << "cap: " << z.capacity() << std::endl; 
+                  std::cout << "size: " << z.size()     << std::endl;
+                  return 0;
+                }
+              </code></pre>
+              <b><p>Affichage</p></b>
+              <pre style="width: 1400px;"><code
+                class="shell"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;">
+                toto toto toto_toto
+                cap: 16
+                size: 9
+              </code></pre>
+        </section>
+
+        <section>
+          <h2>1.8 Conversion de <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span> (sans flux)</h2>
+          <p>Conversion de <inline-code>const char*</inline-code> vers <inline-code>std::string</inline-code></p>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                const char *ptr2char = "Hello";
+                std::string mystring(ptr2char);
+              </code></pre>
+              <p><warning>⚠️ Attention :</warning> on passe d'un tableau de caractères (pointeur) à un objet (structure)</p>
+              <br>
+          <p>Conversion de <inline-code>std::string</inline-code> vers <inline-code>const char*</inline-code></p>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                std::string mystring = "Hello";
+                const char *ptr2char2 = nullptr;
+                ptr2char2 = mystring.c_str();
+              </code></pre>
+              <p><warning>⚠️ Attention :</warning> on passe d'un object (structure) à un tableau de caractères (pointeur)</p>
+        </section>
+
+        <section>
+          <h2>1.8 Le flux <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span></h2>
+          <p>Les flux permettent de convertir des données en chaînes de caractères</p>
+          <p>La source ou la destination d'un flux peut être une chaîne de caractères</p>
+          <p>⇒ Les 2 sont constitués d'octets</p>
+          <p>Intérêts : conversions, transferts en mémoire (buffers)</p>
+          <br>
+          <p><inline-code>#include &#60;sstream&#62</inline-code> ⇒ 3 classes :</p>
+          <ul>
+            <li><inline-code>istringstream</inline-code> : entrée</li>
+            <li><inline-code>ostringstream</inline-code> : sortie</li>
+            <li><inline-code>stringstream</inline-code> : les deux</li>
+          </ul>
+          <br>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/io/basic_stringstream">📚 std::stringstream (cppreference)</a></p>
+        </section>
+
+        <section>
+          <h2>1.8 Conversion de <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span> (avec flux)</h2>
+
+          <p>Conversion de <inline-code>int</inline-code> vers <inline-code>std::string</inline-code></p>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                #include &#60;sstream&#62;
+                int main()	
+                {		
+                  std::ostringstream toto;
+                  toto << 10;
+                  std::string texte = toto.str();
+                }
+              </code></pre>
+          <p>Conversion de <inline-code>std::string</inline-code> vers <inline-code>int</inline-code></p>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                #include &#60;sstream&#62;
+                int main()	
+                {		
+                  std::istringstream titi("10");
+                  int nombre;
+                  titi >> nombre;
+                }
+              </code></pre> 
+        </section>
+        
+      </section>
+
+      <!----------          1.9 Divers : inférences de type, range-for, etc.          ---------->
+      <section>
+
+        <section>
+          <h2>1.9 Les fonctions <span style="text-transform: lowercase;"><inline-code>inline</inline-code></span></h2>
+          <p>Fonctions dont le code est copié à chaque appel</p>
+          <p>Utilisées pour des fonctions courtes et fréquemment appelées</p>
+          <p><b>Macro en C</b></p>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                #define MAX(x,y) ((x)>(y)?(x):(y))
+              </code></pre>
+          <b><p><inline-code>inline</inline-code> en C++</p></b>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                inline int max(int x, int y) { return x>y ? x : y; }
+              </code></pre>
+              <br>
+          <p>Les expressions <inline-code>x=MAX(2,b+1);</inline-code> et <inline-code>x=max(2,b+1);</inline-code> sont remplacées par le compilateur par <inline-code>x=((2)>(b+1)?(2):(b+1));</inline-code></p>
+        </section>
+
+        <section>
+          <h2>1.9 Les <span style="text-transform: lowercase;"><inline-code>struct</inline-code></span> en C++</h2>
+          <p>En C++, une structure peut aussi contenir des fonctions (méthodes)</p>
+          <b><p>Exemple</p></b>
+          <pre style="width: 1400px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                struct Vecteur
+                {
+                  double x, y;
+                  double longueur()
+                  {
+                    return (sqrt(x*x + y*y));
+                  }
+                };
+                Vecteur v;
+                v.x=3.0; v.y=4.0;
+                v.longueur();
+              </code></pre>
+              <br>
+              <p>📌 Pas besoin de mentionner <inline-code>struct</inline-code></p>
+        </section>
+
+        <section>
+          <h2>1.9 divers</h2>
+          <p>Utiliser <inline-code>nullptr</inline-code>, et non <inline-code>0</inline-code> ou <inline-code>NULL</inline-code></p>
+          <p>Terminer les fichiers source par une ligne vide pour des raisons de compatibilité avec certains anciens outils qui peuvent ignorer une ligne se terminant par EOF </p>
+          <p>Utiliser <inline-code>auto</inline-code> pour l'inférence de type</p>
+          <p>Utiliser <inline-code>decltype</inline-code> pour obtenir le type d'une expression</p>
+          <p>⇒ Très utile pour les itérateurs et le templates</p> 
+        </section>
+
+        <section>
+          <h2>1.9 Range-based for loop</h2>
+          <pre style="width: 1400px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.8em;"
+                        data-line-numbers="">
+                        int values[] = {10, 20, 26};
+
+                        for (const auto& value : values) 
+                        { 
+                          cout << value << endl; 
+                        }
+                      </code></pre>
+                      <br>
+
+          <b><p>Affichage</p></b>
+          <pre style="width: 1400px;"><code
+                        class="shell"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.8em;">
+                        10
+                        20
+                        26
+                      </code></pre>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/language/range-for">📚 Range-based for loop (cppreference)</a></p>
+        </section>
+
+      </section>
+
+      <!----------          1.10 Bilbiothèque standard          ---------->
+      <section>
+
+        <section>
+          <h2>1.10 Bibliothèque standard</h2>
+          <p>Structures de données classiques (avec les algorithmes associés)</p>
+          <p>Intégrée à la procédure de standardisation de C++</p>
+          <p>Basée sur les modèles de classes (conteneurs valables pour plusieurs classes/types différents)</p>
+          <br>
+          <b><p>Contient</p></b>
+          <ul>
+            <li>Conteneurs : implémentation de structures de données classiques (Chapitre 9)</li>
+            <li>Itérateurs : offrent des méthodes unifiées d'accès aux conteneurs (Chapitre 9)</li>
+            <li>Algorithmes : offrent des algorithmes pour les conteneurs (Chapitre 9)</li>
+            <li>Foncteur : objets fonctions (non traités dans ce cours)</li>
+          </ul>
+          <br>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/header">📚 Bibliothèque standard (cppreference)</a></p>
+        </section>
+
+        <section>
+          <h2>1.10 Conteneurs et itérateurs</h2>
+          <b><p>Conteneurs</p></b>
+          <p>Objets permettant de stocker d'autres objets</p>
+          <p>Permettent de gérer les objets contenus : ajout, suppression, insertion</p>
+          <br>
+          <b><p>Itérateurs</p></b>
+          <p>Permettent de parcourir une collection d'objets sans avoir à se préoccuper de l'implémentation. Ceci permet d'avoir une interface de manipulation commune</p>
+          <p>Utilisation possible d'algorithmes comme tri, recherche, remplacement</p>
+        </section>
+
+        <section>
+          <h2>1.10 Les conteneurs</h2>
+
+          <p>2 types de conteneurs : <highlight>séquentiels</highlight> et <highlight>associatifs</highlight></p>
+          <br>
+          <b><p>Les conteneurs séquentiels</p></b>
+          <p>Conteneurs dont les éléments sont ordonnés</p>
+          <p>On peut parcourir le conteneur suivant cet ordre et insérer ou supprimer un élément en un endroit explicitement choisi</p>
+          <p>Exemples : vecteurs, listes, piles, files, ...</p>
+          <br>
+          <b><p>Les conteneurs associatifs</p></b>
+          <p>Conteneurs dont les éléments sont identifiés par une clé et ordonnés suivant celle-ci</p>
+          <p>Pour insérer un élément, il n'est en théorie plus utile de préciser un emplacement</p>
+          <p>Exemples : dictionnaires, ensembles</p>
+        </section>
+
+        <section>
+          <h2>1.10 Les classes conteneurs</h2>
+          <img data-src="./medias/classes_conteneurs.png" width="1350px" />
+        </section>
+
+        <section>
+          <h2>1.10 Les classes conteneurs</h2>
+          <h3><span style="text-transform: lowercase;"><inline-code>#include <...></inline-code></span></h3>
+          <br>
+          <div class="container">
+            <div class="col-left">
+              <b><p>Conteneurs séquentiels</p></b>
+              <p>Tableau dynamique contigu : <inline-code>vector</inline-code></p>
+              <p>Tableau statique contigu : <inline-code>array</inline-code></p>
+              <p>File à double entrée : <inline-code>deque</inline-code></p>
+              <p>Liste doublement chainée : <inline-code>list</inline-code></p>
+              <p>Liste simplement chainée : <inline-code>forward_list</inline-code></p>
+            </div>
+            <div class="col-right">
+              <b><p>Conteneurs associatifs</p></b>
+              <p>Dictionnaires (clé ⟷ valeur) : <inline-code>map</inline-code>, <inline-code>multi_map</inline-code></p>
+              <p>Ensembles : <inline-code>set</inline-code>, <inline-code>multi_set</inline-code></p>
+              <br>
+              <b><p>Conteneurs dérivés</p></b>
+              <p>Files : <inline-code>queue</inline-code>, <inline-code>priority_queue</inline-code></p>
+              <p>Piles : <inline-code>stack</inline-code></p>
+            </div>
+          </div>  
+        </section>
+
+        <section>
+          <h2>1.10 Méthode courantes des conteneur</h2>
+          <p><inline-code>clear()</inline-code> : vide le conteneur</p>
+          <p><inline-code>size()</inline-code> : retourne le nombre d'éléments</p>
+          <p><inline-code>empty()</inline-code> : teste si le conteneur est vide</p>
+          <p><inline-code>push_back(...)</inline-code> : ajoute un élément à la fin</p>
+          <p><inline-code>push_front(...)</inline-code> : ajoute un élément au début</p>
+          <p><inline-code>front()</inline-code> : renvoie le 1er élément</p>
+          <p><inline-code>pop_front()</inline-code> : supprime le premier élément</p>
+          <p><inline-code>insert()</inline-code> : insère un élément</p>
+          <p><inline-code>erase()</inline-code> : supprime un élément</p>
+          <p><inline-code>sort()</inline-code> : trie le contenu d'une conteneur</p>
+          <p><inline-code>find()</inline-code> : recherche dans le conteneur</p>
+        </section>
+
+        <section>
+          <h2>1.10 Conteneur séquentiel : <span style="text-transform: lowercase;"><inline-code>std::vector</inline-code></span>
+          </h2>
+          <pre style="width: 1400px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 2em;"
+                        data-line-numbers="">
+                        #include &#60;vector&#62;
+        
+                        int main()
+                        {
+                          std::vector&#60;int&#62;  myVector1{10,11};
+                      
+                          std::vector&#60;float&#62; myVector2;
+                          myVector2.push_back(11.0);
+                          myVector2.push_front(10.0);
+                      
+                          std::vector&#60;int&#62; myVector3(2,5);
+                          myVector3[0]=10;
+                          myVector3[1]=11;                 
+                          ...                  
+                        }
+                      </code></pre>
+        </section>
+        
+        <section>
+          <h2>1.10 Conteneur séquentiel : <span style="text-transform: lowercase;"><inline-code>std::vector</inline-code></span>
+          </h2>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+            for (int item : myVector1)
+            {
+              std::cout << item << " ";
+            }
+            
+            for (const int& item : myVector1)
+            {
+              std::cout << item << " ";
+            }
+            
+            for (const auto& item : myVector1)
+            {
+              std::cout << item << " ";
+            }
+            
+            for (int i = 0; i < (int)myVector1.size(); i++)
+            {
+                std::cout << myVector1[i] << " (";
+                std::cout << myVector1.at(i) << ") ";
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.10 Conteneur séquentiel : <span style="text-transform: lowercase;"><inline-code>std::vector</inline-code></span>
+          </h2>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            #include &#60;iostream&#62;
+            #include &#60;vector&#62;
+            #include &#60;algorithm&#62; // std::sort
+            
+            int main()
+            {
+              std::vector&#60;int&#62; v{5, -4, 9, 5, 3, 0};
+
+              // Ascending order
+              std::sort(v.begin(), v.end());
+              
+              // Descending order
+              std::sort(v.begin(), v.end(), std::greater&#60;int&#62;());
+
+              return 0;
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.10 Conteneur séquentiel : <span style="text-transform: lowercase;"><inline-code>std::vector</inline-code></span>
+          </h2>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            #include &#60;iostream&#62;
+            #include &#60;vector&#62;
+            #include &#60;string&#62;
+
+            int main()
+            {           
+              std::vector&#60;string&#62; v;
+              v.push_back("Introduction");
+              v.push_back("une phrase");
+              v.push_back("Conclusion");
+              for(int i = 0; i < vect.size(); ++i)
+              {
+                std::cout << vect[i] << std::endl;
+              }              
+              return 0;
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.10 Conteneur séquentiel : <span style="text-transform: lowercase;"><inline-code>std::array</inline-code></span></h2>
+            <pre style="width: 1400px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 2em;"
+              data-line-numbers="">
+              #include &#60;array&#62;
+
+              int main()
+              {
+                std::array&#60;int, 2&#62; myArray1{10,11}; // 10 11
+                std::array&#60;int, 2&#62; myArray2{0}; // 0 0
+
+                std::array&#60;int, 2&#62; myArray3;
+                // myVector2.push_back(10); => not possible
+              
+                std::array&#60;int, 2&#62; myArray4;
+                myArray4[0] = 10;
+                myArray4[1] = 11; // 10 11
+
+                return 0;
+              }</code></pre>
+        </section>
+
+        <section>
+          <h2>1.10 Imbrication de conteneurs</h2>
+          <p>Il est possible d'imbriquer les conteneurs</p>
+          <p>On peut par exemple, créer un vecteur de listes de chaînes de caractères</p>
+          <p><inline-code>std::vector&#60;std::list&#60;std::string&#62;&#62; maChanson;</inline-code></p>
+          <br>
+          <p>La définition d'un type intermédiaire peut augmenter la lisibilité</p>
+          <p><inline-code>typedef list&#60;string&#62; Couplet;</inline-code></p>
+          <p><inline-code>vector&#60;Couplet&#62; maChanson;</inline-code></p>
+        </section>
+
+        <section>
+          <h2>1.10 Imbrication de conteneurs</h2>
+          <p>Des objets <inline-code>std::vector</inline-code> imbriqués simulent des tableaux multidimensionnels</p>
+          <p>On peut initialiser une matrice identité M (5x5) avec le code suivant :</p>
+          <pre style="width: 1400px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+            typedef std::vector&#60;float&#62; Line;
+            typedef std::vector&#60;Line&#62; Matrix;
+            Matrix m(5); 	// 5 lines
+            for(int i = 0; i < 5; ++i)
+            {
+              m[i].resize(5);   // rows size is 5
+              for(int j = 0; j < 5; ++j)
+              {
+                if (i==j)
+                {
+                  m[i][j]=1;
+                }
+                else
+                {
+                  m[i][j]=0; 
+                }
+              }
+            }</code></pre>
+        </section>
+
+        <section>
+          <h2>Mots-clés en C++20</h2>
+          <iframe src="https://en.cppreference.com/w/cpp/keyword" width="1600px" height="800px"></iframe>
+        </section>
+
+      </section>
+    </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+      slideNumber: 'c/t',
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>

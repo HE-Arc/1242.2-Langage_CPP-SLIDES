@@ -1,0 +1,388 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 5 - Opérateurs de transtypage et RTTI</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/vs.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!----------          TITLE          ---------->
+      <section>
+        <h1>
+          Chapitre 5
+        </h1>
+        <h2>
+          Opérateurs de transtypage et RTTI
+        </h2>
+        <div class="container">
+          <div class="col-left">
+            <p>1. Introduction</p>
+            <p>2. <inline-code>static_cast</inline-code></p>
+            <p>3. <inline-code>reinterpret_cast</inline-code></p>
+          </div>
+          <div class="col-right">
+            <p>4. <inline-code>const_cast</inline-code></p>
+            <p>5. <inline-code>dynamic_cast</inline-code></p>
+            <p>6. RTTI</p>
+          </div>
+        </div>
+      </section>
+
+      <!----------          1. Classes dérivées          ---------->
+      <section>
+
+        <section>
+          <h2>5.1 Introduction</h2>
+          <p>Les conversions (cast) peuvent être faites par des mots-clés dédiés</p>
+          <h3>1. Casting statique (à la compilation)</h3>
+          <p><inline-code>static_cast&lt;&gt;</inline-code> entre types de la même famille*</p>
+          <p><inline-code>reinterpret_cast&lt;&gt;</inline-code> entre types de familles différentes</p>
+          <p><inline-code>const_cast&lt;&gt;</inline-code> ajouter/ supprimer <inline-code>const</inline-code></p>
+          <br>
+          <h3>2. Casting dynamique (à l'exécution - runtime)</h3>
+          <p><inline-code>dynamic_cast&lt;&gt;</inline-code> entre types de la même famille*</p>
+          <br>
+
+          <b>*Famille :</b> les pointeurs, les références, les objets
+          <br>
+
+          <p><warning>⚠️ ATTENTION :</warning> les casts «à la C» sont possibles mais non recommandés</p>          
+
+        </section>
+      </section>
+
+      <!----------          2. static_cast          ---------->
+      <section>
+
+        <section>
+          <h2>5.2 <inline-code>static_cast</inline-code></h2>
+          <p><b>Syntaxe</b></p>
+          <p><inline-code>var = <highlight>static_cast</highlight>&#60;typeDest&#62;(var)</inline-code></p>
+          <p><b>Exemple</b></p>
+          <p><inline-code>char c = static_cast&#60;char&#62;(i);</inline-code></p>
+          <img data-src="./medias/definitions_transtypages.png" width="80%" />
+        </section>
+
+        <section>
+          <h2>5.2 <inline-code>static_cast</inline-code></h2>
+          <p><inline-code>static_cast</inline-code> sert aux conversions qui auraient pu être effectuées de manière implicite</p> 
+          <br>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            int i = 100;
+            char c = static_cast&#60;char&#62;(i); // int -> char
+              
+              float f = 100.0f;
+              i = static_cast&#60;int&#62;(f); // float -> int
+                
+              class Base{};
+              class Deri : public Base{};
+              Der  *d = new Deri;
+              Base *b = static_cast&#60;Base*&#62;(d); // Deri* -> Base*
+          </code></pre>
+          <br>
+          <p><success>✅ évite les warning des conversions implicites</success></p>
+        </section>
+
+        <section>
+          <h2>5.2 <inline-code>static_cast</inline-code></h2>
+          <p><inline-code>static_cast</inline-code> sert aux conversions qui auraient pu être effectuées de manière implicite</p>
+          <br>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            char c = 10;       // 1 byte
+            int *p = (int*)&c; // 4 bytes
+            
+            *p = 5; // run-time error: stack corruption
+            
+            int *q = static_cast&#60;int*&#62;(&c); // compile-time error
+            </code></pre>
+          <br>
+          <p><success>✅ détecte les erreurs à la compilation</success></p>
+        </section>
+
+      </section>
+
+      <!----------          3. reinterpret_cast          ---------->
+      <section>
+
+        <section>
+          <h2>5.3 <inline-code>reinterpret_cast</inline-code></h2>
+          <p><inline-code>static_cast</inline-code> ne fonctionne pas avec des pointeurs de type différents</p>
+
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            float *pf=&f;
+            double *pd=&d;
+            pd = static_cast&#60;double*&#62; (pf); // ⛔ error
+            pd = reinterpret_cas&#60;double*&#62;v(pf); // ✅ ok
+          </code></pre>
+          <br>
+          <p><success>✅ <inline-code>reinterpret_cast</inline-code> sert aux conversions* entre types de familles différentes (p.ex. entier vers pointeur)</success></p>
+          <br>
+          <p>*aucune donnée n'est physiquement modifiée, ce n'est qu'une indication pour le compilateur</p>
+        </section>
+
+        <section>
+          <h2>5.3 <inline-code>reinterpret_cast</inline-code></h2>
+
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            int i;
+            char *ptr = reinterpret_cast&#60;char*&#62;(i); // int -> char*
+            char &ref = reinterpret_cast&#60;char&&#62;(i); // int -> char&
+            float *pf = reinterpret_cast&#60;float*&#62;(pd); // double* -> float*
+          </code></pre>
+          <br>
+          <p><error>⛔ <inline-code>reinterpret_cast</inline-code> est peu portable. Son usage est peu recommandé !</error></p>
+          <br>
+          <p>Utile pour scanner de la mémoire (scanner un range de int avec reinterpret_cast&#60;char*&#62;(adr) pour voir byte par byte le codage, faire un désassembleur, déc)</p>
+        </section>
+
+      </section>
+
+      <!----------          4. const_cast          ---------->
+
+      <section>
+
+        <section>
+          <h2>5.4 <inline-code>const_cast</inline-code></h2>
+          <p><inline-code>const_cast</inline-code> permet d'ajouter ou supprimer les qualificatifs <inline-code>const</inline-code>, <inline-code>volatile</inline-code></p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            class A{};
+            const A *cptr;
+            A *ptr = const_cast&#60;A*&#62;(cptr); // const A* -> A*
+            
+            A a;
+            const A &cref = a;
+            A &ref = const_cast&#60;A&&#62;(cref); // const A& -> A&
+            </code></pre>
+          <p>Opérateur peu utile, car :</p>
+          <p>- la conversion non-const ⇒ const est implicite</p>
+          <p>- la conversion const ⇒ non-const relève souvent d'une erreur de conception</p>
+          <p>- le qualificatif <inline-code>volatile</inline-code> est rarement utilisé</p>
+        </section>
+
+        <section>
+          <h2>5.4 <inline-code>const_cast</inline-code></h2>
+
+          <p><error>⛔ <inline-code>const_cast</inline-code> est dangereux et peut entraîner des comportements indéfinis</error></p>
+          <p>Il est utilisé pour supprimer la constance des références et des pointeurs qui se réfèrent à quelque chose qui, à la base, n'est pas const</p>
+          <p>Les seules possibilités de conversion sont</p>
+          <p><inline-code>X ⇔ const X</inline-code></p>
+          <p><inline-code>X ⇔ volatile X</inline-code></p>
+          <p><inline-code>volatile X ⇔ const X</inline-code></p>
+          <br>
+          <p><inline-code>volatile</inline-code> : sert lors de la programmation système. Elle indique qu'une variable peut être modifiée en arrière-plan par un autre programme (par exemple par une interruption, par un thread, par un autre processus, par le système d'exploitation ou par un autre processeur dans une machine parallèle)
+        </section>
+
+      </section>
+
+      <!----------          5. dynamic_cast          ---------->
+      <section>
+
+        <section>
+          <h2>5.5 <inline-code>dynamic_cast</inline-code></h2>
+          <p><inline-code>dynamic_cast</inline-code> est utilisé pour les conversions entre classes polymorphiques</p>
+          <p>⇒ elle doit comporter au moins une fonction membre virtuelle</p>
+          <p>⇒ être manipulée au moyen d'un pointeur ou d'une référence</p>
+          <br>
+          <img data-src="./medias/4.5_Cat_Classes.png" width="30%" />
+        </section>
+
+        <section>
+          <h2>5.5 <inline-code>dynamic_cast</inline-code></h2>
+          <p>Ce type de cast est dynamique (effectué à l'exécution), et est susceptible d'échouer : </p>
+          <p>⇒ renvoie <inline-code><highlight>nullptr</highlight></inline-code> pour les conversions de pointeurs</p>
+          <p>⇒ lève une exception <inline-code><highlight>std::bad_cast</highlight></inline-code> pour les conversions de référence</p>
+        </section>
+
+        <section>
+          <h2>5.5 <inline-code>dynamic_cast</inline-code> - Exemples</h2>
+
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            Product *products[100];
+            
+            for (int i = 0; i < 100; i++)
+            {
+              Liquor *ptrLiquor = dynamic_cast&#60;Liquor*&#62;(products[i]);
+                
+              if (nullptr != ptrLiquor)
+                cout << ptrLiquor->degree() << endl;
+              
+              else
+                cout << products[i]->name();
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>5.5 <inline-code>dynamic_cast</inline-code> - Commentaires</h2>
+          <p><inline-code>dynamic_cast</inline-code> identifie à l'exécution le type réel de l'expression reçue par RTTI -RunTime Type Information-</p>
+          <br>
+          <p><inline-code>dynamic_cast</inline-code> peut facilement être utilisé à tort, signe d'une mauvaise conception :</p>
+          <p>- La fonction que l'on écrit ne travaille en fait pas sur la classe de base, mais seulement sur certaines classes dérivées bien identifiées</p>
+          <p>- Polymorphisme dynamique pas exploité (fonctions virtuelles)</p>
+          <p>- Polymorphisme statique pas exploité (utilisation de templates, surcharges)</p>
+          <p>- Hiérarchie de classes mal structurée</p>        
+        </section>
+
+      </section>
+
+      <!----------          6. RTTI          ---------->
+      <section>
+
+        <section>
+          <h2>5.6 RTTI</h2>
+          <p><inline-code>RTTI</inline-code> - RunTime Type Information</p>
+          <p>Permet de déterminer le type d'une variable à l'exécution (runtime)</p>
+          <p>Le mécanisme RTTI contient :</p>
+          <p>- Le mot-clé de conversion <inline-code>dynamic_cast</inline-code></p>
+          <p>- L'opérateur <inline-code>typeid</inline-code> de la classe <inline-code>type_info</inline-code></p>
+          <br>
+          <p><warning>⚠️ Note :</warning> avec certains compilateurs, le support RTTI est une option à activer</p>
+        </section>
+
+        <section>
+          <h2>5.6 Opérateur typeid</h2>
+          <p><inline-code>typeid</inline-code> retourne un objet de type <inline-code>type_info</inline-code> qui contient des informations sur le type de l'expression</p>
+          <p>⇒ utilisé pour vérifier le type d'un objet à l'exécution</p>
+          <br>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            typeid(int).name() // ⇒ i
+            typeid(float).name() // ⇒ f
+            typeid(2+2.00).name() // ⇒ d
+            typeid(ptri).name() // ⇒ Pi
+            typeid(ptrf).name() // ⇒ Pf
+            typeid(refd).name() // ⇒ d
+            AAA a;
+            typeid(a).name() // ⇒ Z4mainE3AAA
+          </code></pre>
+      </section>
+
+      <section>
+        <h2>5.6 Opérateur typeid - Exemple</h2>
+        <pre style="width: 1600px;"><code 
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          class Animal { public: virtual ~Animal(){}};
+          class Mammifere : public Animal {};
+          class Chien : public Mammifere {};
+          class Caniche : public Chien {};
+          
+          int main() {
+            Animal *ptr = new Caniche;
+            typeid(ptr).name(); // ⇒ P6Animal
+            typeid(*ptr).name(); // ⇒ 7Caniche
+            typeid(*ptr) == typeid(Chien); // ⇒ Faux
+            typeid(*ptr) == typeid(Caniche); // ⇒ Vrai
+
+            return 0;
+          }
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>5.6 Opérateur typeid vs dynamic_cast</h2>
+        <p><inline-code>typeid</inline-code> est utilisé pour vérifier le type d'un objet à l'exécution</p>
+        <p><inline-code>dynamic_cast</inline-code> est utilisé pour convertir un pointeur ou une référence d'une classe de base en une classe dérivée</p>
+        <br>
+        <p><inline-code>typeid</inline-code> est plus rapide que <inline-code>dynamic_cast</inline-code></p>
+        <p><inline-code>dynamic_cast</inline-code> est plus sûr que <inline-code>typeid</inline-code></p>
+
+        <pre style="width: 1600px;"><code 
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          if (typeid(*ptr) == typeid(Chien)) {
+            Chien *c = dynamic_cast&#60;Chien*&#62;(ptr);
+            if (c) {
+              // ptr est un Chien
+            }
+          }
+      </section>
+
+    </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+      slideNumber: 'c/t',
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>

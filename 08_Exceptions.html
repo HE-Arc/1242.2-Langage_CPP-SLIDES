@@ -1,0 +1,569 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 8 - Les exceptions</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/vs.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!----------          TITLE          ---------->
+      <section>
+        <h1>
+          Chapitre 8
+        </h1>
+        <h2>
+          Les exceptions
+        </h2>
+        <div class="container">
+          <div class="col-left">
+            <p>1. Gestion des erreurs</p>
+            <p>2. Principe des exceptions</p>
+            <p>3. <inline-code><highlight>Try</highlight></inline-code>, <inline-code><highlight>catch</highlight></inline-code> et <inline-code><highlight>throw</highlight></inline-code></p>
+          </div>
+          <div class="col-right">
+            <p>4. Relance d'exceptions</p>
+            <p>5. <inline-code><highlight>noexcept</highlight></inline-code></p>
+            <p>6. <inline-code><highlight>std::exception</highlight></inline-code> et <inline-code><highlight>what()</highlight></inline-code></p>
+          </p>
+          </div>
+        </div>
+      </section>
+
+      <!----------          1. Gestion des erreurs          ---------->
+      <section>
+
+        <section>
+          <h2>8.1 Gestion des erreurs en C++</h2>
+          <h3>Méthode historique</h3>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="2, 9, 10, 11">
+                // Computes f(x) = 1/x^2
+                #define ERROR -1
+                int main()
+                {
+                  int x = 0;
+                  double result = ERROR;
+                  cin >> x;
+                  result = f(x);
+                  if (ERROR == result)
+                    cout << "erreur";
+                  else 
+                    cout << result;
+
+                  return 0;
+                }
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="4-8, 13, 14, 16, 17">
+                double f(int x)
+                {
+                 double res = ERROR;
+                 if (false == inv(x, res)) {
+                   cout << "inversion error";
+                   return ERROR;
+                 }
+                 else 
+                   return res*res; // (1/x)^2
+                }
+                bool inv(int n, double &res)
+                {
+                  if (n==0) return false;
+                  else {
+                    res = 1.0 / n;
+                    return true;
+                  }
+                }
+              </code></pre>
+            </div>
+          </div>          
+        </section>
+      
+        <section>
+          <h2>8.1 Gestion des erreurs en C++</h2>
+          <h3>Inconvénients</h3>
+          <p>Code de gestion d'erreurs mélanger au "vrai" code</p>
+          <p>L'appelant doit savoir ce que signifient les codes d'erreurs retournés</p>
+          <p>Retouner une valeur et un code d'erreur en même temps</p>
+        </section>
+      
+        <section>
+          <h2>8.1 Gestion des erreurs en C++</h2>
+          <h3>Les exceptions</h3>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="8, 10, 11-13">
+                // Computes f(x) = 1/x^2
+
+                int main()
+                {
+                  int x = 0;
+                  double result = -1;
+                  cin >> x;
+                  try {
+                    result = f(x);
+                  }
+                  catch (...) {
+                    cout << "erreur";
+                  }
+                  
+                  cout << result;
+                }
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="8">
+                double f(int x)
+                {
+                 double res = inv(x);
+                 return res*res;
+                }
+                double inv(int x)
+                {
+                  if (x==0) throw(0);
+                  
+                  return 1./x;
+                }
+              </code></pre>
+              <p><inline-code><highlight>throw</highlight></inline-code> : lance une exception</p>
+              <p><inline-code><highlight>catch</highlight></inline-code> : récupère une exception</p>
+            </div>
+          </div>          
+        </section>
+
+      </section>
+      
+      <!----------          2. Principe des exceptions          ---------->
+      <section>
+
+        <section>
+          <h2>8.2 Principe des exceptions</h2>
+          <p>Lors de la détection d'une «erreur» (fonctionnement imprévu)</p>
+          <p><highlight>Exception</highlight> : signal logiciel, accompagné de données (int, string, ..., objet).
+            Une exception est souvent un objet de la classe <inline-code><highlight>std::exception</highlight></inline-code> ou d'une classe dérivée</p>
+          <p>Lorsqu'une exception est lancée (avec <inline-code><highlight>throw</highlight></inline-code>), le traitement en cours est <highlight>interrompu</highlight></p>
+          <p>L'exception remonte les fonctions appelantes jusqu'à être récupérée (avec <inline-code><highlight>catch</highlight></inline-code>)</p>
+          <p>Si elle n'est pas récupérée, alors le programme se termine</p>
+          <br>
+          <h3>Remarques</h3>
+          <p>Les exceptions permettent de séparer le traitement d'erreur du reste du code</p>
+          <p>Une exception n'est pas forcément une erreur (fonctionnement non prévu)</p>
+        </section>
+
+        <section>
+          <h2>8.2 Syntaxe de la gestion de exceptions</h2>
+          <p>Les instructions pouvant lever une exception doivent être à l'intérieur d'un bloc :</p>
+          <p><inline-code><highlight>try { /*instructions*/ }</highlight></inline-code></p>
+          <br>
+          <p>Un bloc <inline-code><highlight>try</highlight></inline-code> doit être immédiatement suivi d'au moins un bloc de gestion d'erreur :</p>
+          <p><inline-code><highlight>catch () { /*instructions*/ }</highlight></inline-code></p>
+          <br>
+          <p>Une exception est levée par l'instruction :</p>
+          <p><inline-code><highlight>throw</highlight></inline-code></p>
+        </section>
+
+        <section>
+          <h2>8.2 Exemple simple</h2>
+          <pre style="width: 800;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            int main()
+            {
+              auto diviseur = 0;
+              <b>try</b>
+              {
+                if (diviseur == 0) <b>throw diviseur;</b>
+                cout << "Q:" << dividende/diviseur << endl;
+              }
+              <b>catch (int &d)</b> // Exception handler for int              
+              { 
+                cout << "Division par " << d << endl; 
+              }
+              <b>catch (...)</b> // Exception handler for all other types
+              { 
+                cout << "Autre erreur" << endl; 
+              }
+
+              return 0;
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>8.2 Exemple simple</h2>
+          <p>Le premier gestionnaire compatible avec le type de l'exception l'attrape</p>
+          <p>Au plus un gestionnaire est exécuté pour une exception levée</p>
+          <p>Donc, si plusieurs gestionnaires sont appropriés pour le type de l'exception, seul le premier sera exécuté</p>
+          <p>Il convient donc de commencer par les gestionnaires les plus spécialisés, et terminer par le plus général</p>
+        </section>
+
+      </section>
+
+      <!----------          3. Try catch throw          ---------->
+      <section>
+
+        <section>
+          <h2>8.3 Le bloc <span style="text-transform: lowercase;"><inline-code><highlight>try</highlight></inline-code></span></h2>
+          <p>Pour être gérable, une exception doit être levée dans un bloc <inline-code><highlight>try</highlight></inline-code></p>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 700px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+
+                try
+                {
+                  throw "err!";
+                }
+
+                </code>
+              </pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 700px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                void foo()
+                {
+                  throw ERROR_CODE_27;
+                }
+
+                try
+                {
+                  foo();
+                }
+
+                </code></pre>
+            </div>
+          </div>
+          <p>Si l'instruction <inline-code><highlight>throw</highlight></inline-code> n'est pas dans un bloc <inline-code><highlight>try</highlight></inline-code>, la levée de l'exception entraine la fin du programme ⇒ <inline-code><highlight>terminate()</highlight></inline-code></p>
+          <p><warning>⚠️ Attention :</warning> <inline-code><highlight>throw</highlight></inline-code> n'apparait pas toujours explicitement dans le code. Exemple avec l'opérateur <inline-code><highlight>new</highlight></inline-code></p>
+        </section>
+
+        <section>
+          <h2>8.3 Le bloc <span style="text-transform: lowercase;"><inline-code><highlight>catch</highlight></inline-code></span></h2>
+          <p>Un bloc <inline-code><highlight>try</highlight></inline-code> doit être immédiatement suivi par au moins un gestionnaire <inline-code><highlight>catch</highlight></inline-code></p>
+          <pre style="width: 1800px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            try {
+              ...
+            }
+            catch (int except1) { // Handle int exceptions
+              ...
+            }
+            catch (std::string except2) { // Handle string exceptions
+              ...
+            }
+            catch (std::exception &except3) { // Handle std::exception exceptions
+              ...
+            }
+            catch (...) { // Handle all other exceptions
+              ...
+            }            
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>8.3 Le mot-clef <span style="text-transform: lowercase;"><inline-code><highlight>throw</highlight></inline-code></span></h2>
+          <p><inline-code>throw</inline-code> peut envoyer des messages de n'importe quel type, y compris des objets</p>
+          <pre style="width: 1400px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            try { 
+              switch(i) {
+                case 1: throw 2;          break;
+                case 2: throw "Erreur";   break;
+                case 3: throw objet;      break;
+              }
+            }
+            catch(int x) {
+              cout << x;
+            }
+            catch(const char* str) {
+              cout << str;
+            }
+            catch(Classe &obj) {
+              cout << obj->afficher();
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>8.3 Gestionnaires d'exceptions</h2>
+          <p>Lorsqu'une exception de type T est levée, le compilateur cherche un gestionnaire :</p>
+          <p>1. de type <inline-code><highlight>T</highlight></inline-code></p>
+          <p>2. de superclasse de <inline-code><highlight>T</highlight></inline-code></p>
+          <p>3. pointeur sur une classe dérivée</p>
+          <p>4. type indéterminé : <inline-code><highlight>catch(...)</highlight></inline-code> (à placer en dernier)</p>
+          <br>
+          <p>Si l'exception est levée dans une fonction, le compilateur cherche un gestionnaire dans la fonction. Si ce n'est pas le cas, dans la fonction appelante, etc.</p>
+          <p>Le gestionnaire peut mettre fin au programme. Si ce n'est pas le cas, l'exécution continue par l'instruction qui suit les gestionnaires : <highlight>la fin du bloc try n'est pas exécutée.</highlight></p>
+          <p>Si aucun gestionnaire n'est trouvé, il appelle la fonction <inline-code><highlight>terminate()</highlight></inline-code>. Par défaut, celle-ci appelle <inline-code><highlight>abort()</highlight></inline-code></p>
+        </section>
+
+        <section>
+          <h2>🌶️ 8.3 Déclaration et problématique</h2>
+          <p>Le principal problème lié aux exceptions est la libération des ressources :</p>
+          <p>- Libérer les ressources allouées dynamiquement</p>
+          <p>- Fermer les flux</p>
+          <br>
+          <h3>Solutions</h3>
+          <p>1. Les allocateurs</p>
+          <p>2. RAII (Resource Acquisition Is Initialization)</p>
+        </section>
+
+      </section>
+
+      <!----------          4. Relance d'exceptions          ---------->
+
+      <section>
+
+        <section>
+          <h2>8.4 Relance d'exceptions</h2>
+          <p>Il est possible de relancer une exception déjà lancée</p>
+          <p>Il faut utiliser l'instruction <inline-code><highlight>throw</highlight></inline-code> sans argument</p>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 700px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                void foo()
+                {
+                  try {
+                    int n=2;
+                    throw n;
+                  }
+                  catch(int) {
+                    cout<<"foo \n";
+                    throw;
+                  }
+                }
+              </code>
+            </pre>
+          </div>
+          <div class="col-right">
+              <pre style="width: 700px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                int main()
+                {
+                  try {
+                    foo();
+                  }
+                  catch(int) {
+                    cout <<"main\n";
+                    exit(-1);
+                  }
+                  
+                  return 0;
+                }
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!----------          5. noexcept          ---------->
+      <section>
+
+        <section>
+          <h2>8.5 <span style="text-transform: lowercase;"><inline-code><highlight>noexcept</highlight></inline-code></span></h2>
+          <p>Le mot clé <inline-code><highlight>noexcept</highlight></inline-code> indique que la fonction ne doit pas lever d'exception</p>
+          <p>Il est possible de spécifier une condition pour lever une exception</p>
+          <pre style="width: 1500px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+
+            // Do not throw an exception
+            void f1() noexcept(true) { ... }
+
+            // Might throw an exception
+            void f2() noexcept(false) { ... }
+
+            // Might throw an exception if expr is false
+            void f3() noexcept(expr) { ... }
+
+            // Might throw an exception if foo() may throw too
+            void f4() noexcept(noexcept(foo())) { ... }
+          </code></pre>
+        </section>
+
+      </section>
+
+      <!----------          6. std::exception et what()          ---------->
+      <section>
+
+        <section>
+          <h2>8.6 Les classes exceptions standards</h2>
+          <p>La bibliothèque standard définit des classes exceptions</p>
+          <p>Leur superclasse commune est <inline-code><highlight>std::exception</highlight></inline-code></p>
+          <p>Elle est définie dans le fichier d'en-tête <inline-code><highlight>stdexcept</highlight></inline-code></p>
+          <p>Elle comporte une méthode <inline-code>what()</inline-code> retournant une chaîne de caractères</p>
+          <p>Les exceptions personnalisées hériteront donc de <inline-code>exception</inline-code> et la méthode <inline-code>what()  </inline-code>what() sera redéfinie.</p>
+          <p>Double intérêt :</p>
+          <p>1. Transmettre des informations (attributs, what())</p>
+          <p>2. catch (const exception &e) plutôt que catch(...)</p>
+          <p>Les exceptions sont lancées par valeur et attrapées par référence</p>
+          <p><a href="https://en.cppreference.com/w/cpp/error/exception">📚 Exceptions (cppreference)</a></p>
+        </section>
+
+        <section>
+          <h2>8.6 Spécialisation de la classe <span style="text-transform: lowercase;"><inline-code><highlight>std::exception</highlight></inline-code></span></h2>
+          <pre style="width: 1500px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            #include &#60;iostream&#62;
+            #include &#60;stdexcept&#62; // or #include &#60;exception&#62;
+            using namespace std;
+            
+            class Exception1 : public exception {
+              public:
+              Exception1() noexcept {}
+              const char* what() const noexcept override {
+                return "exception1";
+              }
+            };
+              
+            class Exception2 : public exception {
+              public:
+              Exception2() noexcept {}
+              const char* what() const noexcept override {
+                return "exception2";
+              }
+            };
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>8.6 Surcharge de <span style="text-transform: lowercase;"><inline-code><highlight>what()</highlight></inline-code></span></h2>
+          <pre style="width: 1500px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.7em;"
+            data-line-numbers="">
+
+            int main()
+            {
+              try {  
+                cout << "bloc try 1" << endl;
+                throw Exception1();
+              }
+              catch(const Exception1 & e) { 
+                cout << e.what() << endl;
+              }
+              try { 
+                cout << "bloc try 2" << endl;
+                throw Exception2();
+              }
+              catch (const exception & e) {
+                cout << e.what() << endl;
+              }
+              return 0;
+            }
+            </code></pre>
+            <p><warning>⚠️ Attention :</warning> une référence est nécessaire pour le polymorphisme</p>
+          </section>
+
+      </section>
+    </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+      slideNumber: 'c/t',
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>

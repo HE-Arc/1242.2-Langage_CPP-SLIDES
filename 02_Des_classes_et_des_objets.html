@@ -1,0 +1,2045 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 2 - Des classes et des objets</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/vs.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!----------          TITLE          ---------->
+      <section>
+        <h1>
+          Chapitre 2
+        </h1>
+        <h2>
+          Des classes et des objets
+        </h2>
+        <div class="container">
+          <div class="col-left">
+            <p>1. Introduction</p>
+            <p>2. Définition d'une classe</p>
+            <p>3. Implémentation d'une méthode</p>
+            <p>4. Instancier des objets</p>
+            <p>5. Les constructeurs</p>
+            <p>6. Le destructeur</p>
+          </div>
+          <div class="col-right">
+            <p>7. Membres constants</p>
+            <p>8. <inline-code>this</inline-code>, Membres statiques, <inline-code>friend</inline-code></p>
+            <p>9. Diagrammes UML</p>
+            <p>10. <inline-code>=delete</inline-code> et <inline-code>=default</inline-code></p>
+            <p>11. Résumé</p>
+          </div>
+        </div>
+      </section>
+
+      <!----------          INTRODUCTION          ---------->
+      <section>
+
+        <section>
+          <h2>2.1 Paradigmes de programmation</h2>
+          <b>
+            <p>Procédurale / impérative</p>
+          </b>
+          <p>Séparation des données et des fonctions</p>
+          <p>Une fonction agit sur des données</p>
+          <br>
+          <b>
+            <p>Orientée objet (POO)</p>
+          </b>
+          <p>Regroupement des fonctions et données dans un objet</p>
+          <p>Envoi de "messages" entre objets</p>
+
+          <!--TODO: faire diagramme UML -->
+        </section>
+
+        <section>
+          <h2>2.1 Principe de la POO</h2>
+          <p>
+            <highlight>Décrire les objets et les actions possibles sur ces objets</highlight>
+          </p>
+          <br>
+          <h3>Avantages</h3>
+          <p>Approche naturelle</p>
+          <p>Code réutilisable</p>
+          <p>Modulaire</p>
+          <p>Plus facile à maintenir / à faire évoluer</p>
+          <p>Meilleure gestion pour les gros projets</p>
+        </section>
+
+        <section>
+          <h2>2.1 Notion de classe</h2>
+
+          <div class="container">
+            <div class="col-left">
+              <h3>C</h3>
+              <pre style="width: 800px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.6em;"
+                        data-line-numbers="">
+
+                        int balance = 0;
+          
+                        void deposit(int x)
+                        {
+                          balance += x;
+                        }
+          
+                        int main(void)
+                        {
+                          deposit(15);
+          
+                          return 0;
+                        }</code></pre>
+            </div>
+            <div class="col-right">
+              <h3>C++</h3>
+              <pre style="width: 800px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.6em;"
+                        data-line-numbers="">
+          
+                        class Account
+                        {
+                          int balance{0};
+          
+                          void deposit(int x)
+                          {
+                            balance += x;
+                          }
+                        };
+          
+                        int main()
+                        {
+                          Account myAccount;
+                          Account otherAccount;
+          
+                          myAccount.deposit(15);
+          
+                          return 0;
+                        }</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>2.1 Classe vs Objet</h2>
+
+          <p>Une classe est un <highlight>type</highlight> défini par le programmeur</p>
+          <img src="./medias/ClasseVoiture.png" alt="Classe" width="600px">
+
+          <p>Un objet est une <highlight>instance</highlight> de cette classe</p>
+          <img src="./medias/ObjetsVoitures.png" alt="Objet" width="1600px">
+        </section>
+
+        <section>
+          <h2>2.1 Principes de POO</h2>
+          <p><b>Une classe est la description abstraite d'un objet. Elle regroupe des <highlight>attributs</highlight>
+              et des <highlight>méthodes</highlight></b></p>
+          <br>
+          <h3>Attributs</h3>
+          <p>Appelés aussi des variables membres (de la classe)</p>
+          <p>Décrivent l'état de l'objet</p>
+          <p>Exemples : vitesse, poids, nombre de passagers, etc.</p>
+          <br>
+          <h3>Méthodes</h3>
+          <p>Appelées aussi des fonctions membres (de la classe)</p>
+          <p>Décrivent les actions qu'un objet peut effectuer</p>
+          <p>Exemples : démarrer, accélérer, freiner, etc.</p>
+        </section>
+
+        <section>
+          <h2>2.1 Exemple de classe</h2>
+          <p>Définition de la classe <inline-code>Point</inline-code></p>
+          <pre style="width: 1400px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.6em;"
+                        data-line-numbers="">
+                        
+                        #include &#60;iostream&#62;
+                        
+                        // Class name: Point
+                        class Point
+                        {
+                          public:
+
+                            // Methods
+                            void init(int, int);
+                            void translate(int, int);
+                            void print()
+                            {
+                              std::cout << "(" << x << "," << y << ")";
+                            }
+                            
+                            // Attributes
+                            int x{0};
+                            int y{0};
+                          };
+                        
+                        </code></pre>
+
+        </section>
+
+        <section>
+          <h2>2.1 Exemple de classe</h2>
+          <p>Définition <highlight>des méthodes </highlight>de la classe <inline-code>Point</inline-code></p>
+          <pre style="width: 1400px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.6em;"
+                        data-line-numbers="">
+                        
+                        ...
+                        
+                        void Point::init(int _x, int _y)
+                        {
+                          x=_x;
+                          y=_y;
+                        }
+                        
+                        void Point::translate(int delta_x, int delta_y)
+                        {
+                          x += delta_x;
+                          y += delta_y;
+                        }
+                        
+                        ...
+
+                      
+                      
+                      </code></pre>
+        </section>
+
+        <section>
+          <h2>2.1 Exemple de classe</h2>
+          <p>Utilisation <highlight>des objets </highlight>de la classe <inline-code>Point</inline-code></p>
+          <pre style="width: 1400px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 1.6em;"
+                        data-line-numbers="">
+                        
+                        int main()
+                        {
+                          // Point is a class
+                          // p1 is an object of the class Point
+                          Point p1;
+                          
+                          p1.init(-1,2);
+                          
+                          p1.print();
+                          p1.translate(10,10);
+                          p1.print();
+                          
+                          return 0;
+                        }
+                      
+                      </code></pre>
+        </section>
+
+        <section>
+          <h2>2.1 Caractéristiques d'un objet</h2>
+          <b>
+            <p>Un objet possède un <highlight>état interne</highlight>
+            </p>
+          </b>
+          <p>C'est l'ensemble des valeurs qui décrit l'état de l'objet à un instant donné.
+            Cet état n'est pas directement accessible : l'utilisateur doit y accéder au travers de son interface.</p>
+
+          <b>
+            <p>Un objet possède une <highlight>implémentation</highlight>
+            </p>
+          </b>
+          <p>C'est la façon dont l'objet est réalisé.
+            L'implémentation n'est pas accessible à l'utilisateur.
+            2 classes ayant la même interface peuvent avoir une implémentation différentes.</p>
+
+          <p>
+            <highlight>Un objet appartient à une classe</highlight>
+          </p>
+          <p>La classe est le "moule" à partir duquel on crée un objet.
+            Un objet en est une instanciation.</p>
+
+          <p>
+            <highlight>Un objet est identifiable (nommable)</highlight>
+          </p>
+          <p>On peut distinguer les objets entre eux en les nommant, même s'ils sont de la même classe.</p>
+        </section>
+
+      </section>
+
+      <!----------          DÉCLARATION D'UNE CLASSE ET DE SES ATTRIBUTS          ---------->
+      <section>
+
+        <section>
+          <h2>2.2 Déclaration d'une classe en C++</h2>
+          <h3>Syntaxe</h3>
+
+          <pre style="width: 1400px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 2.7em;"
+                        data-line-numbers="">
+                        
+                        <b>class NomDeLaClasse</b>
+                        {
+                          <b>public:</b>
+                            int uneFonctionMembre();
+                            double unAttribut;
+
+                          <b>private:</b>
+                            char unAutreAttribut;
+                        }<b>;</b> // ⚠️ Do not forget the semicolon
+                        
+                        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.2 Déclaration d'une classe en C++</h2>
+          <h3>Contrôle d'accès aux membres</h3>
+          <p><inline-code>public</inline-code> : les membres sont accessibles par tous</p>
+          <p><inline-code>private</inline-code> : les membres sont accessibles uniquement par les méthodes de la classe.
+            C'est le mode par défaut.</p>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 700px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class XYZ
+                {
+                  public:
+                    void fctPub(){..}
+                    int varPub;
+
+                  private:
+                    void fctPriv(){..}
+                    int varPriv;
+                };                
+                
+                </code></pre>
+
+            </div>
+            <div class="col-right">
+              <pre style="width: 700px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                int main()
+                {
+                  <b>XYZ</b> x;
+                
+                  x.fctPub(); // ✅
+                  x.varPub=3; // ✅
+
+                  <b>x.fctPriv();</b> // ⛔
+                  <b>x.varPriv=6;</b> // ⛔
+                }
+                                
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>2.2 Déclaration d'une classe en C++</h2>
+          <h3>Contrôle d'accès aux membres</h3>
+          <p><inline-code>public</inline-code> : les membres sont accessibles par tous</p>
+          <p><inline-code>private</inline-code> : les membres sont accessibles uniquement par les méthodes de la classe.
+            C'est le mode par défaut.</p>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 700px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class XYZ
+                {
+                  public:
+                    void fctPub(){..}
+                    int varPub;
+
+                  private:
+                    void fctPriv(){..}
+                    int varPriv;
+                };                
+                
+                </code></pre>
+
+            </div>
+            <div class="col-right">
+              <pre style="width: 700px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">                
+
+                void <b>XYZ</b>::fctPub()
+                { 
+                  varPub = 3;  // ✅
+                  varPriv = 6; // ✅
+                }
+                void <b>XYZ</b>::fctPriv()
+                { 
+                  varPub = 3;  // ✅
+                  varPriv = 6; // ✅
+                }                
+                                                
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>2.2 Encapsulation</h2>
+          <b>
+            <p>L'implémentation et le type des données sont cachés (peuvent évoluer)</p>
+          </b>
+          <p>⇒ Permet <highlight>l'évolutivité des programmes</highlight>
+          </p>
+          <br>
+          <b>
+            <p>La visibilité des membres est gérée avec <inline-code>public</inline-code>,
+              <inline-code>private</inline-code> et <inline-code>protected</inline-code>
+            </p>
+          </b>
+          <b>
+            <p>L'accès aux membres est géré par des <highlight>accesseurs</highlight>
+              (<inline-code>getX()</inline-code>) et des <highlight>modificateurs</highlight>
+              (<inline-code>setX()</inline-code>)</p>
+          </b>
+          <p>⇒ Garantit la cohérence/sécurité des données </p>
+        </section>
+
+        <section>
+          <h2>2.2 Encapsulation</h2>
+          <p>Les fonctions sont <inline-code>public</inline-code>, et les données sont
+            <inline-code>private</inline-code> (ou <inline-code>protected</inline-code></inline-code>)
+          </p>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 700px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.7em;"
+                data-line-numbers="">
+                
+                class Account
+                {
+                  <b>public:</b>
+                    void deposit(int x)
+                    {
+                      balance += x;
+                    }
+                    void withdraw(int x)
+                    {
+                      balance -= x;
+                    }
+                    int getBalance()
+                    {
+                      return balance;
+                    }
+
+                  <b>private:</b>
+                    int balance{0};
+                };                
+                </code></pre>
+
+            </div>
+            <div class="col-right">
+              <pre style="width: 1000px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.7em;"
+                data-line-numbers="">                
+
+                int main()
+                {
+                  Account myAccount;
+                  myAccount.deposit(100);
+                  myAccount.withdraw(50);
+                  auto balance = myAccount.getBalance();
+                  std::cout << balance;
+
+                  myAccount.balance = 1000; // ⛔
+                  std::cout << myAccount.balance; // ⛔
+
+                  return 0;
+                }
+                                                
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>2.2 Portée des attributs et des méthodes</h2>
+          <b>
+            <p>Certaines méthodes doivent être publiques</p>
+          </b>
+          <p>les constructeurs (en général)</p>
+          <p>les accesseurs, les modificateurs</p>
+          <br>
+          <b>
+            <p>On recommande de :</p>
+          </b>
+          <p>déclarer les attributs privés</p>
+          <p>les rendre accessibles par des méthodes publiques (accesseurs et modificateurs).</p>
+
+          <p><b>📌 Note :</b> un membre déclaré sans modificateur d'accès sera <inline-code>private</inline-code> par
+            défaut (accessible uniquement depuis méthodes de la classe)</p>
+
+        </section>
+
+      </section>
+
+      <!----------          DÉFINITION D'UNE METHODE          ---------->
+      <section>
+
+        <section>
+          <h2>2.3 Définition des méthodes</h2>
+          <h3>En-ligne</h3>
+          <p>Dans la déclaration de la classe</p>
+          <p>Mot-clef inline (implicite)</p>
+          <p>Pour des fonctions courtes</p>
+          <br>
+          <h3>Séparée</h3>
+          <p>Prototype dans déclaration de la classe</p>
+          <p>Définition hors de la déclaration de la classe</p>
+          <p>Opérateur de portée <inline-code>::</inline-code></p>
+        </section>
+
+        <section>
+          <h2>2.3 Définition des méthodes</h2>
+          <h3>En-ligne</h3>
+
+          <pre style="width: 1600px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 2em;"
+                        data-line-numbers="">
+                        
+                        class Point 
+                        {
+                          public:
+                            int getX()
+                            {
+                              return x;
+                            }
+                            <b>inline</b> void setX(int _x) // 📌 inline is optional here
+                            {
+                              x = _x;
+                            }
+
+                          private:
+                            int x{0}, y{0};
+                        };
+                        
+                        </code></pre>
+
+        </section>
+
+        <section>
+          <h2>2.3 Définition des méthodes</h2>
+          <h3>Séparée</h3>
+
+          <pre style="width: 1600px;"><code
+                        class="c++"
+                        data-trim
+                        data-noescape
+                        style="font-size: 2em;"
+                        data-line-numbers="">
+                        
+                        // Class declaration
+                        class Point
+                        {
+                          public:
+                            void display();
+
+                          private:
+                            int x{0}, y{0};
+                        };
+                        
+                        // Point::display() definition
+                        void Point::display()
+                        {
+                          std::cout << '(' << x << ',' << y << ')';
+                        }
+                                                
+                        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.3 Définitions de méthodes</h2>
+          <h3>Organisation d'un projet C++</h3>
+          <p>2 fichiers par classe : <inline-code>classe.h</inline-code> (déclarations classe et membres) +
+            <inline-code>classe.cpp</inline-code> (définitions méthodes)
+          </p>
+          <p>Directives de non-inclusion multiple dans les interfaces</p>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                // Classe.h
+                #ifndef CLASSE_H
+                #define CLASSE_H
+                ...
+                #endif
+              </code></pre>
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                // Classe.cpp
+                #include "classe.h"
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                // Classe.h
+                <b>#pragma once</b>
+                ...
+              </code></pre>
+              <br>
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+  
+                // Classe.cpp
+                #include "classe.h"
+              </code></pre>
+            </div>
+          </div>
+
+          <p>📌 1 fichier peut contenir plusieurs classes</p>
+          <p>✅ 1 seule classe par paire de fichiers <inline-code>.h</inline-code> et <inline.code>.cpp</inline.code>
+          </p>
+        </section>
+
+        <section>
+          <h2>2.3 Définitions de méthodes</h2>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                // Point.h
+                #pragma once
+
+                class Point
+                {
+                  public:
+                    ...
+
+                    <b>int getX(){return x;} // inline</b>
+                    void Print();
+                };
+              </code></pre>
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                // Point.cpp
+                #include "Point.h"
+                ...
+
+                void Point::Print()
+                {
+                  std::cout << ...
+                }                
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                // main.cpp
+                #include "point.h"
+
+                int main()
+                {
+                  <b>Point ptA;</b>
+
+                  ...
+
+                  return 0;
+                }
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!----------          INSTANCIER DES OBJETS          ---------->
+      <section>
+
+        <section>
+          <h2>2.4 Instancier des objets</h2>
+          <p>Instancier : créer un objet à partir d'une classe</p>
+          <p>Chaque objet dispose de son propre jeu d'attributs</p>
+          <p>La syntaxe est la même que pour déclarer des variables</p>
+
+          <div class="container">
+            <div class="col-left">
+              <highlight>
+                <p>Instanciation automatique</p>
+              </highlight>
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+
+                int main()
+                {
+                  // Allocated on the stack
+                  <b>Point p1;</b>
+                  ...
+                  p1.Print();
+                  ...
+                }
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <highlight>
+                <p>Instanciation dynamique</p>
+              </highlight>
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+
+                int main()
+                {
+                  // Allocated on the heap
+                  <b>auto p = new Point;</b> 
+                  ...
+                  p->Print();
+                  ...
+                  delete p;
+                  p = nullptr;
+                }
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Remarques</h2>
+          <p>Un type est utilisé pour <highlight>déclarer</highlight> des variables</p>
+          <p>Une classe est utilisée pour <highlight>instancier</highlight> des objets</p>
+          <br>
+          <p>Les attributs et les méthodes sont relatifs à un objet : il est nécessaire de commencer par instancier un
+            objet à partir d'une classe avant de pouvoir accéder à ses membres.
+            C'est pour cette raison que les membres d'une classe sont parfois appelés attributs d'instance ou méthodes
+            d'instance.</p>
+          <br>
+          <b>
+            <p>Avantages de l'instanciation dynamique</p>
+          </b>
+          <p>Portée globale</p>
+          <p>Rapidité de passage de paramètre par adresse (ou référence)</p>
+        </section>
+
+      </section>
+
+      <!----------          LES CONSTRUCTEURS          ---------->
+      <section>
+
+        <section>
+          <h2>2.5 Principe du constructeur</h2>
+          <p><b>Problème</b></p>
+          <p>Entre le moment où un objet est instancié et son initialisation, l'état interne est <highlight>indéterminé
+            </highlight>
+          </p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            
+            Point p; // ⚠️ p state is unknown
+
+            p.Print(); // ⚠️ (?, ?)
+
+            p.Init(3,5);  // Initialisation
+
+            p.Print(); // ✅ (3,5)
+          </code></pre>
+          <br>
+          <p>
+            <highlight>But du constructeur</highlight>
+          </p>
+          <p>Initialiser un objet lors de son instanciation</p>
+        </section>
+
+        <section>
+          <h2>2.5 Principe du constructeur</h2>
+          <highlight>
+            <p>Instanciation PUIS initialisation</p>
+          </highlight>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            Point p;
+            p.Init(3,5);
+          </code></pre>
+          <br>
+          <highlight>
+            <p>Instanciation ET initialisation</p>
+          </highlight>
+          <p>On peut initialiser l'état interne d'un objet lors de son instanciation grâce à un constructeur (méthode
+            spéciale)</p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            Point p(3,5);
+          </code></pre>
+
+          <p><b>Quand on instancie un objet :</b></p>
+          <p>1) La mémoire nécessaire est allouée</p>
+          <p>2) Le constructeur de la classe est automatiquement appelé pour initialiser les attributs</p>
+        </section>
+
+        <section>
+          <h2>2.5 Définition d'un constructeur</h2>
+          <p>Un constructeur est une méthode avec les caractéristiques suivantes:</p>
+          <p>Son nom est celui de la classe</p>
+          <p>Il ne contient pas d'instruction <inline-code>return</inline-code></p>
+          <p>Il ne possède pas de type de retour (même pas <inline-code>void</inline-code>)</p>
+
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            class Point
+            {
+              public:
+                Point()
+                {
+                  x = 0;
+                  y = 0;
+                }
+
+                private:
+                  int x, y;
+            };
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Définition d'un constructeur</h2>
+          <p>1) ✅ Quand c'est possible, on initialise directement les attributs de l'objet</p>
+          <p>2) Ce constructeur devient alors le même que le constructeur par défaut</p>
+
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            class Point
+            {
+              public:
+                Point()=default; // 📌 Optional, but clearer
+
+                private:
+                  int x{0}, y{0};
+            };
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Les différents constructeurs</h2>
+          <p>Un constructeur peut avoir des paramètres et peut être <highlight>surchargé</highlight>. Il peut être
+            appelé le constructeur :</p>
+          <p>
+            <highlight>Par défaut</highlight>
+          </p>
+          <p><inline-code>Point()</inline-code> - Pas de paramètre</p>
+          <p>
+            <highlight>«Standard»</highlight>
+          </p>
+          <p><inline-code>Point(T value1, T value2,...)</inline-code> - Plusieurs paramètres</p>
+          <p>
+            <highlight>Par recopie</highlight>
+          </p>
+          <p><inline-code>Point(const Point &point)</inline-code> - Un paramètre qui est une référence sur un objet de
+            la classe</p>
+          <p>
+            <highlight>De conversion</highlight>
+          </p>
+          <p><inline-code>Point(T value)</inline-code> - Un seul paramètre de type différent de la classe (ci-dessus)
+          </p>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par défaut</h2>
+          <p>2 façons de définir un constructeur par défaut (sans paramètres)</p>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class Point
+                {
+                  public:
+                    Point()
+                    {
+                      x = 0;
+                      y = 0;
+                    }
+                    ...
+                };
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class Point
+                {
+                 public:
+                  Point(int a=0, int b=0);
+                  ...
+                };                 
+                
+                Point::Point(int a, int b)
+                {
+                  x=a; y=b;
+                }              
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par défaut - Remarques</h2>
+          <p>Le constructeur par défaut est appelé chaque fois qu'un objet doit être créé sans arguments</p>
+          <p>Le compilateur fournit un constructeur par défaut, si le programmeur n'a écrit aucun autre constructeur</p>
+          <p>Le constructeur par défaut proposé par le compilateur ne fait rien: <inline-code>{ }</inline-code> (pour
+            l'instant...)</p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            
+            auto x = Point();
+            Point y;
+
+            // ⚠️ Ne jamais mettre de parenthèses !
+            //    Sinon, c'est une déclaration de fonction appelée z
+            // Point z();
+
+            Point t[10]; // 10 appels de Point()
+            auto p = new Point;   // équiv.à: p = new Point()
+            auto q = new Point[10]; // 10 appels de Point()
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs standard</h2>
+          <p>Un constructeur standard est un constructeur qui prend des paramètres</p>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class Point
+                {
+                 public:
+                  Point(int a, int b);
+                 ...
+                };
+                
+                
+                Point::Point(int a, int b)
+                {
+                  x=a; y=b;
+                }
+              </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 900px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class Point
+                {
+                 public:
+                 // ⚠️ constructeur par défaut !
+                  Point(int a=0, int b=0);
+                 ...
+                };                 
+                
+                Point::Point(int a, int b)
+                {
+                  x=a; y=b;
+                }
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs standard - Remarques</h2>
+          <p>Le constructeur standard est appelé chaque fois qu'un objet doit être créé avec des arguments</p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            
+            Point p1(1, 2);
+            auto p2 = Point(1, 2);  
+            // ⚠️ Use default CTor
+            Point p3[10];
+            // ⚠️ Use Point(int, int), then use default CTor
+            Point p4[4] = {Point(5, 3)};
+
+            auto p5 = new Point(6, 3);
+            
+            // ⚠️ Hard to do in 1 line
+            auto p6 = new Point[10]; 
+            for (int i = 0; i < 10; i++)
+            {
+              p6[i] = Point(2,3);
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeur standard - <span
+              style="text-transform: lowercase;"><inline-code>this</inline-code></span></h2>
+          <p>Le pointeur <inline-code>this</inline-code> contient l'adresse de l'objet courant</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          Point::Point(int x, int y)
+          {
+            <b>this->x</b> = x;
+            <b>this->y</b> = y;
+          }
+        </code></pre>
+          <br>
+          <p>1) Éviter le masquage de l'attribut par un paramètre</p>
+          <p>2) Améliorer la lisibilité du code source: on distingue mieux les méthodes de l'objet courant et les
+            fonctions globales</p>
+          <p>3) Comparer l'adresse de l'objet courant avec celle d'un autre objet. </p>
+        </section>
+
+        <section>
+          <h2>2.5 Les constructeurs de conversion</h2>
+          <p>Un seul argument obligatoire, d'un autre type simple</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          class Point 
+          {
+           public:
+            // Conversion constructor from int
+            Point(int a) {x = y = a;}
+            ...
+          };          
+        </code></pre>
+          <br>
+          <p><b>Exemples</b></p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          auto p1 = Point(2); 
+          Point p2(3); 
+          Point p3 = 4; // ⚠️ Implicit conversion          
+          p3 = 5; // ⚠️ Implicit conversion
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>📝 2.5 Les constructeurs de conversion</h2>
+          <p>Forcer toutes les conversions à être explicites : <inline-code>explicit</inline-code></p>
+
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          class Point 
+          {
+           public:
+            // Conversion constructor from int
+            <b>explicit</b> Point(int a) {x = y = a;}
+            ...
+          };          
+        </code></pre>
+          <br>
+          <p><b>Exemples</b></p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          auto p1 = Point(2); // ✅ Explicit conversion
+          Point p2(3); // ✅ Explicit conversion 
+          Point p3 = 4; // ⛔ Implicit conversion          
+          p3 = 5; // ⛔ Implicit conversion
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par copie</h2>
+          <p>Un constructeur par copie est un constructeur qui prend en paramètre une référence constante sur un objet
+            de la classe</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          class Point 
+          {
+           public:
+            Point(const Point &p) {x = p.x; y = p.y;}
+            ...
+          };
+        </code></pre>
+          <br>
+          <p><b>Exemples</b></p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+          
+          Point p1(2,3);
+          Point p2(p1); // Copy constructor
+          auto p3 = p1; // Copy constructor
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par copie</h2>
+          <p><b>Ce constructeur est souvent appelé implicitement</b></p>
+          <p>1) À l'initialisation d'un objet, avec l'operateur =</p>
+          <p><inline-code>Point p2 = anotherPoint;</inline-code></p>
+          <p>2) Lorsqu'on passe un objet en paramètre par valeur à une fonction</p>
+          <p><inline-code>Add(anotherPoint)</inline-code></p>
+          <p>3) <highlight>Parfois</highlight> lorsqu'on retourne un objet par valeur (voir copy elision)</p>
+          <p><inline-code>return anotherPoint;</inline-code></p>
+          <br>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/language/copy_elision">📚 Copy elision (cppreference)</a></p>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par copie</h2>
+          <p>Le compilateur propose automatiquement un constructeur par copie trivial (bit à bit). On parle de
+            <highlight>"copie en surface"</highlight>.
+          </p>
+          <p>⚠️ La copie en surface ne fonctionne pas si l'objet contient des pointeurs ou des références.</p>
+          <p>Il est souvent nécessaire de redéfinir un constructeur par copie pour réaliser une <highlight>"copie en
+              profondeur"</highlight>.</p>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par copie</h2>
+          <b>
+            <p>Problème
+          </b> : 1 ou plusieurs des attributs sont des pointeurs (ou similaires)</p>
+
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.4em;"
+          data-line-numbers="">
+          
+          class Point
+          {
+          public:
+            ...
+            Point(const Point& point) = default;
+            // 📌 Equivalent to:
+            // Point(const Point &point)
+            // {
+            // 	 this->x = point.x;
+            // 	 this->y = point.y;
+            // 	 this->name = point.name;
+            // }         
+            ...                    
+            void SetName(const char *name)
+            {
+              strcpy(this->name, name);
+            }
+          
+          private:
+            ...          
+            <b>char *name = nullptr;</b>
+          };
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par copie</h2>
+          <b>
+            <p>Problème
+          </b> : 1 ou plusieurs des attributs sont des pointeurs (ou similaires)</p>
+
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          int main()
+          {
+            auto p1 = Point(1, 2, "P1");
+
+            // ⚠️ Shallow copy
+            auto p2 = p1;
+
+            // ⚠️ p1 is modified too
+            p2.SetName("P2");
+            
+            return 0;
+          }          
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Constructeurs par copie</h2>
+          <b>
+            <p>Solution
+          </b> : copie en profondeur</p>
+
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.4em;"
+          data-line-numbers="5, 10, 11, 14-17, 21">
+          
+          class Point
+          {
+          public:
+            ...          
+            <b>Point(int x, int y, const char *name = "")</b>
+            {
+              this->x = x;
+              this->y = y;
+          
+              <b>this->name = new char[strlen(name) + 1];</b>
+              <b>strcpy(this->name, name);</b>
+            }
+            ...                    
+            <b>void SetName(const char *name)</b>
+            {
+              <b>strcpy(this->name, name);</b>
+            }
+          
+          private:
+            ...          
+            <b>char *name = nullptr;</b>
+          };
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Appels de constructeurs - Exemples</h2>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          auto a = Point(1, 1);
+          Point b(2, 2);
+          Point c = 3;
+          auto d = new Point(4, 4);
+          Point e;
+          Point f[4];
+        </code></pre>
+          <br>
+          <p>Initialisation d'objets temporaires, anonymes</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          std::cout << Point(10,0).distance(Point(3, 4));
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.5 Appels de constructeurs - Exemples</h2>
+          <p>2 interprétations différentes pour le <inline-code>=</inline-code> :</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          // A)
+          auto p = Point(1, 2);
+
+          // B)
+          Point p;
+          p = Point(1, 2);
+        </code></pre>
+          <br>
+          <p><b>A) 1 appel au constructeur standard</b></p>
+          <p>Cette expression crée l'objet p et l'initialise en rangeant dans p.x et p.y les valeurs 1 et 2
+        </section>
+
+        <section>
+          <h2>2.5 Appels de constructeurs - Exemples</h2>
+          <p>2 interprétations différentes pour le <inline-code>=</inline-code> :</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          // A)
+          auto p = Point(1, 2);
+
+          // B)
+          Point p;
+          p = Point(1, 2);
+        </code></pre>
+          <br>
+          <p><b>B) 2 appels de constructeurs + 1 affectation</b></p>
+          <p>- crée un objet p (constructeur par défaut)</p>
+          <p>- crée un point anonyme de coordonnées (1,2)</p>
+          <p>- affecte les valeurs des attributs du point anonyme aux attributs de p</p>
+          <p>⚠️ Risque si l'opérateur <inline-code>=</inline-code> n'est pas surchargé pour des copie en profondeur !
+          </p>
+        </section>
+
+        <section>
+          <h2>2.5 Liste d'initialisation</h2>
+
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.8em;"
+          data-line-numbers="">
+
+          class Point
+          {
+          public:
+            Point(int a, int b) <b>: x(a), y(b)</b> {}
+            ...
+          };
+        </code></pre>
+          <p>Une liste d'initialisation est indispensable pour :</p>
+          <p>1) initialiser un <highlight>membre constant</highlight>
+          </p>
+          <p>2) initialiser un <highlight>membre de type référence</highlight>
+          </p>
+          <p>3) initialiser un <highlight>membre d'un type sans constructeur par défaut</highlight>
+          </p>
+          <br>
+          <p>Valable pour tous les constructeurs</p>
+          <p>✅ À utiliser autant que possible</p>
+        </section>
+
+        <section>
+          <h2>Remarques / Rappels</h2>
+          <p>⚠️ Le constructeur par défaut fourni par le compilateur <highlight>n'est plus disponible</highlight> si le
+            programmeur a défini un constructeur </p>
+          <p>Si un constructeur a des valeurs par défaut pour ses paramètres, celles-ci doivent figurer dans la
+            déclaration de la classe (fichier d'interface : <inline-code>classe.h)</inline-code></p>
+          <p>⚠️ Quand il faut redéfinir le constructeur par défaut (copie en profondeur)</p>
+          <p>La déclaration d'un tableau d'objets génère autant d'appels au constructeur par défaut que d'éléments dans
+            le tableau</p>
+        </section>
+
+      </section>
+
+      <!----------          DESTRUCTEUR          ---------->
+      <section>
+
+        <section>
+          <h2>2.6 Le destructeur</h2>
+          <p>
+            <highlight>Appel implicite</highlight> à la destruction d'un objet (auto et dynamique)
+          </p>
+          <p>
+            <highlight>Syntaxe :</highlight> comme pour le constructeur par défaut, mais avec
+            <inline-code>~</inline-code> devant :
+          </p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 2em;"
+          data-line-numbers="">
+
+          class Point
+          {
+          public:
+            ...
+            ~Point() {...}
+            ...
+          };
+        </code></pre>
+          <br>
+          <p>1 seul destructeur</p>
+          <p>Destructeur par défaut généré par le compilateur (trivial)</p>
+          <p>Permet au programmeur de détruire proprement un objet (libérer la mémoire, fermer les flux, stopper les
+            threads, etc.</p>
+        </section>
+
+        <section>
+          <h2>2.6 Le destructeur</h2>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 2em;"
+              data-line-numbers="">
+
+              class PointN 
+              {
+                public:
+                  ~PointN();
+              };
+              
+              PointN::~PointN()
+              {
+                delete [] nom;
+              }
+            </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 2em;"
+              data-line-numbers="">
+
+              int main()
+              {
+                auto *p = new PointN;
+                ...
+                delete p;
+                ...
+                auto *q = new PointN[10];
+                ...
+                delete [] q;
+              }
+            </code></pre>
+            </div>
+          </div>
+          <p>Le destructeur est appelé automatiquement lors de la destruction d'un objet <highlight>puis</highlight> la
+            mémoire réservée pour l'objet est libérée (désallouée)</p>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/language/destructor">📚 Destructors (cppreference)</a></p>
+        </section>
+      </section>
+
+      <!----------          LES MEMBRES CONSTANTS          ---------->
+      <section>
+
+        <section>
+          <h2>2.7 Membres constants</h2>
+          <h3>Attributs constants</h3>
+          <p>Un attribut d'une classe peut être qualifié <highlight>const</highlight>
+          </p>
+          <p>Initialisé lors de la construction d'un objet</p>
+          <p>Ne peut plus être modifié ensuite</p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.8em;"
+          data-line-numbers="">
+          class Segment
+          {
+            public:
+              Segment(int x,int y, int num);
+              ...
+            private:
+              const int ID{0}; // 1) ✅ OK
+          };
+          
+          Segment::Segment(..., int num){..., ID = num;} // ⛔ Error
+          ...          
+          Segment::Segment(..., int num) : ID(num){...} // ou 2) ✅ OK
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.7 Membres constants</h2>
+          <h3>Méthodes constantes</h3>
+          <p>Le mot-clé <inline-code>const</inline-code> en fin d'en-tête d'une méthode indique qu'elle ne change pas
+            l'état de l'objet</p>
+          <p>C'est une méthode de <highlight>consultation de l'objet</highlight>
+          </p>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.8em;"
+          data-line-numbers="">
+          
+          class Point
+          {
+            // Can modify the object
+            void setXY(float newX, float newY);
+
+            // Cannot modify the object
+            float getX( ) const;
+          };
+        </code></pre>
+        </section>
+
+        <section>
+          <h2>2.7 Membres constants</h2>
+          <h3>Méthodes constantes avec objet constant</h3>
+          <pre style="width: 1600px;"><code
+          class="c++"
+          data-trim
+          data-noescape
+          style="font-size: 1.8em;"
+          data-line-numbers="">
+          const Point pt = ...;
+
+          auto x = pt.getX();
+        </code></pre>
+
+          <p><inline-code>pt</inline-code> est constant donc il ne doit pas être modifié par
+            <inline-code>getX()</inline-code>
+          </p>
+          <p>⇒ la qualification <inline-const>const</inline-const> de <inline-code>getX()</inline-code> est
+            indispensable</p>
+          <br>
+          <p>
+            <success>✅ Bonne pratique :</success> qualifier <inline-code>const</inline-code> toute méthode qui peut
+            l'être : cela élargit son champ d'application
+          </p>
+        </section>
+
+        <section>
+          <h2>2.7 Membres constants</h2>
+          <h3>Méthodes constantes : surcharge</h3>
+          <p>Le mot-clef <inline-code>const</inline-code> change la signature d'une méthode</p>
+          <p>⇒ On peut surcharger une méthode non-constante par une méthode constante</p>
+          <p>La fonction non constante sera appelée par les objets variables, la fonction
+            <inline-code>const</inline-code> sur les objets constants
+          </p>
+        </section>
+
+        <section>
+          <h2>🌶️ 2.7 Membres constants</h2>
+          <h3>Méthodes constantes : surcharge</h3>
+          <pre style="width: 1600px;"><code
+        class="c++"
+        data-trim
+        data-noescape
+        style="font-size: 1.8em;"
+        data-line-numbers="">
+        
+        class Point
+        {
+          int x,y;
+          
+          public:
+            int X() const {return x;}
+            int &X() {return x;}
+        };
+        </code></pre>
+
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 1.4em;"
+              data-line-numbers="">
+
+              const Point pC(2, 3);
+              int r;
+              ...
+              r = pC.X(); // ✅ OK
+              pC.X() = 15; // ⛔ Error: rvalue
+            </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 800px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 1.4em;"
+              data-line-numbers="">
+
+              Point p(4,5);
+              int r;
+              ...
+              r = p.X(); // ✅ OK
+              p.X() = 15; // ✅ OK: lvalue
+            </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>🌶️ 2.7 Membres constants</h2>
+          <h3>Méthodes constantes : surcharge</h3>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            
+            class Point
+            {
+              int x,y;
+              
+              public:
+              int &X() const {return x;} // ⛔ Error
+            };
+          </code></pre>
+          <br>
+          <p>Comme <inline-code>X()</inline-code> retourne une référence (=> possibilité d'être une lvalue), le
+            compilateur ne peut pas
+            garantir que la méthode soit constante</p>
+        </section>
+      </section>
+
+      <!----------          POINTEUR THIS, LES MEMBRES STATIQUES ET FRIEND          ---------->
+      <section>
+
+        <section>
+          <h2>2.8 Pointeur <span style="text-transform: lowercase;"><inline-code>this</inline-code></span></h2>
+          <p>Le pointeur <inline-code>this</inline-code> contient l'adresse de l'objet courant</p>
+          <br>
+          <p><b>📌 Les méthodes sont toujours appelées depuis un objet</b></p>
+          <p>⇒ L'adresse de l'objet est implicitement passée à la méthode appelée</p>
+          <br>
+          <p><inline-code>this</inline-code> est donc le pointeur sur l'objet qui a servi à appeler la méthode</p>
+          <p>⚠️ <inline-code>this</inline-code> est un pointeur constant</p>
+
+
+
+          <br>
+          <p>Le déréférencement de <inline-code>this</inline-code> donne l'objet courant !</p>
+          <p><inline-code>return *this;</inline-code> retourne l'objet lui-même</p>
+          <p><inline-code>Point temp(*this);</inline-code> crée une copie de l'objet courant (constructeur par copie)
+          </p>
+        </section>
+
+        <section>
+          <h2>2.8 Pointeur <span style="text-transform: lowercase;"><inline-code>this</inline-code></span></h2>
+          <p>1) Éviter le masquage de l'attribut par un paramètre :</p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            
+            Point::Point(int x, int y)
+            {
+              this->x = x;
+              this->y = y;
+            }
+          </code></pre>
+          <br>
+          <p>2) Améliorer la lisibilité du code source : on distingue mieux les membres de l'objet courant des
+            paramètres</p>
+          <br>
+          <p>3) Comparer l'adresse de l'objet courant avec celle d'un autre objet</p>
+        </section>
+
+        <section>
+          <h2>2.8 Membres statiques</h2>
+          <h3>2 catégories de membres (attributs et méthodes)</h3>
+          <p><b>A) Membres d'instance (cas connu)</b></p>
+          <p>- Chaque objet d'une classe a ses propres attributs</p>
+          <p>- Les méthodes sont appelées à partir des objets d'une classe</p>
+          <br>
+          <p><b>B) Membres de classe</b></p>
+          <p>- Un attribut de classe est unique pour tous les objets d'une classe</p>
+          <p>- Une méthode de classe peut être appelée à partir de la classe</p>
+        </section>
+
+        <section>
+          <h2>2.8 Membres statiques</h2>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            
+            class Point
+            {
+              public:
+                ...
+                <b>static GetNbPoints() {return nbPoints;}</b>
+
+              private:
+                int x{0}, y{0}; // Unique to each object
+                <b>static int nbPoints; // Shared by all objects</b>              
+            };
+          </code></pre>
+          <p>⚠️ Un attribut de classe (<inline-code>static</inline-code>) doit être initialisé en dehors de la classe
+          </p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            
+            int Point::nbPoints = 0;
+
+            int main()
+            {
+              ...
+              std::cout << Point::GetNbPoints(); << std::endl;
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>2.8 Membres statiques - Remarques</h2>
+          <p>⚠️ Une méthode statique ne peut accéder qu'aux membres statiques</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            
+            class Point
+            {
+              public:
+                ...
+                static int GetX() {return x;} // ⛔ Error
+            };
+          </code></pre>
+          <br>
+          <p>⚠️ Une méthode statique ne dispose pas du pointeur <inline-code>this</inline-code></p>
+          <br>
+          <p>📌 Les méthodes statiques sont utilisables sans instancier un objet</p>
+        </section>
+
+        <section>
+          <h2>2.8 Classes et fonctions <span style="text-transform: lowercase;"><inline-code>friend</inline-code></span>
+          </h2>
+          <p>Il est possible de passer outre la protection d'accès aux membres privés d'une classe grâce au mot-clé
+            <inline-code>friend</inline-code>
+          </p>
+          <br>
+          <p><b>1) Une fonction amie (<inline-code>friend</inline-code>)</b> d'une classe est une fonction qui, sans
+            être membre de cette classe, a le droit d'accéder à tous ses membres, aussi bien publics que privés</p>
+          <br>
+          <p><b>2) Une classe amie (<inline-code>friend</inline-code>)</b> d'une classe <inline-code>C</inline-code> est
+            une classe qui a le droit d'accéder à tous les membres de <inline-code>C</inline-code></p>
+        </section>
+
+        <section>
+          <h2>2.8 Classes et fonctions <span style="text-transform: lowercase;"><inline-code>friend</inline-code></span>
+          </h2>
+          <p>1) Une fonction amie doit être déclarée dans la classe qui accorde le droit d'accès</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            
+            class Point 
+            {
+              ...              
+              public:
+                friend void fctExt(Point &p);
+              ...
+            };
+
+            void fctExt(Point &p)
+            { 
+              p.x = 0; // ✅ OK: fctExt is a friend of Point
+            }
+          </code></pre>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            
+            int main()
+            {
+              Point p;
+              p.x = 0; // ⛔ Error: x is private
+              fctExt(p); // ✅ OK: fctExt is a friend of Point
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>2.8 Classes et fonctions <span style="text-transform: lowercase;"><inline-code>friend</inline-code></span>
+          </h2>
+          <p>2) Une classe amie doit être déclarée dans la classe en hôte</p>
+          <pre style="width: 1600px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                
+                class Host
+                {
+                    <b>friend class ZeFriend;</b>
+                    int x;
+                  public:
+                    Host(int a):x(a){} 
+              };
+            </code></pre>
+          <pre style="width: 1600px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                
+                class ZeFriend
+                {
+                  public: 
+                    void displayHost()
+                    {
+                      Host h(16);
+                      // ✅ OK: ZeFriend is a friend of Host
+                      std::cout << h.x << std::endl;
+                    }
+                };
+              </code></pre>
+        </section>
+
+      </section>
+
+      <!----------          DIAGRAMMES UML          ---------->
+      <section>
+
+        <section>
+          <h2>2.9 Diagrammes UML</h2>
+          <h3>Voir cours 2243.2 Génie Logiciel</h3>
+        </section>
+
+      </section>
+
+      <!----------          =delete et =default          ---------->
+      <section>
+
+        <section>
+          <h2>2.10 =delete et =default</h2>
+          <p><inline-code>Point()=defaut</inline-code> force le compilateur à générer un constructeur par défaut</p>
+          <p><inline-code>Point()=delete</inline-code> empêche le compilateur de générer un constructeur par défaut</p>
+          <br>
+          <p>📌 Fonctionne aussi pour le constructeur par copie, et le destructeur</p>
+          <pre style="width: 1600px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class A
+                { 
+                  public:
+                    A() = default;
+                    A(const A&);
+                    ~A() = default;
+              </code></pre>
+            </section>
+
+            <section>
+              <h2>2.10 Delegating Constructors</h2>
+              <p>Un constructeur peut appeler un autre constructeur avec des paramètres différents</p>
+              <pre style="width: 1600px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                
+                class A
+                {
+                  public:
+                    A() = default;
+                    A(char x, int y) {}
+                    A(int y) : A('a', y) {}
+                };
+              </code></pre>
+            </section>
+
+      </section>
+    </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+      slideNumber: 'c/t',
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>

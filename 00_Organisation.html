@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 0 - Introduction</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/zenburn.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <!----------          CONTENT          ---------->
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>
+          Organisation du cours
+        </h1>
+        <h2>
+          1242.2 Langage C++
+        </h2>
+        <h2>&nbsp;</h2>
+        Benoit Le Callennec<br>
+        Jules Perrelet
+        <h2>&nbsp;</h2>
+        Ninoslav Marina<br>
+        Matthieu Saner<br>
+        Guy-Raphaël Stauffer
+        <h2>&nbsp;</h2>
+        <h2>&nbsp;</h2>
+        <h2>&nbsp;</h2>
+      </section>
+
+      <section>
+        <h2>Contenu</h2>
+        <p>0. Introduction</p>
+        <p>1. De C à C++</p>
+        <p>2. Classes et objets</p>
+        <p>3. Surcharge des opérateurs</p>
+        <p>4. Héritage et polymorphisme</p>
+        <p>5. Opérateurs de transtypage et RTTI</p>
+        <p><s>6. Liste chaînées</s></p>
+        <p>7. Modèles (templates)</p>
+        <p>8. Gestion des exceptions</p>
+        <p>9. Bibliothèque standard</p>
+      </section>
+
+      <section>
+        <h2>Prérequis</h2>
+        <h3>Programmation en C :</h3>
+        <p>Constante, variable, type, instruction</p>
+        <p>Fonctions</p>
+        <p>Pointeurs, allocation dynamique de mémoire</p>
+        <br>
+
+        <h3>Savoir ce que veut dire</h3>
+        <p>Compiler un programme</p>
+        <p>Exécuter un programme</p>
+        <br>
+
+        <h3>Connaître un environnement de développement</h3>
+        <p>Visual Studio 2022</p>
+        <p>Visual Studio Code</p>
+        <p>Autres...</p>
+      </section>
+
+      <section>
+        <h2>Organisation du cours</h2>
+        <p>2 périodes de cours + 4 périodes d'exercices</p>
+        <p>Un oral (live coding) de 20 à 30 minutes</p>
+        <p>Un projet individuel de développement (jeu).</p>
+        <br>
+        <h3><warning>⚠️ IAs Génératives</warning></h3>
+        <p>Tolérées pour le projet</p>
+        <p>Il faut être capable de comprendre et de modifier le code</p>
+      </section>
+
+      <section>
+        <h2>Nos attentes</h2>
+        <p>Être présent (et à l'heure) en cours</p>
+        <p>Votre attention</p>
+        <p>Prendre des <highlight>notes personnelles</highlight>
+        </p>
+        <p>Poser les questions tout de suite</p>
+        <br>
+        <h3><highlight>6 heures</highlight> de travail par semaine</h3>
+      </section>
+
+      <section>
+        <h2>Ressources</h2>
+        <div class="container">
+          <div class="col-left">
+            <img src="./medias/qrcode_cours.png" alt="QR Code" width="600px">
+          </div>
+          <div class="col-right">
+            <img src="./medias/GitLab.png" alt="GitLab" width="600px">
+          </div>
+        </div>
+        
+        <br><br>
+
+        <a
+          href="http://enseignement.pages.ing.he-arc.ch/isc/cours/niveau-1/1242.2-langage-cpp/1242-2-langage-cpp-website/">
+          http://enseignement.pages.ing.he-arc.ch/isc/cours/niveau-1/1242.2-langage-cpp/1242-2-langage-cpp-website/
+        </a>
+      </section>
+
+    </div>
+  </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>

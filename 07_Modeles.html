@@ -1,0 +1,589 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 7 - Les modèles</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/vs.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!----------          TITLE          ---------->
+      <section>
+        <h1>
+          Chapitre 7
+        </h1>
+        <h2>
+          Les modèles
+        </h2>
+        <div class="container">
+          <div class="col-left">
+            <p>1. Introduction</p>
+            <p>2. Modèles de fonction</p>
+            <p>3. Modèles de classe</p>
+          </div>
+          <div class="col-right">
+          </div>
+        </div>
+      </section>
+
+      <!----------          1. Introduction          ---------->
+      <section>
+
+        <section>
+          <h2>7.1 Introduction</h2>
+          <h3>Problème</h3>
+          <p>Développer une classe de listes chainées d'entiers (<inline-code>CListInt</inline-code></p>
+          <p>Développer une classe de listes chainées de <inline-code>Figure</inline-code> (<inline-code>CListFigure</inline-code>)</p>
+          <p>Développer une classe de listes chainées de pointeurs de <inline-code>Figure</inline-code> (<inline-code>CListPtrFigure</inline-code>)</p>
+          <p>...</p>
+          <h3>Solution</h3>
+          <p>Développer une seule classe <inline-code>CList</inline-code> pour un type générique et l'instancier lors de son utilisation</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            CList&#60;int&#62; lint;
+            CList&#60;Figure&#62; lfig;
+            CList&#60;Figure*&#62; lpfig;
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>7.1 Introduction</h2>
+          <p>Un modèle est un code qui est indépendant du type de données</p>
+          <p>Il prend un ou plusieurs types en paramètres</p>
+          <p>⇒  Code générique (généricité)</p>
+          <br>
+          <h3>Définition</h3>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            template &#60;typename T&#62;
+            class CList
+            {
+              private:
+                T *tab; // Generic member
+                int size;
+              public:
+                CList(int size) { ... }
+                void add(T e) { ... }
+                T get(int i) { ... }
+            };
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>7.1 Introduction</h2>
+          <p>Un modèle est un code qui est indépendant du type de données</p>
+          <p>Il prend un ou plusieurs types en paramètres</p>
+          <p>⇒  Code générique (généricité)</p>
+          <br>
+          <h3>Utilisation (instanciations)</h3>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            CList&#60;int&#62; lstInt(3); // Instantiation with int
+            CList&#60;Figure&#62; lstFigure(5); // Instantiation with Figure
+            CList&#60;Figure*&#62; lstPtrFigure(7); // Instantiation with Figure*
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>7.1 Introduction</h2>
+          <p>On peut créer des modèles pour :</p>
+          <p>- des fonctions (évite de surcharger une fonction identique)
+          <p>- des classes (évite de créer plusieurs classes identiques)</p>        
+          <br>
+          <h3>Synonymes</h3>
+          <p><highlight>Class template</highlight> : modèle de classe, patron de classe, classe générique</p>
+          <p><highlight>Function template</highlight> : modèle de fonction, patron de fonction, fonction générique</p>
+        </section>
+
+      </section>
+
+      <!----------          2. Modèles de fonction          ---------->
+      <section>
+
+        <section>
+          <h2>7.2 Modèles de fonction</h2>
+          <h3>Définition</h3>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            template&#60;typename T1, typename T2, ... , typename Tn&#62;
+            // AnyType is T1, T2, ..., Tn
+            AnyType nomfonct(AnyType arg1, ... , AnyType argN)
+            {
+              ...
+            }
+          </code></pre>
+          <br>
+          <h3>Utilisation</h3>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            nomfonct&#60;type1, ..., typen&#62;(arg1, ..., argN);
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>7.2 Modèles de fonction</h2>
+          <h3>Exemple</h3>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            template&#60;typename T&#62;
+            T maxi(const T &a, const T &b)
+            {
+              return (a >= b) ? a : b;
+            }
+            </code></pre>
+            <br>
+          <h3>Utilisation</h3>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            int i1, i2; 
+            float f1, f2; 
+            double d1,d2;
+            
+            maxDouble = maxi&#60;double&#62;(i1, d2); // Explicit
+            maxInt = maxi&#60;int&#62;(f1, d2); // Explicit
+            maxInt = maxi(i1, i2); // Implicit
+            maxFloat = maxi(f1, f2); // Implicit
+            maxDouble = maxi(d1, d2); // Implicit
+            maxDouble = maxi(i1, d2); // ⛔ error
+
+            Time t1(10,57,59), t2(9,58,37);
+            Time maxTime = maxi&#60;Time&#62;(t1, t2);
+            maxTime = maxi(t1, t2);
+            </code></pre>
+          <br>
+        </section>
+
+        <section>
+          <h2>7.2 Modèles de fonction</h2>
+          <h3>Commentaires</h3>
+          <p>Le type de retour peut être un type générique</p>
+          <p>Les opérateurs utilisés dans le modèle de fonction doivent être définis par les classes (types) utilisées</p>
+          <p>Le modèle de fonction est instancié par le compilateur, en fonction des appels</p>
+          <p>Le compilateur cherche une correspondance absolue des types : il ne réalise pas de conversions implicites</p>
+        </section>
+
+        <section>
+          <h2>7.2 Modèles de fonction</h2>
+          <h3>Commentaires</h3>
+          <p>Chaque type générique doit être dans l'entête du modèle</p>
+          <p>Les modèles de fonctions sont dans le fichier d'interface (.h) - Aussi pour les méthodes de classes !</p>
+          <p>Il est possible de surcharger et même de spécialiser des modèles de fonctions. La spécialisation est prioritaire (voir page suivante).</p>
+          <p>On peut contraindre l'instanciation des modèles à certains type avec les <inline-code>Concept</inline-code>s (C++20)</p>
+        </section>
+
+        <section>
+          <h2>7.2 Spécialisation</h2>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+            template&#60;typename T&#62;
+            void f(int)
+            {
+              cout << "Non template" << endl;
+            }            
+            template&#60;typename T&#62;
+            void f(T)
+            {
+              cout << "Template" << endl;
+            }                        
+            template&#60;&#62; // Total specialization
+            void f&#60;int&#62;(int)
+            {
+              cout << "Spécialisation f&#60;int&#62;" << endl;
+            }            
+            int main()
+            {
+              f(1); // Prints "Non template"
+              f('c'); // Prints "Template"
+              f&#60;&#62;(1); // Prints "Spécialisation f&#60;int&#62;"
+            }
+            </code></pre>
+            <warning>⚠️ ATTENTION : </warning> le code de la spécialisation doit être dans le fichier d'implémentation (.cpp) et pas dans le fichier d'interface (.h) !</p>
+          </section>
+
+        <section>
+          <h2>7.2 Paramètres expressions</h2>
+          <p>Paramètres d'un modèle de fonction dont le type est imposé</p>
+          <h3>Syntaxe</h3>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">            
+            template&#60;typename T, typename T2, int N, double K&#62;
+          </code></pre>
+          <br>
+          <p>Les valeurs par défaut s'appliquent aux paramètres de type et aux paramètres expressions </p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">            
+            template&#60;typename T = int, int N = 10&#62;
+            TableFixe&#60;&#62; tablo;
+          </code></pre>
+          <br>
+        </section>
+
+        <section>
+          <h2>7.2 Paramètres expressions</h2>
+          <h3>Exemple</h3>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.7em;"
+            data-line-numbers="">
+            template&#60;typename T&#62; T mini(T a, T b) // Template 1
+            {
+              return (a <  b) ? a : b;
+            }
+            
+            template&#60;typename T&#62; T mini(T *t, int n) // Template 2
+            {
+              T min = t[0];
+              for (int i = 1; i < n; i++)
+              if (t[i] < min) min=t[i];
+              
+              return min;
+            }
+            
+            int main()
+            {
+              long n=2, p=12; float t[4] = {1.23, 66.65, -12.34, 100};
+              x=mini(n,p); // Calls long mini(long, long)
+              x=mini(t,4); // Calls float mini(float*, int)
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>7.2 Choix de la fonction appelée</h2>
+          <p>Le compilateur choisit la fonction à appeler en fonction des types des arguments</p>
+          <p>Priorités pour le compilateur</p>
+          <p>1. fonction ordinaire</p>
+          <p>2. instances de modèles plus spécialisées</p>
+          <p>3. instances de modèles moins spécialisées</p>
+      </section>
+
+      </section>
+
+      <!----------          3. Modèles de classe          ---------->
+      <section>
+
+        <section>
+          <h2>7.3 Modèles de classe</h2>
+          <p>Comme pour les fonctions, on peut créer des classes génériques</p>
+          <p>Très utile pour créer des conteneurs de données comme par exemple les conteneurs de la Standard Template Library (chap. 9)</p>
+          <p>Définition de méthodes : préfixer le nom de la classe par l'entête du modèle.</p>
+          <p>Pour instancier un modèle de classe, les paramètres expressions doivent être des constantes.</p>
+        </section>
+
+        <section>
+          <h2>7.3 Modèles de classe - Exemple</h2>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+                template&#60;typename T&#62;
+                class Point
+                {
+                  T x; T y; // Generic members
+
+                  public:
+                    Point(T abs=0, T ord=0)
+                    {
+                      x=abs;
+                      y=ord;
+                    }
+                    void show();
+                };
+                
+                template&#60;typename T&#62;
+                void Point&#60;T&#62;::show()
+                {
+                  cout << x << " " << y << endl;
+                }
+              </code></pre>    
+            </div>
+            <div class="col-right">
+              <pre style="width: 800;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+                #include &#60;iostream&#62;
+                #include "Point.h"
+                
+                using namespace std;
+                
+                int main()
+                {                  
+                  Point&#60;int&#62; ptInt(3,5);
+                  // "3 5"
+                  ptInt.show();
+                  
+                  Point&#60;char&#62; ptChar('d','y');
+                  // "d y"
+                  ptChar.show();
+
+                  Point&#60;double&#62; ptDbl(3.5,2.3);
+                  // "3.5 2.3"
+                  ptDbl.show();
+                }
+              </code></pre>
+            </div>
+          </div>
+          </section>
+
+          <section>
+            <h2>7.3 Modèles de classe - Exemple</h2>
+            <div class="container">
+              <div class="col-left">
+                <pre style="width: 1200;"><code
+                  class="c++"
+                  data-trim
+                  data-noescape
+                  style="font-size: 1.6em;"
+                  data-line-numbers="">
+                  ...
+    
+                  template&#60;&#62;
+                  void Point&#60;char&#62;::show()
+                  {
+                    cout << (int)x << " "
+                         << (int)y << endl;
+                  }            
+    
+                  ...
+                </code></pre>
+              </div>
+              <div class="col-right">
+                <pre style="width: 600;"><code
+                  class="c++"
+                  data-trim
+                  data-noescape
+                  style="font-size: 1.6em;"
+                  data-line-numbers="">
+                  #include &#60;iostream&#62;
+                  #include "Point.h"
+                  
+                  using namespace std;
+                  
+                  int main()
+                  {                  
+                    Point&#60;int&#62; ptInt(3,5);
+                    // "3 5"
+                    ptInt.show();
+                    
+                    Point&#60;char&#62; ptChar('d','y');
+                    // "100 121"
+                    ptChar.show();
+  
+                    Point&#60;double&#62; ptDbl(3.5,2.3);
+                    // "3.5 2.3"
+                    ptDbl.show();
+                  }
+                </code></pre>
+              </div>
+            </div>
+            </section>
+            
+            <section>
+              <h2>7.3 Spécialisation partielle</h2>
+              <pre style="width: 1800px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+                // primary template
+                template&#60;typename T1, typename T2, int I&#62;
+                class A{ };
+                
+                // #1 partial specialization - T1 is a pointer
+                template&#60;typename T1, typename T2, int I&#62; 
+                class A&#60;T1*, T2, I&#62; { }; 
+
+                // #2 partial specialization - T2 is a pointer
+                template&#60;typename T1, typename T2, int I&#62; 
+                class A&#60;T1, T2*, I&#62; { }; 
+
+                // #3 partial specialization - T2 is a pointer to T1
+                template&#60;typename T, int I&#62;
+                class A&#60;T, T*, I&#62; { }; 
+
+                // #4 partial specialization - T1 is an int, T2 is a pointer, I is 5
+                template&#60;typename T&#62; 
+                class A&#60;int, T*, 5&#62; { };
+                </code></pre>
+                <br>
+                <warning>⚠️ ATTENTION : </warning> la spécialisation partielle est valable pour les modèles de classe et pas pour les modèles de fonction !</p>            
+            </section>
+
+            <section>
+              <h2>7.3 Exemple</h2>
+              <pre style="width: 1600px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                template&#60;typename T, int taille&#62;
+                class CustomArray
+                {
+                  public:
+                    CustomArray() {};
+                    T getAt(int pos) const ;
+                    void setAt(int pos, T val);
+                    int getSize() const {return taille;}
+                
+                  private:
+                    T tab[taille];
+                };
+              </code></pre>
+            </section>
+                
+            <section>
+              <h2>7.3 Exemple</h2>
+              <pre style="width: 1600px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2em;"
+                data-line-numbers="">
+                template&#60;typename T, int taille&#62;
+                T CustomArray&#60;T,taille&#62;::getAt(int pos) const
+                {
+                  if (pos >= 0 && pos < taille)
+                    return tab[pos];
+                  else return -1;
+                }
+                
+                template&#60;typename T, int taille&#62;
+                void CustomArray&#60;T,taille&#62;::setAt(int pos, T val)
+                {
+                  if (pos >= 0 && pos < taille) tab[pos]=val;
+                }
+              </code></pre>
+            </section>
+                
+            <section>
+              <h2>7.3 Exemple</h2>
+              <pre style="width: 1600px;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.8em;"
+                data-line-numbers="">
+                #include "CustomArray.h"
+                int main()
+                {
+                  CustomArray&#60;double, 5> t1;
+                  typedef CustomArray&#60;int, 7> tabIntTy;
+                  tabIntTy t2;
+                  
+                  for (int i =- 1; i <= t1.getSize(); i++)
+                  {
+                    t1.setAt(i, i/2.);
+                    cout << t1.getAt(i) << "\t";
+                  }
+                  
+                  for (int i =- 1; i <= t2.getSize(); i++)
+                  {
+                    t2.setAt(i, i/2);
+                    cout << t2.getAt(i) << "\t";
+                  }
+                  
+                  return 0;
+                }
+              </code></pre>
+            </section>
+          
+          </section>
+
+    </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+      slideNumber: 'c/t',
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>

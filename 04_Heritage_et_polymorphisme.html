@@ -1,0 +1,1051 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>HE-Arc - 1242.2 Langage C++ - Chapitre 4 - Héritage et polymorphisme</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/hearc.css" id="theme">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://www.he-arc.ch/wp-content/uploads/2021/12/cropped-hearc-icon-192x192.png"
+    type="image/vnd.microsoft.icon" />
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/vs.css" id="highlight-theme">
+</head>
+
+<body>
+  <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
+  <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
+  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!----------          TITLE          ---------->
+      <section>
+        <h1>
+          Chapitre 4
+        </h1>
+        <h2>
+          Héritage et polymorphisme
+        </h2>
+        <div class="container">
+          <div class="col-left">
+            <p>1. Classes dérivées</p>
+            <p>2. Contrôle d'accès</p>
+            <p>3. Mode de dérivation</p>
+            <p>4. Hiérarchie de classes</p>
+          </div>
+          <div class="col-right">
+            <p>5. Conversions de types</p>
+            <p>6. Fonctions virtuelles et Polymorphisme</p>
+            <p>7. Classes abstraites</p>
+          </div>
+        </div>
+      </section>
+
+      <!----------          1. Classes dérivées          ---------->
+      <section>
+
+        <section>
+          <h2>4.1 Classes dérivées</h2>
+          <img src="./medias/4.1_DerivedClasses.svg" alt="Classe dérivées" width="1200px">
+        </section>
+
+        <section>
+          <h2>4.1 Classes dérivées</h2>
+          <img src="./medias/4.1_DerivedClasses_2.svg" alt="Classe dérivées" width="1200px">
+        </section>
+
+        <section>
+          <h2>4.1 Classes dérivées</h2>
+          <img src="./medias/4.1_DerivedClasses_3.svg" alt="Classe dérivées" width="1000px">
+        </section>
+
+        <section>
+          <h2>4.1 Classes dérivées</h2>
+          <h3>Héritage</h3>
+          <p>Création d'une <highlight>nouvelle</highlight> classe à partir d'une <highlight>classe existante
+            </highlight>
+          </p>
+          <p>
+            <highlight>Classe existante</highlight> : on parle de classe de base, de classe mère
+          </p>
+          <p>
+            <highlight>Nouvelle classe</highlight> : on parle de classe dérivée, de classe fille
+          </p>
+          <br>
+          <p>La classe dérivée hérite des membres de la classe de base</p>
+          <p><b>On peut :</b></p>
+          <ul>
+            <li>ajouter des nouveaux membres (attributs et méthodes)</li>
+            <li>redéfinir des méthodes existantes (spécialiser)</li>
+          </ul>
+          <p>Permet notamment d'éviter la répétition de code</p>
+        </section>
+
+        <section>
+          <h2>4.1 Généralisation vs spécialisation</h2>
+          <img src="./medias/4.1_GeneralisationSpecialisation.svg" alt="Généralisation vs spécialisation"
+            width="1200px">
+        </section>
+
+        <section>
+          <h2>4.1 Généralisation vs spécialisation</h2>
+          <h3>Généralisation</h3>
+          <p>En UML, on va dans le sens de la <highlight>généralisation</highlight>
+          </p>
+          <p>La flèche indique donc une généralisation</p>
+          <p>Chaque niveau d'abstraction devient de plus en plus général</p>
+          <p>Factorisation des éléments communs à une classe</p>
+          <p>Démarche complexe et itérative</p>
+        </section>
+
+        <section>
+          <h2>4.1 Généralisation vs spécialisation</h2>
+          <h3>Spécialisation</h3>
+          <p>La classe dérivée est une <highlight>spécialisation</highlight> de la classe de base</p>
+          <p>La classe dérivée possède des attributs et des méthodes propres</p>
+          <p>La classe dérivée peut redéfinir des méthodes de la classe de base</p>
+        </section>
+
+        <section>
+          <h2>4.1 Exemples</h2>
+          <p><b>Exemple de classe de base : <inline-code><highlight>Circle</highlight></inline-code></b></p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            
+            // Circle.h
+            #pragma once
+
+            class Circle
+            {
+              public:
+                Circle(double _r=0) : r(_r){}
+                double getRadius() const {return r;}
+                void setRadius(double _r) {r=_r;}
+                double surface() {return r*r*3.14;}
+
+              private:
+                double r{0};
+            };
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.1 Exemples</h2>
+          <p><b>Exemple de classe dérivée : <inline-code><highlight>Cylindre</highlight></inline-code></b></p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+
+            // Cylinder.h
+            #pragma once
+
+            #include "Circle.h"
+            
+            class Cylinder <b>: public Circle</b>
+            {
+              public:
+                Cylinder(double=0, double=0);
+                double surface();
+                double volume();
+
+              private:
+                double h{0};
+            };
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.1 Remarques</h2>
+          <p>
+            <highlight>Héritage</highlight> ⇒ une instance de <inline-code>Cylinder</inline-code> dispose de tous les
+            membres de la classe <inline-code>Circle</inline-code>, avec :
+          </p>
+          <ul>
+            <li>1 attribut supplémentaire <b><inline-code>h</inline-code></b> (hauteur du cylindre)</li>
+            <li>1 nouvelle méthode <b><inline-code>volume()</inline-code></b></li>
+            <li>1 méthode redéfinie <b><inlinde-code>surface()</inlinde-code></b> (formule différente)</li>
+          </ul>
+          <p>La méthode <inline-code>surface()</inline-code> a été redéfinie (pas une surcharge)</p>
+          <br>
+          <p>Comme la méthode <inline-code>Circle::surface()</inline-code> a la même signature que
+            <inline-code>Cylinder::surface()</inline-code>, elle n'est plus directement accessible dans la classe
+            <inline-code>Cylinder</inline-code>
+            <p>⇒ Il faut explicitement utiliser <inline-code>Circle::surface()</inline-code></p>
+        </section>
+
+        <section>
+          <h2>4.1 Exemples</h2>
+          <p><b>Implémentation de la classe <highlight>Cylinder</highlight></b></p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+
+            // Cylinder.cpp
+            #include "cylinder.h"
+
+            Cylinder::Cylinder(double radius, double height)
+                <b>: Circle(radius)</b>
+            {
+                h=height;
+            }
+
+            double Cylinder::surface()
+            {
+                double r = this->getRadius(); // Circle::r is private
+                return 2 * 3.14 * r * (r + h);
+            }
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>4.1 Remarques</h2>
+          <p>Dans la méthode <inline-code>surface()</inline-code> de <inline-code>Cylinder</inline-code>, la variable
+            locale <inline-code>r</inline-code> masque l'attribut du même nom (hérité de
+            <inline-code>Circle</inline-code>).</p>
+          <p>Comme l'attribut <inline-code>r</inline-code> a été déclaré <highlight>private</highlight> dans
+            <inline-code>Circle</inline-code>, la classe <inline-code>Cylinder</inline-code> n'a pas accès à ce membre
+            (bien qu'il soit présent, car hérité de <inline-code>Circle</inline-code>).</p>
+          <p>Un droit d'accès supplémentaire a été introduit pour pallier ce problème : <highlight>protected</highlight>
+          </p>
+        </section>
+
+      </section>
+
+      <!----------          2. Contrôle d'accès          ---------->
+      <section>
+
+        <section>
+          <h2>4.2 Contrôle d'accès <span style="text-transform: lowercase;"><inline-code>
+                <highlight>protected</highlight>
+              </inline-code></span></h2>
+          <p>Un membre <inline-code>
+              <highlight>protected</highlight>
+            </inline-code> sera considéré comme :</p>
+          <ul>
+            <li><inline-code>
+                <highlight>public</highlight>
+              </inline-code> pour la classe dérivée</li>
+            <li><inline-code>
+                <highlight>private</highlight>
+              </inline-code> pour les autres utilisateurs</li>
+          </ul>
+          <br><br>
+          <p>Le contrôle d'accès <inline-code>
+              <highlight>protected</highlight>
+            </inline-code> facilite l'implémentation de classes dérivées. Il permet aux classes dérivées uniquement
+            d'accéder aux membres hérités.</p>
+        </section>
+
+        <section>
+          <h2>4.2 Exemples</h2>
+          <p><b>Nouvelle classe de base <inline-code><highlight>Circle</highlight></inline-code></b></p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+            
+            // Circle.h
+            #pragma once
+
+            class Circle
+            {
+              public:
+                Circle(double _r=0) : r(_r){}
+                double getRadius() const {return r;}
+                void setRadius(double _r) {r=_r;}
+                double surface() {return r*r*3.14;}
+
+              <b>protected:</b>
+                double r{0};
+            };
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.2 Exemples</h2>
+          <p><b>Nouvelle implémentation de la classe <inline-code><highlight>Cylinder</highlight></inline-code></b></p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+
+            // Cylinder.cpp
+            #include "cylinder.h"
+
+            Cylinder::Cylinder(double radius, double height)
+                <b>: Circle(radius)</b>
+            {
+                h=height;
+            }
+
+            double Cylinder::surface()
+            {
+                <b>return 2 * 3.14 * r * (r + h);</b> // r is now accessible
+            }
+            </code></pre>
+        </section>
+
+      </section>
+
+      <!----------          3. Mode de dérivation          ---------->
+      <section>
+
+        <section>
+          <h2>4.3 Mode de dérivation</h2>
+          <p>Le mode de dérivation permet de définir l'accessibilité des membres hérités. Il est précisé avant le nom de
+            la superclasse.</p>
+          <br>
+          <inline-code>
+            <highlight>class Cylinder : <b>public</b> Circle {...}</highlight>
+          </inline-code>
+          <br><br>
+          <p>
+            <warning>⚠️ IMPORTANT : l'héritage n'augmente jamais l'accessibilité d'un membre !</warning>
+          </p>
+          <p>Dans tous les cas, les membres <inline-code>private</inline-code> de la classe de base seront
+            inaccessibles, mais présents dans la classe dérivée</p>
+          <p>
+            <highlight>Modes de dérivation</highlight>
+          </p>
+          <ul>
+            <li><inline-code>public</inline-code> : les membres conservent leur accessibilité</li>
+            <li><inline-code>protected</inline-code> : les membres publics deviennent protégés</li>
+            <li><inline-code>private</inline-code> : les membres publics et protégés deviennent privés</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>4.3 Mode de dérivation</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Dérivation</th>
+                <th>Classe de base</th>
+                <th>Classe dérivée</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><inline-code>
+                    <highlight>public</highlight>
+                  </inline-code></td>
+                <td>
+                  <inline-code>
+                    <highlight>public</highlight>
+                  </inline-code><br>
+                  <inline-code>
+                    <warning>protected</warning>
+                  </inline-code><br>
+                  <inline-code>
+                    <error>private</error>
+                  </inline-code><br>
+                </td>
+                <td>
+                  <inline-code>
+                    <highlight>public</highlight>
+                  </inline-code><br>
+                  <inline-code>
+                    <warning>protected</warning>
+                  </inline-code><br>
+                  <error>Inaccessible</error-code><br>
+                </td>
+              </tr>
+              <tr>
+                <td><inline-code>
+                    <warning>protected</warning>
+                  </inline-code></inline-code></td>
+                <td>
+                  <inline-code>
+                    <highlight>public</highlight>
+                  </inline-code><br>
+                  <inline-code>
+                    <warning>protected</warning>
+                  </inline-code><br>
+                  <inline-code>
+                    <error>private</error>
+                  </inline-code><br>
+                </td>
+                <td>
+                  <inline-code>
+                    <warning>protected</warning>
+                  </inline-code><br>
+                  <inline-code>
+                    <warning>protected</warning>
+                  </inline-code><br>
+                  <error>Inaccessible</error-code><br>
+                </td>
+              </tr>
+              <tr>
+                <td><inline-code>
+                    <error>private</error>
+                  </inline-code></td>
+                <td>
+                  <inline-code>
+                    <highlight>public</highlight>
+                  </inline-code><br>
+                  <inline-code>
+                    <warning>protected</warning>
+                  </inline-code><br>
+                  <inline-code>
+                    <error>private</error>
+                  </inline-code><br>
+                </td>
+                <td>
+                  <inline-code>
+                    <error>private</error>
+                  </inline-code><br>
+                  <inline-code>
+                    <error>private</error>
+                  </inline-code><br>
+                  <error>Inaccessible</error-code><br>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </section>
+
+      <!----------          4. Hiérarchie de classes          ---------->
+      <section>
+
+        <section>
+          <h2>4.4 Création / Destruction des objets</h2>
+          <p>Lors de l'instanciation d'une classe dérivée, un objet de la classe de base est d'abord alloué et initialisé
+            (appel d'un constructeur, celui par défaut si rien n'est précisé)</p>
+          <p>À la destruction d'un objet, cette séquence est inversée (exécution destructeur, libération objet dérivé,
+            libération objet de base)</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 2em;"
+            data-line-numbers="">
+
+            {
+              auto c = Cylinder(1, 2);
+              // 1) Memory Allocation
+              // 2) Call to Circle constructor
+              // 3) Call to Cylinder constructor  
+              ...
+            }
+            // 1) Call to Cylinder destructor
+            // 2) Call to Circle destructor
+            // 3) Memory deallocation
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.4 Création / Destruction des objets</h2>
+          <p>Appel <highlight>explicite</highlight> des constructeurs de base</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            // Cylinder.cpp
+            #include "cylinder.h"
+
+            Cylinder::Cylinder(double _r, double _h) <highlight>: Circle(_r)</highlight>
+            {
+              this->h = _h;
+            }
+          </code></pre>
+          <p>Appel <error>implicite</error> des constructeurs de base</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            // Cylinder.cpp
+            #include "cylinder.h"
+
+            Cylinder::Cylinder(double _r, double _h) // Call to Circle()
+            {
+              
+              this->r = _r; // ⛔ r is private in Circle 
+              this->h = _h;
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.4 Hiérarchie de classes</h2>
+          <p>On peut faire <highlight>plusieurs</highlight> dérivations successives</p>
+          <p>Dans ce cas, la classe de base commune à toutes les classes est appelée <highlight>classe racine
+            </highlight>
+          </p>
+          <p>L'intérêt est que toutes les classes héritant de cette classe racine disposeront de ses membres</p>
+          <p>Disposer d'une classe racine permet d'utiliser le <highlight>polymorphisme</highlight> (voir plus loin)</p>
+        </section>
+
+        <section>
+          <h2>4.4 Accès aux méthode de la classe de base</h2>
+          <p>L'accès aux méthodes de la classe de base dépend du mode de dérivation (<inline-code>public</inline-code>,
+            <inline-code>protected</inline-code>, ou <inline-code>private</inline-code>)</p>
+          <p>Si une méthode est redéfinie dans une classe dérivée, celle de la superclasse est alors masquée mais peut
+            toujours être appelée avec <inline-code>Baseclass::baseMethod();</inline-code> </p>
+          <p>Cette syntaxe est utile pour utiliser le code de la classe de base avant d'exécuter celui propre à la
+            classe dérivée</p>
+          <p>Pour les constructeurs, on utilise la syntaxe des listes d'initialisation: s'il n'y a aucun appel
+            explicite, c'est le constructeur par défaut qui sera appelé</p>
+        </section>
+
+      </section>
+
+      <!----------          5. Conversions de types          ---------->
+      <section>
+
+        <section>
+          <h2>4.5 Conversions standard Base ⟺ Dérivée </h2>
+          <p>Si la classe <inline-code>D</inline-code> dérive publiquement de la classe <inline-code>B</inline-code>,
+            alors :</p>
+          <p>⇒ les membres de <inline-code>B</inline-code> sont membres de <inline-code>D</inline-code></p>
+          <p>⇒ les membres <inline-code>public</inline-code> et <inline-code>protected</inline-code> de
+            <inline-code>B</inline-code> peuvent être atteints à travers un objet <inline-code>D</inline-code></p>
+          <p>⇒ toutes les fonctions non <inline-code>private</inline-code>, disponibles pour
+            <inline-code>B</inline-code> le sont aussi pour <inline-code>D</inline-code></p>
+          <br>
+          <p><b>Que peut-on dire de la conversion entre les objets instanciés de ces classes ?</b></p>
+        </section>
+
+        <section>
+          <h2>4.5 Conversions standard Base ⟺ Dérivée </h2>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 1100px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                class Base
+                {
+                public:
+                  Base() = default;
+                  Base(const Base&) = default;
+                  Base &operator=(const Base&) = default;
+                private:
+                  int b{0};
+                };
+                
+                class Derived : public Base
+                {
+                public:
+                  Derived() = default;
+                  Derived(const Derived&) = default;
+                  Derived &operator=(const Derived&) = default;
+                private:
+                  int d{0};
+                };
+                </code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 760px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.6em;"
+                data-line-numbers="">
+
+                int main()
+                {
+                  Derived D0;
+                  // ✅ OK
+                  Base B0 = D0;
+                  // ✅ OK
+                  B0 = D0;
+                
+                  Base B1;
+                  // ⛔ Not enough information
+                  Derived D1 = B1;
+                  // ⛔ Not enough information
+                  D1 = B1;
+                
+                  return 0;
+                }
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>4.5 Conversions standard Base ⟺ Dérivée</h2>
+          <div class="container">
+            <div class="col-left">
+              <img src="./medias/4.5_Cat_Classes.png" alt="Conversion Base ⟺ Dérivée" width="600px">
+            </div>
+            <div class="col-right">
+              <pre style="width: 1000px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 2.4em;"
+                data-line-numbers="">
+
+                cat = dog; // ⛔
+                dog = cat; // ⛔
+                animal = cat; // ✅
+                cat = animal; // ⛔
+                cat = straycat; // ✅
+                straycat = cat; // ⛔
+                animal = straycat; // ✅
+                </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>4.5 Conversions standard Base ⟺ Dérivée</h2>
+          <p style="font-size: 60px;"><inline-code>
+              <success>✅ BaseClass = DerivedClass;</success>
+            </inline-code></p>
+          <p style="font-size: 60px;"><inline-code>
+              <error>⛔ DerivedClass = BaseClass;</error>
+            </inline-code></p>
+          <br>
+          <p>On peut cependant rajouter la conversion en implémentant un constructeur de conversion
+            <inline-code>Derived(const Base&)</inline-code></p>
+          <br>
+          <p>
+            <warning>⚠️ ATTENTION :</warning> en pratique, ce genre de conversions (on parle de Slicing) est fortement
+            déconseillé
+          </p>
+        </section>
+
+        <section>
+          <h2>4.5 Conversions standard Base* ⟺ Dérivée*</h2>
+          <h3>Même chose que pour les objets</h3>
+          <p>⇒ les pointeurs de <inline-code>Base</inline-code> peuvent pointer vers des objets de type
+            <inline-code>Derived</inline-code></p>
+          <p>⇒ les pointeurs de <inline-code>Derived</inline-code>
+            <highlight>ne peuvent pas</highlight> pointer vers des objets de type <inline-code>Base</inline-code>
+          </p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+
+            int main()
+            {
+              Base* ptrBase0 = new Base();
+              Derived* ptrDerived0 = new Derived();
+            
+              Base *ptrBase1 = ptrDerived0; // ✅
+            
+              Derived *ptrDerived1 = ptrBase0; // ⛔
+              Derived* ptrDerived1 = (Derived*)ptrBase0; // ✅
+            
+              return 0;
+            }
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.5 Conversions standard Base* ⟺ Dérivée*</h2>
+          <p style="font-size: 60px;"><inline-code>
+              <success>✅ BaseClass* = DerivedClass*;</success>
+            </inline-code></p>
+          <p style="font-size: 60px;"><inline-code>
+              <error>⛔ DerivedClass* = BaseClass*;</error>
+            </inline-code></p>
+          <br>
+          <p>On peut cependant forcer la conversion avec des <inline-code>cast</inline-code></p>
+          <br>
+          <p>
+            <warning>⚠️ ATTENTION :</warning> en pratique, ce genre de conversions est aussi fortement déconseillé car
+            elle induit des <highlight>memory leaks</highlight>
+          </p>
+        </section>
+
+      </section>
+
+      <!----------          6. Fonctions virtuelles et Polymorphisme          ---------->
+      <section>
+
+        <section>
+          <h2>4.6 Type statique vs type dynamique</h2>
+          <p>
+            <highlight>Type statique (static binding)</highlight>
+          </p>
+          <p>C'est ainsi que l'objet est déclaré (connu à la compilation)</p>
+          <p>Type dynamique (dynamic binding)</p>
+          <p>C'est le type des objets effectivement utilisés / pointés (connu à l'exécution)</p>
+        </section>
+
+        <section>
+          <h2>4.6 Exemple introductif</h2>
+          <h3>Quelques rappels</h3>
+          <p><inline-code>
+              <highlight>std::vector&#60;T&#62;</highlight>
+            </inline-code> : pour stocker une collection d'objets de type <inline-code>T</inline-code></p>
+          <p>
+            <highlight>Range-based for : </highlight>pour itérer sur une collection
+          </p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+
+            #include &#60;vector&#62;
+
+            std::vector&#60;T&#62; collection;
+            ... 
+            // When you want <b>to copy</b> the elements in collection
+            for (auto item : collection){item.do();}
+
+            // When you want <b>to modify</b> the elements in the collection
+            for (auto <b>&</b>item : collection){item.do();}
+
+            // When you <b>dont want to copy nor modify</b> the elements in the collection
+            for (<b>const</b> auto &item : collection){item.do();}
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>4.6 Exemple introductif</h2>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 800px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+
+                class Animal
+                {
+                public:
+                  void MakeSound() const
+                  {
+                    std::cout << "..." << std::endl;
+                  }
+                };                
+                class Cat : public Animal
+                {
+                public:
+                  void MakeSound() const
+                  {
+                    std::cout << "meow" << std::endl;
+                  }
+                };                
+                class Dog : public Animal
+                {
+                public:
+                  void MakeSound() const
+                  {
+                    std::cout << "woof" << std::endl;
+                  }
+                };</code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 1000px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+
+                int main()
+                {
+                  auto animal = new Animal;
+                  auto cat = new Cat;
+                  auto dog = new Dog;
+                
+                  std::vector&#60;Animal *&#62; animals = {animal, cat, dog};
+                
+                  for (const auto &animal : animals)
+                  {
+                    animal-><b>MakeSound();</b>
+                  }
+                
+                  return 0;
+                }
+            </code></pre>
+              <p><b>Quelle est la sortie de ce programme ?</b></p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>4.6 Exemple introductif</h2>
+          <p>La sortie de ce programme est :</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+
+            ...
+            ...
+            ...
+          </code></pre>
+          <p>Le type statique est <inline-code>Animal *</inline-code> donc on appelle la méthode
+            <inline-code>Animal::MakeSound()</inline-code> 3 fois de suite</p>
+          <p>Le <highlight>polymorphisme</highlight> permet de résoudre ce problème et d'accéder automatiquement aux
+            méthodes des classes dérivées en utilisant le type dynamique</p>
+        </section>
+
+        <section>
+          <h2>4.6 Fonctions virtuelles</h2>
+          <p>C++ peut choisir la méthode à appeler selon la nature de l'objet pointé à l'exécution du programme (type
+            dynamique)</p>
+          <p>Pour cela, la méthode doit être qualifiée par le mot-clé <inline-code>
+              <highlight>virtual</highlight>
+            </inline-code> dans la classe de base</p>
+          <p>La méthode doit être redéfinie dans les classes dérivées</p>
+          <br>
+          <p>
+            <success>BONNE PRATIQUE : </success>la méthode redéfinie doit être qualifiée par le mot-clé <inline-code>
+              <highlight>override</highlight>
+            </inline-code> dans les classes dérivées
+          </p>
+          <br>
+          <p>
+            <warning>⚠️ ATTENTION :</warning> les destructeurs doivent être virtuels pour éviter des fuites de mémoire
+            (destruction partielle)
+          </p>
+        </section>
+
+        <section>
+          <h2>4.6 Polymorphisme</h2>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 900px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+
+                class Animal
+                {
+                public:
+                  <b>virtual ~Animal() = default;</b>
+                  <b>virtual</b> void MakeSound() const {...}
+                };
+                
+                class Cat : public Animal
+                {
+                public:
+                  <b>virtual ~Cat() = default;</b>
+                  void MakeSound() const <b>override</b> {...}
+                };
+                
+                class Dog : public Animal
+                {
+                public:
+                  <b>virtual ~Dog() = default;</b>
+                  void MakeSound() const <b>override</b> {...}
+                };</code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 1000px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+
+                int main()
+                {
+                  auto animal = new Animal;
+                  auto cat = new Cat;
+                  auto dog = new Dog;
+                
+                  std::vector&#60;Animal *&#62; animals = {animal, cat, dog};
+                
+                  for (const auto &animal : animals)
+                  {
+                    animal-><b>MakeSound();</b>
+                  }
+                
+                  return 0;
+                }
+            </code></pre>
+              <p><b>Le programme principal (<inline-code>int main(){...}</inline-code> reste le même</b></p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>4.6 Polymorphisme</h2>
+          <p>La sortie de ce programme est maintenant :</p>
+          <pre style="width: 1600px;"><code 
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
+
+            ...
+            meow
+            woof
+          </code></pre>
+          <p>Le polymorphisme est un point essentiel de la POO (avec l'abstraction de données et l'héritage)</p>
+          <p>Il permet d'appeler la méthode d'un objet sans se soucier de son type statique, et qu'elle s'adapte au type
+            dynamique</p>
+          <p>Il est implémenté en C++ par les fonctions virtuelles (<inline-code>virtual</inline-code>)</p>
+        </section>
+
+        <section>
+          <h2>4.6 Polymorphisme</h2>
+          <p>Le polymorphisme est la faculté pour des objets de différents types (classes) de répondre à des appels de
+            méthodes portant le même nom, chacun correspondant à un code spécifique à chaque type. Le programmeur n'a
+            pas besoin de connaitre a l'avance le type de l'objet, il pourra être déterminé à l'exécution (type
+            dynamique).</p>
+          <br>
+          <p>Un type (classe) possédant des fonctions virtuelles est nommé type polymorphique.</p>
+          <br>
+          <p>Pour obtenir un comportement polymorphique en C++, les fonctions membres appelées doivent être virtuelles
+            et les objets doivent être manipulés avec des pointeurs ou des références</p>
+        </section>
+
+        <section>
+          <h2>4.6 Polymorphisme</h2>
+          <p><b>Pour que le polymorphisme soit effectif</b>, il faut une fonction f qui soit :</p>
+          <p>1) une fonction membre d'une classe B</p>
+          <p>2) redéfinie dans des classes dérivées de B</p>
+          <p>3) appelée à travers des pointeurs ou des références (sur des objets de B ou de classes dérivées de B)</p>
+          <p>4) déclarée comme fonction virtuelle (sa déclaration est précédée du mot clé virtual)</p>
+          <br>
+          <p>Ainsi, si f est appelée à travers un pointeur ou une référence sur un objet de classe C, le choix de la
+            fonction effectivement exécutée (parmi les diverses redéfinitions de f se fera d'après le type dynamique de
+            cet objet.</p>
+        </section>
+
+      </section>
+
+      <!----------          7. Classes abstraites          ---------->
+      <section>
+        <section>
+          <h2>4.7 Classes abstraites</h2>
+          <p>Parfois, une classe de base est utilisée pour regrouper les caractéristiques communes de plusieurs classes (i.e. Animal)</p>
+          <p>Certaines méthodes peuvent ne pas être implémentées dans une classe de base, mais doivent l'être dans toutes les classes dérivées. Ces méthodes sont appelées <hightlight>virtuelles pures</hightlight>.</p>
+          <p><inline-code><hightlight>virtual void MakeSound() = 0;</hightlight></inline-code></p>
+          <p>Une classe qui contient au moins une méthode virtuelle pure ne pourra pas être instanciée : c'est une <highlight>classe abstraite</highlight></p>
+          <p>Une classe abstraite doit être dérivée et ses méthodes virtuelles pures redéfinies dans les classes dérivées.</p>
+        </section>
+
+        <section>
+          <h2>4.7 Classes Abstraites</h2>
+          <div class="container">
+            <div class="col-left">
+              <pre style="width: 900px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+
+                class Animal
+                {
+                public:
+                  virtual ~Animal() = default;
+                  virtual void MakeSound() const <b>= 0</b>;
+                };
+                
+                class Cat : public Animal
+                {
+                public:
+                  virtual ~Cat() = default;
+                  void MakeSound() const override {...}
+                };
+                
+                class Dog : public Animal
+                {
+                public:
+                  virtual ~Dog() = default;
+                  void MakeSound() const override {...}
+                };</code></pre>
+            </div>
+            <div class="col-right">
+              <pre style="width: 1000px;"><code 
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.5em;"
+                data-line-numbers="">
+
+                int main()
+                {
+                  // ⛔ Cannot instantiate abstract class
+                  auto animal = new Animal;
+                  auto cat = new Cat;
+                  auto dog = new Dog;
+                
+                  std::vector&#60;Animal *&#62; animals = {animal, cat, dog};
+                
+                  for (const auto &animal : animals)
+                  {
+                    animal->MakeSound();
+                  }
+                
+                  return 0;
+                }
+            </code></pre>
+            </div>
+          </div>
+        </section>
+
+      </section>
+    </div>
+  </div>
+
+  <!----------          CONTENT          ---------->
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      width: 1920,
+      height: 1080,
+      transition: "none",
+      center: false,
+      slideNumber: 'c/t',
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
+</html>
