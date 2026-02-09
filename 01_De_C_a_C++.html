@@ -130,16 +130,17 @@
             
             int main()
             {
-              std::cout << "Hello world++!\n";
+              std::cout << "Hello world++!" << std::endl;
+
               return 0;
             }</code></pre>
 
           <br>
-          <p>Des fonctionnalités évoluées sont accessibles avec la bibliothèque standard C++</p>
+          <p>Fonctionnalités avancées accessibles avec la bibliothèque standard C++</p>
           <p><inline-code>std</inline-code> Espace de noms (namespace)</p>
           <p><inline-code>::</inline-code> Opérateur de portée</p>
           <p><inline-code>cout</inline-code> Flux de sortie</p>
-          <p><inline-code><< </inline-code> Opérateur d'insertion
+          <p><inline-code><<</inline-code> Opérateur d'insertion
         </section>
 
         <section>
@@ -150,16 +151,25 @@
             class="c++"
             data-trim
             data-noescape
-            style="font-size: 1.4em;"
+            style="font-size: 1.8em;"
             data-line-numbers="">
 
-            for (int i = 0; i < 10; i++)
+            #include &#60;iostream&#62;
+
+            int main()
             {
-              std::cout << i;
-            }</code></pre>
+                for (int i = 0; i < 3; ++i)
+                {
+                    int x = i * 2;
+                    std::cout << x << std::endl;
+                }
 
-          <br><br><br>
-
+                return 0;
+            }
+          </code></pre>
+          
+          <br>
+          
           <h3><success>✅ Initialiser les variables à la déclaration</success></h3>
         </section>
 
