@@ -516,11 +516,9 @@
 
         </section>
 
-
-
       </section>
 
-      <!----------          Entrées/sorties standards          ---------->
+      <!----------          Références          ---------->
       <section>
 
         <section>
@@ -542,9 +540,10 @@
             int i;
             int &r = i; // r is a reference to i
             r = j; // affects j to i
+
           </code></pre>
           <br>
-          <p>Ce sont une alternative aux pointeurs pour manipuler des adresses</p>
+          <p>Alternative aux pointeurs</p>
           <p>Surtout utilisées pour les passages de paramètres</p>
           <p>
             <warning>⚠️ Attention : </warning>on ne dispose pas de l'arithmétique des pointeurs !
@@ -563,51 +562,53 @@
           <h2>1.4 Modes de passage des paramètres</h2>
           <h3>Par valeur</h3>
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.2em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
+            
+            void fn(int par_formel){...}
+            fn(param_effectif);
+          
+          </code></pre>
 
-          void fn(int par_formel){...}
-          fn(par_effectif);
-        </code></pre>
-          <br>
           <h3>Par adresse</h3>
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.2em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
 
-          void fn(int *par_formel){...}
-          fn(&par_effectif);
-        </code></pre>
-          <br>
+            void fn(int *par_formel){...}
+            fn(<b>&</b>param_effectif);
+          
+          </code></pre>
+
           <h3>Par référence</h3>
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.2em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
 
-          void fn(int &par_formel){...}
-          fn(par_effectif);
-        </code></pre>
-          <br>
+            void fn(int &par_formel){...}
+            fn(param_effectif);
+          
+          </code></pre>
           <h3>Par référence sur une constante</h3>
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.2em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
 
-          void fn(const int &par_formel){...}
-          fn(par_effectif);
-        </code></pre>
+            void fn(const int &par_formel){...}
+            fn(param_effectif);
+          </code></pre>
         </section>
 
         <section>
@@ -619,7 +620,7 @@
           class="c++"
           data-trim
           data-noescape
-          style="font-size: 1.2em;"
+          style="font-size: 1.6em;"
           data-line-numbers="">
 
           void swap(int &a, int &b)
@@ -635,7 +636,7 @@
           class="c++"
           data-trim
           data-noescape
-          style="font-size: 1.2em;"
+          style="font-size: 1.6em;"
           data-line-numbers="">
 
           int x=2, y=3;
@@ -645,46 +646,48 @@
 
         <section>
           <h2>1.4 Références sur des données constantes</h2>
-          <p>L'argument <inline-code>pasTouche</inline-code> est nécessaire mais ne doit pas pouvoir être modifié dans
-            une fonction</p>
+          <p>L'argument <inline-code>pasTouche</inline-code> est nécessaire mais ne doit pas être modifié</p>
           <br>
           <h3>Passage par valeur</h3>
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.2em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
 
-          double CalculerTout(monType pasTouche)
-          {
-            ...
-          }
-        </code></pre>
+            double CalculerTout(monType pasTouche)
+            {
+              ...
+            }
+          
+          </code></pre>
           <p></p>
 
           <p>
             <error>⛔ création d'une copie du l'argument</error>
           </p>
-
           <br>
+
           <h3>Passage par référence constante</h3>
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.2em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.2em;"
+            data-line-numbers="">
 
-          double CalculerTout(const monType &maRef)
-          {
-            ...
-          }
-        </code></pre>
+            double CalculerTout(const monType &maRef)
+            {
+              ...
+            }
+
+          </code></pre>
 
           <p>
-            <success>✅ L'argument n'est pas copié, et ne peut être modifié</success>
+            <success>✅ L'argument n'est pas copié, et ne peut pas être modifié</success>
           </p>
+
         </section>
 
         <section>
@@ -714,24 +717,24 @@
           <h3>Exemple</h3>
           <!-- TODO: maybe post-increment first line, then show that static local variable has been changed? -->
           <pre style="width: 1400px;"><code
-          class="c++"
-          data-trim
-          data-noescape
-          style="font-size: 1.6em;"
-          data-line-numbers="">
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.6em;"
+            data-line-numbers="">
 
-          int& getRefOnCount()
-          {
-            static int count = 0;
-            return count;
-          }
+            int& getRefOnCount()
+            {
+              static int count = 0;
+              return count;
+            }
 
-          int main()
-          {
-            std::cout << "Count: " << getRefOnCount()  << std::endl;
-            std::cout << "Count: " << ++getRefOnCount() << std::endl;
-          }
-        </code></pre>
+            int main()
+            {
+              std::cout << "Count: " << getRefOnCount()++  << std::endl;
+              std::cout << "Count: " << ++getRefOnCount() << std::endl;
+            }
+          </code></pre>
           <br>
           <h3>Affichage</h3>
           <pre style="width: 1400px;"><code
@@ -741,7 +744,7 @@
           style="font-size: 2em;">
 
           Count: 0
-          Count: 1
+          Count: 2
         </code></pre>
         </section>
 
@@ -750,11 +753,11 @@
           <h3>Manipulation au travers d'une fonction-sécurité</h3>
           <div class="container">
             <div class="col-left">
-              <pre style="width: 940px;"><code
+              <pre style="width: 1200px;"><code
               class="c++"
               data-trim
               data-noescape
-              style="font-size: 1.6em;"
+              style="font-size: 1.4em;"
               data-line-numbers="">
     
               #include &#60;iostream&#62;
@@ -772,8 +775,13 @@
                   {
                     return tabAges[i];
                   }
+
+                  // If we are here, the name was not found
+                  // See chapter on exceptions for more details
+                  throw std::out_of_range("nom not found");
                 }
               } 
+
             </code></pre>
             </div>
             <div class="col-right">
