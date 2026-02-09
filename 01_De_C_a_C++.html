@@ -395,8 +395,8 @@
           <p><inline-code>std::[no]uppercase</inline-code> : changement de casse</p>
           <p><inline-code>std::[no]showpos</inline-code> : force l'affichage du signe +</p>
           <p><inline-code>std::[no]boolalpha</inline-code> : affichage booléen (persistant)</p>
-          <br>
-          <h3>Exemple</h3>
+
+          <h3>Exemples</h3>
           <pre style="width: 1400px;"><code
             class="c++"
             data-trim
@@ -434,59 +434,14 @@
 
         <section>
           <h2>1.3 Manipulateurs d'E/S standard</h2>
-          <h3>Opérations de saisie et de contrôle de buffer</h3>
-          <p><inline-code>>></inline-code> : renvoie une valeur qui peut être testée (comme <inline-code>scanf</inline-code>)</p>
-          <!-- TODO: check if not better to use cin.fail() instead -->
-          <p>L'expression <inline-code>(cin >> nombre)</inline-code> est nulle (=0) en cas d'échec</p>
-          <br>
-          <h3>Exemple</h3>
-          <pre style="width: 1400px;"><code
-            class="c++"
-            data-trim
-            data-noescape
-            style="font-size: 1.2em;"
-            data-line-numbers="">
-
-            if ( (cin >> nombre) == 0 )
-            {
-              std::cout << "error while reading";
-            }</code></pre>
-        </section>
-
-        <section>
-          <h2>1.3 Manipulateurs d'E/S standard</h2>
-          <h3>Remise en état du buffer après une erreur</h3>
-          <p>Utiliser la fontion <inline-code>istream& ignore(streamsize n=1, int delim = EOF)</inline-code></p>
-          <p>Cette fonction vide le buffer d'entrée.
-            L'extraction s'arrête après n caractères ou quand le caractère <inline-code>delim</inline-code> est trouvé.
-          </p>
-          <br>
-          <h3>Exemple</h3>
-          <pre style="width: 1400px;"><code
-            class="c++"
-            data-trim
-            data-noescape
-            style="font-size: 1.2em;"
-            data-line-numbers="">
-
-            #include &#60;iostream&#62;
-            #include &#60;limits&#62; // For numeric_limits
-
-            ...
-
-            if ( (cin >> nombre) == 0 )
-            {
-              std::cout << "error while reading";
-              cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }</code></pre>
-        </section>
-
-        <section>
-          <h2>1.3 Manipulateurs d'E/S standard</h2>
           <h3>Contrôler l'état du flux d'entrée et agir</h3>
           <p><inline-code>cin.fail()</inline-code> : problème dans le flux d'entrée, saisie incorrecte</p>
-          <p><inline-code>cin.clear()</inline-code> : remet les bits de contrôle du flux à OK</p>
-          <p><inline-code>cin.eof()</inline-code> : fin du flux d'entrée</p>
+          <p> <inline-code>istream& ignore(streamsize n=1, int delim = EOF)</inline-code> : vide le buffer d'entrée</p>
+          <br>
+          <p>
+            <warning>⚠️ Attention : </warning>il faut utiliser <inline-code>clear()</inline-code> avant d'utiliser <inline-code>ignore()</inline-code>
+            pour remettre le flux d'entrée dans un état correct
+          </p>
         </section>
 
         <section>
@@ -528,6 +483,40 @@
               Le chiffre n'est pas entre 1 et 6: 5
               </code></pre>
         </section>
+
+                <section>
+          <h2>1.3 Entrées / Sorties (C++23)</h2>
+          <p>Inclure <inline-code>print</inline-code></p>
+          <h3>Exemple</h3>
+
+            <pre style="width: 1400px;"><code
+              class="c++"
+              data-trim
+              data-noescape
+              style="font-size: 1.6em;"
+              data-line-numbers="">
+
+              #include &#60;print&#62;
+
+              int main()
+              {
+                std::string firstname = "Donald";
+                std::string lastname = "Knuth";
+                int answerToEverything = 42;
+
+                std::println("Hello, {} {}!", firstname, lastname);
+                std::print("The answer is = {}\n", answerToEverything);
+                
+                return 0;
+              }
+              
+            </code></pre>
+          <br>
+          <p><a href="https://en.cppreference.com/w/cpp/io/print.html">📚 std::print (cppreference)</a></p>
+
+        </section>
+
+
 
       </section>
 
