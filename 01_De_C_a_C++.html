@@ -179,25 +179,29 @@
           <p>Une variable de type <inline-code>bool</inline-code> a 2 valeurs : <inline-code>true</inline-code> et
             <inline-code>false</inline-code>
           </p>
+
           <br>
-          <b>
-            <p>Conversions implicites avec les <inline-code>int</inline-code></p>
-          </b>
-          <p><inline-code>true</inline-code> : 1</p>
-          <p><inline-code>false</inline-code> : 0</p>
-          <p>Entier non-nul : <inline-code>true</inline-code></p>
-          <p>0 : <inline-code>false</inline-code></p>
-          <br>
-          <b>
-            <p>Conversions implicites avec les pointeurs</p>
-          </b>
-          <p>pointeur non-nul : <inline-code>true</inline-code></p>
-          <p>pointeur nul : <inline-code>false</inline-code></p>
+
+          <div class="container">
+            <div class="col-left">
+              <u><b><p>Conversions avec <inline-code>int</inline-code></p></b></u>
+              <p><inline-code>true</inline-code> : 1</p>
+              <p><inline-code>false</inline-code> : 0</p>
+              <p>Entier non-nul : <inline-code>true</inline-code></p>
+              <p>0 : <inline-code>false</inline-code></p>
+            </div>
+            <div class="col-right">
+              <u><b><p>Conversions avec les pointeurs</p></b></u>
+              <p>pointeur non-nul : <inline-code>true</inline-code></p>
+              <p>pointeur nul : <inline-code>false</inline-code></p>
+            </div>
+          </div>
           <br>
           <p>
             <success>✅ Ne pas utiliser ces conversions implicites (lisibilité)</success>
           </p>
           <p><inline-code>if (x != 0)</inline-code> plutôt que <s><inline-code>if (x)</inline-code></s></p>
+          <p><inline-code>if (ptr != nullptr)</inline-code> plutôt que <s><inline-code>if (ptr)</inline-code></s></p>
         </section>
 
       </section>
@@ -207,9 +211,10 @@
 
         <section>
           <h2>1.2 Espace de noms</h2>
-          <p>Dans les grands projets, le risque d'utiliser les mêmes noms pour des variables ou fonctions est grand</p>
-          <p>On confine donc les noms d'un module dans un <highlight>espace de noms</highlight> (namespace)</p>
+          <p>Grands projets ⇒ risque de collision de noms (variables et fonctions)</p>
           <br>
+          <success>✅ Confiner les noms d'un module dans un <highlight>espace de noms</highlight> (namespace)</success>
+          <br><br>
           <p><inline-code>namespace XX{...}</inline-code> : définit un nouvel espace de noms</p>
           <p><inline-code>namespace XX::YY{...}</inline-code> : nouvel espace de noms imbriqués (C++17)</p>
           <p><inline-code>using namespace XX</inline-code> : ouvre l'espace de noms XX</p>
@@ -219,33 +224,35 @@
         <section>
           <h2>1.2 Espace de noms - Exemple</h2>
 
-          <pre style="width: 1400px;"><code
+          <pre style="width: 1600px;"><code
             class="c++"
             data-trim
             data-noescape
             style="font-size: 1.6em;"
             data-line-numbers="">
             
-            namespace language::english
-            {
-              char *color[]={"White", "Red", "Black"};              
-              void colorName(int index)
+              namespace language::english
               {
-                std::cout<<"The color is" << color[index];
-              }
-            }
-
-            namespace language
-            {
-              namespace french
-              {
-                char *color[]={"Blanc", "Rouge", "Noir"};
+                std::string colors[] = {"White", "Red", "Black"};
                 void colorName(int index)
                 {
-                  std::cout<<"La couleur est" << color[index];
+                  std::cout << "The color is: " << colors[index] << std::endl;
                 }
               }
-            }</code></pre>
+
+              namespace language
+              {
+                namespace french
+                {
+                  std::string colors[] = {"Blanc", "Rouge", "Noir"};
+                  void colorName(int index)
+                  {
+                    std::cout << "La couleur est : " << colors[index] << std::endl;
+                  }
+                }
+              }
+          
+          </code></pre>
         </section>
 
         <section>
@@ -255,21 +262,36 @@
             class="c++"
             data-trim
             data-noescape
-            style="font-size: 1.6em;"
+            style="font-size: 1.4em;"
             data-line-numbers="">            
 
-            ...
+              using namespace language;
 
-            // Promote english namespace to global namespace
-            using namespace language::english;
-            
-            int main()
-            {
-              colorName(1); // "Red"
-              language::french::colorName(1); // "Rouge"
-              
-              return 0;
-            }</code></pre>
+              int main()
+              {
+                // GCC: error: 'colorName' was not declared in this scope
+                // colorName(1);
+
+                english::colorName(1);
+
+                {
+                  using namespace french;
+                  colorName(1); // -> "Rouge"
+                }
+
+                using namespace english;
+                colorName(1);         // -> "Red"
+                french::colorName(1); // -> "Rouge"
+
+                using namespace french;
+
+                // GGC: error: call of overloaded 'colorName(int)' is ambiguous
+                // colorName(1);
+
+                return 0;
+              }
+          
+          </code></pre>
         </section>
 
       </section>
