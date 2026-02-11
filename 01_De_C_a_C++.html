@@ -1001,8 +1001,7 @@
           <h2>1.8 La classe <span style="text-transform: lowercase;"><inline-code>std::string</inline-code></span></h2>
           <p>Type (classe) pour les chaînes en C++ : <inline-code>std::string</inline-code></p>
           <p>Plus simple et plus sûr que <inline-code>char*</inline-code></p>
-          <p>Gestion automatique/dynamique de la taille</p>
-          <p>Opérateurs et fonctions dédiées</p>
+          <p>Gestion automatique/dynamique de la taille + opérateurs et fonctions dédiées</p>
       
           <p><inline-code>std::string</inline-code> est déclaré dans <inline-code>&#60;string&#62;</inline-code> et visible dans <inline-code>std</inline-code></p>
           <pre style="width: 1400px;"><code
@@ -1015,8 +1014,14 @@
                 
                 int main()
                 {
-                  std::string x = "toto";
-                  std::string y("toto");
+                  std::string x = "Hello";
+                  // Or
+                  // auto x = std::string("Hello");
+                  
+                  // C++14: string literals
+                  // Need to add "using namespace std::string_literals;"
+                  using namespace std::string_literals;
+                  auto s = "Hello"s;
                 }
               </code></pre>
       
