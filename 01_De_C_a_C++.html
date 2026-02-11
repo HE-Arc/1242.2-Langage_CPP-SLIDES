@@ -21,7 +21,7 @@
 <body>
   <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
   <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
-  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+  <p id="course-infos">1242.2 Langage C++ - 2025-2026</p>
 
   <div class="reveal">
     <div class="slides">
@@ -497,19 +497,21 @@
               data-line-numbers="">
 
               #include &#60;print&#62;
-
-              int main()
-              {
-                std::string firstname = "Donald";
-                std::string lastname = "Knuth";
-                int answerToEverything = 42;
-
-                std::println("Hello, {} {}!", firstname, lastname);
-                std::print("The answer is = {}\n", answerToEverything);
-                
-                return 0;
-              }
               
+              // C++20: std::format and {:.2} instead of std::setprecision
+              double dbl = 3.1415926535897932384626433832795;
+              std::cout << std::format("{:.2f}", dbl) << std::endl;
+              std::cout << std::format("{:.8f}", dbl) << std::endl;
+              std::cout << std::format("{:.4e}", dbl) << std::endl;
+              std::cout << std::format("{:.2f}", dbl) << std::endl;
+              
+              // C++23: print and println instead of std::cout and std::endl
+              std::string firstname = "Donald";
+              std::string lastname = "Knuth";
+              int answerToEverything = 42;
+              
+              std::println("Hello, {} {}!", firstname, lastname);
+              std::print("The answer is = {}\n", answerToEverything);
             </code></pre>
           <br>
           <p><a href="https://en.cppreference.com/w/cpp/io/print.html">📚 std::print (cppreference)</a></p>
@@ -568,7 +570,7 @@
             style="font-size: 1.2em;"
             data-line-numbers="">
             
-            void fn(int par_formel){...}
+            void fn(int param_formel){...}
             fn(param_effectif);
           
           </code></pre>
@@ -581,7 +583,7 @@
             style="font-size: 1.2em;"
             data-line-numbers="">
 
-            void fn(int *par_formel){...}
+            void fn(int <b>*</b>param_formel){...}
             fn(<b>&</b>param_effectif);
           
           </code></pre>
@@ -594,7 +596,7 @@
             style="font-size: 1.2em;"
             data-line-numbers="">
 
-            void fn(int &par_formel){...}
+            void fn(int <b>&</b>param_formel){...}
             fn(param_effectif);
           
           </code></pre>
@@ -606,7 +608,7 @@
             style="font-size: 1.2em;"
             data-line-numbers="">
 
-            void fn(const int &par_formel){...}
+            void fn(<b>const</b> int <b>&</b>param_formel){...}
             fn(param_effectif);
           </code></pre>
         </section>
@@ -775,11 +777,11 @@
                   {
                     return tabAges[i];
                   }
-
-                  // If we are here, the name was not found
-                  // See chapter on exceptions for more details
-                  throw std::out_of_range("nom not found");
                 }
+                
+                // If we are here, the name was not found
+                // See chapter on exceptions for more details
+                throw std::out_of_range("nom not found");
               } 
 
             </code></pre>
