@@ -525,7 +525,7 @@
           <p>les accesseurs, les modificateurs</p>
           <br>
           <b>
-            <p>On recommande de :</p>
+            <p>On recommande de</p>
           </b>
           <p>déclarer les attributs privés</p>
           <p>les rendre accessibles par des méthodes publiques (accesseurs et modificateurs).</p>
@@ -606,7 +606,7 @@
                         };
                         
                         // Point::display() definition
-                        void Point::display()
+                        <b>inline</b> void Point::display() // 📌 inline mandatory
                         {
                           std::cout << '(' << x << ',' << y << ')';
                         }
@@ -700,7 +700,7 @@
                     ...
 
                     <b>int getX(){return x;} // inline</b>
-                    void Print();
+                    void print();
                 };
               </code></pre>
               <pre style="width: 800px;"><code
@@ -714,7 +714,7 @@
                 #include "Point.h"
                 ...
 
-                void Point::Print()
+                void Point::print()
                 {
                   std::cout << ...
                 }                
@@ -772,7 +772,7 @@
                   // Allocated on the stack
                   <b>Point p1;</b>
                   ...
-                  p1.Print();
+                  p1.print();
                   ...
                 }
               </code></pre>
@@ -791,9 +791,9 @@
                 int main()
                 {
                   // Allocated on the heap
-                  <b>auto p = new Point;</b> 
+                  <b>auto *p = new Point;</b> 
                   ...
-                  p->Print();
+                  p->print();
                   ...
                   delete p;
                   p = nullptr;
@@ -840,11 +840,11 @@
             
             Point p; // ⚠️ p state is unknown
 
-            p.Print(); // ⚠️ (?, ?)
+            p.print(); // ⚠️ (?, ?)
 
-            p.Init(3,5);  // Initialisation
+            p.init(3,5);  // Initialisation
 
-            p.Print(); // ✅ (3,5)
+            p.print(); // ✅ (3,5)
           </code></pre>
           <br>
           <p>
@@ -865,7 +865,7 @@
             style="font-size: 2em;"
             data-line-numbers="">
             Point p;
-            p.Init(3,5);
+            p.init(3,5);
           </code></pre>
           <br>
           <highlight>
@@ -1090,12 +1090,12 @@
 
         <section>
           <h2>2.5 Constructeurs standard - Remarques</h2>
-          <p>Le constructeur standard est appelé chaque fois qu'un objet doit être créé avec des arguments</p>
+          <p>Un constructeur standard est appelé lorsqu'un objet doit être créé avec des arguments</p>
           <pre style="width: 1600px;"><code
             class="c++"
             data-trim
             data-noescape
-            style="font-size: 2em;"
+            style="font-size: 1.8em;"
             data-line-numbers="">
             
             Point p1(1, 2);
@@ -1106,14 +1106,16 @@
             Point p4[4] = {Point(5, 3)};
 
             auto p5 = new Point(6, 3);
+            delete p5;
             
-            // ⚠️ Hard to do in 1 line
             auto p6 = new Point[10]; 
             for (int i = 0; i < 10; i++)
             {
               p6[i] = Point(2,3);
             }
-          </code></pre>
+            delete[] p6;
+
+            std::vector<Point> v(10, Point(2,3));</code></pre>
         </section>
 
         <section>
@@ -1292,7 +1294,7 @@
             // 	 this->name = point.name;
             // }         
             ...                    
-            void SetName(const char *name)
+            void setName(const char *name)
             {
               strcpy(this->name, name);
             }
@@ -1325,7 +1327,7 @@
             auto p2 = p1;
 
             // ⚠️ p1 is modified too
-            p2.SetName("P2");
+            p2.setName("P2");
             
             return 0;
           }          
@@ -1358,7 +1360,7 @@
               <b>strcpy(this->name, name);</b>
             }
             ...                    
-            <b>void SetName(const char *name)</b>
+            <b>void setName(const char *name)</b>
             {
               <b>strcpy(this->name, name);</b>
             }
@@ -1384,8 +1386,7 @@
           Point c = 3;
           auto d = new Point(4, 4);
           Point e;
-          Point f[4];
-        </code></pre>
+          Point f[4];</code></pre>
           <br>
           <p>Initialisation d'objets temporaires, anonymes</p>
           <pre style="width: 1600px;"><code
@@ -1395,8 +1396,7 @@
           style="font-size: 2em;"
           data-line-numbers="">
 
-          std::cout << Point(10,0).distance(Point(3, 4));
-        </code></pre>
+          std::cout << Point(10,0).distance(Point(3, 4));</code></pre>
         </section>
 
         <section>
@@ -1896,12 +1896,10 @@
                 friend void fctExt(Point &p);
               ...
             };
-
             void fctExt(Point &p)
             { 
               p.x = 0; // ✅ OK: fctExt is a friend of Point
-            }
-          </code></pre>
+            }          </code></pre>
           <pre style="width: 1600px;"><code 
             class="c++"
             data-trim
@@ -1931,11 +1929,11 @@
                 
                 class Host
                 {
-                    <b>friend class ZeFriend;</b>
-                    int x;
+                  <b>friend class ZeFriend;</b>
+                  int x;                  
                   public:
-                    Host(int a):x(a){} 
-              };
+                    Host(int a):x(a){}
+                };
             </code></pre>
           <pre style="width: 1600px;"><code 
                 class="c++"
@@ -1988,9 +1986,9 @@
                 class A
                 { 
                   public:
-                    A() = default;
+                    A()=default;
                     A(const A&);
-                    ~A() = default;
+                    ~A()=default;
               </code></pre>
             </section>
 
@@ -2007,7 +2005,7 @@
                 class A
                 {
                   public:
-                    A() = default;
+                    A()=default;
                     A(char x, int y) {}
                     A(int y) : A('a', y) {}
                 };
