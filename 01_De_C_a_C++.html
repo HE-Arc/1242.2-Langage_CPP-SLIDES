@@ -59,7 +59,7 @@
           <h2>1.1 Historique du langage</h2>
           <p><b>1979</b> - <highlight>C avec des classes</highlight> : premières extensions au langage C</p>
           <p><b>1983</b> - le nom C++ est créé pour "C incrémenté"</p>
-          <p><b>1998</b> - Le langage C++ est normalisée par l'ISO</p>
+          <p><b>1998</b> - Le langage C++ est normalisé par l'ISO</p>
           <p><b>2011</b> - <highlight>C++11, C++ moderne</highlight> : nouvelle norme du langage</p>
           <p><b>2014</b> - C++14 : mise à jour mineure</p>
           <p><b>2017</b> - C++17 : mise à jour majeure (amélioration des templates, etc)</p>
@@ -78,7 +78,7 @@
           <br>
           <p><s>Le C++ est une extension du langage C</s> (un compilateur C++ peut compiler du code C)</p>
           <p>Le C++ est libre de droit</p>
-          <p>Au delà de ~50'000 lignes de code, le C ne suffit plus</p>
+          <p>Au-delà de ~50'000 lignes de code, le C ne suffit plus</p>
         </section>
 
         <section>
@@ -285,7 +285,7 @@
 
                 using namespace french;
 
-                // GGC: error: call of overloaded 'colorName(int)' is ambiguous
+                // GCC: error: call of overloaded 'colorName(int)' is ambiguous
                 // colorName(1);
 
                 return 0;
@@ -487,7 +487,6 @@
                 <section>
           <h2>1.3 Entrées / Sorties (C++23)</h2>
           <p>Inclure <inline-code>print</inline-code></p>
-          <h3>Exemple</h3>
 
             <pre style="width: 1400px;"><code
               class="c++"
@@ -495,7 +494,10 @@
               data-noescape
               style="font-size: 1.6em;"
               data-line-numbers="">
-
+              
+              #include &#60;iostream&#62;
+              #include &#60;string&#62;
+              #include &#60;format&#62;
               #include &#60;print&#62;
               
               // C++20: std::format and {:.2} instead of std::setprecision
@@ -511,8 +513,7 @@
               int answerToEverything = 42;
               
               std::println("Hello, {} {}!", firstname, lastname);
-              std::print("The answer is = {}\n", answerToEverything);
-            </code></pre>
+              std::print("The answer is = {}\n", answerToEverything);</code></pre>
           <br>
           <p><a href="https://en.cppreference.com/w/cpp/io/print.html">📚 std::print (cppreference)</a></p>
 
@@ -541,7 +542,7 @@
 
             int i;
             int &r = i; // r is a reference to i
-            r = j; // affects j to i
+            r = 99; // affects i to 99
 
           </code></pre>
           <br>
@@ -667,7 +668,7 @@
           <p></p>
 
           <p>
-            <error>⛔ création d'une copie du l'argument</error>
+            <error>⛔ création d'une copie de l'argument</error>
           </p>
           <br>
 
@@ -764,12 +765,13 @@
     
               #include &#60;iostream&#62;
               #include &#60;string&#62;
+              #include &#60;stdexcept&#62;
     
               const int N=2;
               std::string tabNoms[N] = {"Bob", "John"};
               int tabAges[N] = {20, 30};
     
-              int& age(string nom)
+              int& age(const std::string &nom)
               {
                 for (int i = 0; i < N; ++i)
                 {
@@ -1123,7 +1125,7 @@
           <p>⇒ Les 2 sont constitués d'octets</p>
           <p>Intérêts : conversions, transferts en mémoire (buffers)</p>
           <br>          
-          <p><inline-code>#include &#60;sstream&#62</inline-code> ⇒ 3 classes</p>
+          <p><inline-code>#include &#60;sstream&#62;</inline-code> ⇒ 3 classes</p>
           <br>
           <p><inline-code>istringstream</inline-code> : entrée</p>
           <p><inline-code>ostringstream</inline-code> : sortie</p>
@@ -1230,7 +1232,7 @@
           <p>Terminer les fichiers source par une ligne vide pour des raisons de compatibilité avec certains anciens outils qui peuvent ignorer une ligne se terminant par EOF </p>
           <p>Utiliser <inline-code>auto</inline-code> pour l'inférence de type</p>
           <p>Utiliser <inline-code>decltype</inline-code> pour obtenir le type d'une expression</p>
-          <p>⇒ Très utile pour les itérateurs et le templates</p> 
+          <p>⇒ Très utile pour les itérateurs et les templates</p> 
         </section>
 
         <section>
@@ -1266,7 +1268,7 @@
 
       </section>
 
-      <!----------          1.10 Bilbiothèque standard          ---------->
+      <!----------          1.10 Bibliothèque standard          ---------->
       <section>
 
         <section>
@@ -1281,7 +1283,7 @@
             <li>Conteneurs : implémentation de structures de données classiques (Chapitre 9)</li>
             <li>Itérateurs : offrent des méthodes unifiées d'accès aux conteneurs (Chapitre 9)</li>
             <li>Algorithmes : offrent des algorithmes pour les conteneurs (Chapitre 9)</li>
-            <li>Foncteur : objets fonctions (non traités dans ce cours)</li>
+            <li>Foncteurs : objets fonctions (non traités dans ce cours)</li>
           </ul>
           <br>
           <br>
@@ -1346,17 +1348,17 @@
         </section>
 
         <section>
-          <h2>1.10 Méthode courantes des conteneur</h2>
+          <h2>1.10 Méthodes courantes des conteneurs</h2>
           <p><inline-code>clear()</inline-code> : vide le conteneur</p>
           <p><inline-code>size()</inline-code> : retourne le nombre d'éléments</p>
           <p><inline-code>empty()</inline-code> : teste si le conteneur est vide</p>
           <p><inline-code>push_back(...)</inline-code> : ajoute un élément à la fin</p>
-          <p><inline-code>push_front(...)</inline-code> : ajoute un élément au début</p>
+          <p><inline-code>push_front(...)</inline-code> : ajoute un élément au début (<inline-code>std::list</inline-code>, <inline-code>std::deque</inline-code>,...)</p>
           <p><inline-code>front()</inline-code> : renvoie le 1er élément</p>
           <p><inline-code>pop_front()</inline-code> : supprime le premier élément</p>
           <p><inline-code>insert()</inline-code> : insère un élément</p>
           <p><inline-code>erase()</inline-code> : supprime un élément</p>
-          <p><inline-code>sort()</inline-code> : trie le contenu d'une conteneur</p>
+          <p><inline-code>sort()</inline-code> : trie le contenu d'un conteneur</p>
           <p><inline-code>find()</inline-code> : recherche dans le conteneur</p>
         </section>
 
@@ -1367,21 +1369,25 @@
                         class="c++"
                         data-trim
                         data-noescape
-                        style="font-size: 2em;"
+                        style="font-size: 1.8em;"
                         data-line-numbers="">
                         #include &#60;vector&#62;
         
                         int main()
                         {
-                          std::vector&#60;int&#62;  myVector1{10,11};
-                      
+                          // {10, 11}
+                          std::vector&#60;int&#62; myVector1{10,11};
+
+                          // {10.0, 11.0}
                           std::vector&#60;double&#62; myVector2;
+                          myVector2.push_back(10.0);
                           myVector2.push_back(11.0);
-                          myVector2.push_front(10.0);
-                      
+                          
+                          // {5, 5}
                           std::vector&#60;int&#62; myVector3(2,5);
+                          // {10, 11}
                           myVector3[0]=10;
-                          myVector3[1]=11;                 
+                          myVector3[1]=11;
                           ...                  
                         }
                       </code></pre>
@@ -1460,13 +1466,13 @@
 
             int main()
             {           
-              std::vector&#60;string&#62; v;
+              std::vector&#60;std::string&#62; v;
               v.push_back("Introduction");
               v.push_back("une phrase");
               v.push_back("Conclusion");
-              for(int i = 0; i < vect.size(); ++i)
+              for(int i = 0; i < v.size(); ++i)
               {
-                std::cout << vect[i] << std::endl;
+                std::cout << v[i] << std::endl;
               }              
               return 0;
             }</code></pre>
@@ -1505,8 +1511,8 @@
           <p><inline-code>std::vector&#60;std::list&#60;std::string&#62;&#62; maChanson;</inline-code></p>
           <br>
           <p>La définition d'un type intermédiaire peut augmenter la lisibilité</p>
-          <p><inline-code>typedef list&#60;string&#62; Couplet;</inline-code></p>
-          <p><inline-code>vector&#60;Couplet&#62; maChanson;</inline-code></p>
+          <p><inline-code>typedef std::list&#60;std::string&#62; Couplet;</inline-code></p>
+          <p><inline-code>std::vector&#60;Couplet&#62; maChanson;</inline-code></p>
         </section>
 
         <section>
