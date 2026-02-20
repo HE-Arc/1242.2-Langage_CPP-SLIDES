@@ -41,14 +41,13 @@
             <p>3. Implémentation d'une méthode</p>
             <p>4. Instancier des objets</p>
             <p>5. Les constructeurs</p>
-            <p>6. Le destructeur</p>
           </div>
           <div class="col-right">
+            <p>6. Le destructeur</p>
             <p>7. Membres constants</p>
             <p>8. <inline-code>this</inline-code>, Membres statiques, <inline-code>friend</inline-code></p>
             <p>9. Diagrammes UML</p>
             <p>10. <inline-code>=delete</inline-code> et <inline-code>=default</inline-code></p>
-            <p>11. Résumé</p>
           </div>
         </div>
       </section>
@@ -70,7 +69,6 @@
           <p>Regroupement des fonctions et données dans un objet</p>
           <p>Envoi de "messages" entre objets</p>
 
-          <!--TODO: faire diagramme UML -->
         </section>
 
         <section>
@@ -182,7 +180,7 @@
                         style="font-size: 1.6em;"
                         data-line-numbers="">
                         
-                        #include &#60;iostream&#62;
+                        #include &#60;print&#62;
                         
                         // Class name: Point
                         class Point
@@ -194,7 +192,7 @@
                             void translate(int, int);
                             void print()
                             {
-                              std::cout << "(" << x << "," << y << ")";
+                              std::println("({},{})", x, y);
                             }
                             
                             // Attributes
@@ -280,7 +278,7 @@
           </b>
           <p>C'est la façon dont l'objet est réalisé.
             L'implémentation n'est pas accessible à l'utilisateur.
-            2 classes ayant la même interface peuvent avoir une implémentation différentes.</p>
+            2 classes ayant la même interface peuvent avoir une implémentation différente.</p>
 
           <p>
             <highlight>Un objet appartient à une classe</highlight>
@@ -455,7 +453,7 @@
         <section>
           <h2>2.2 Encapsulation</h2>
           <p>Les fonctions sont <inline-code>public</inline-code>, et les données sont
-            <inline-code>private</inline-code> (ou <inline-code>protected</inline-code></inline-code>)
+            <inline-code>private</inline-code> (ou <inline-code>protected</inline-code>)
           </p>
 
           <div class="container">
@@ -503,10 +501,10 @@
                   myAccount.deposit(100);
                   myAccount.withdraw(50);
                   auto balance = myAccount.getBalance();
-                  std::cout << balance;
+                  std::println("Balance: {}", balance);
 
                   myAccount.balance = 1000; // ⛔
-                  std::cout << myAccount.balance; // ⛔
+                  std::println("Balance: {}", myAccount.balance); // ⛔
 
                   return 0;
                 }
@@ -531,7 +529,7 @@
           <p>les rendre accessibles par des méthodes publiques (accesseurs et modificateurs).</p>
 
           <p><b>📌 Note :</b> un membre déclaré sans modificateur d'accès sera <inline-code>private</inline-code> par
-            défaut (accessible uniquement depuis méthodes de la classe)</p>
+            défaut (accessible uniquement depuis les méthodes de la classe)</p>
 
         </section>
 
@@ -608,7 +606,7 @@
                         // Point::display() definition
                         <b>inline</b> void Point::display() // 📌 inline mandatory
                         {
-                          std::cout << '(' << x << ',' << y << ')';
+                          std::println("({},{})", x, y);
                         }
                                                 
                         </code></pre>
@@ -675,7 +673,7 @@
           </div>
 
           <p>📌 1 fichier peut contenir plusieurs classes</p>
-          <p>✅ 1 seule classe par paire de fichiers <inline-code>.h</inline-code> et <inline.code>.cpp</inline.code>
+          <p>✅ 1 seule classe par paire de fichiers <inline-code>.h</inline-code> et <inline-code>.cpp</inline-code>
           </p>
         </section>
 
@@ -716,7 +714,7 @@
 
                 void Point::print()
                 {
-                  std::cout << ...
+                  std::println("Point: ({},{})", x, y);
                 }                
               </code></pre>
             </div>
@@ -729,7 +727,7 @@
                 data-line-numbers="">
 
                 // main.cpp
-                #include "point.h"
+                #include "Point.h"
 
                 int main()
                 {
@@ -804,7 +802,7 @@
         </section>
 
         <section>
-          <h2>Remarques</h2>
+          <h2>2.4 Remarques</h2>
           <p>Un type est utilisé pour <highlight>déclarer</highlight> des variables</p>
           <p>Une classe est utilisée pour <highlight>instancier</highlight> des objets</p>
           <br>
@@ -813,11 +811,6 @@
             C'est pour cette raison que les membres d'une classe sont parfois appelés attributs d'instance ou méthodes
             d'instance.</p>
           <br>
-          <b>
-            <p>Avantages de l'instanciation dynamique</p>
-          </b>
-          <p>Portée globale</p>
-          <p>Rapidité de passage de paramètre par adresse (ou référence)</p>
         </section>
 
       </section>
@@ -938,7 +931,7 @@
         </section>
 
         <section>
-          <h2>Les différents constructeurs</h2>
+          <h2>2.5 Les différents constructeurs</h2>
           <p>Un constructeur peut avoir des paramètres et peut être <highlight>surchargé</highlight>. Il peut être
             appelé le constructeur :</p>
           <p>
@@ -1137,7 +1130,7 @@
         </code></pre>
           <br>
           <p>1) Éviter le masquage de l'attribut par un paramètre</p>
-          <p>2) Améliorer la lisibilité du code source: on distingue mieux les méthodes de l'objet courant et les
+          <p>2) Améliorer la lisibilité du code source: on distingue mieux les méthodes/attributs de l'objet courant et les
             fonctions globales</p>
           <p>3) Comparer l'adresse de l'objet courant avec celle d'un autre objet. </p>
         </section>
@@ -1247,7 +1240,7 @@
         <section>
           <h2>2.5 Constructeurs par copie</h2>
           <p><b>Ce constructeur est souvent appelé implicitement</b></p>
-          <p>1) À l'initialisation d'un objet, avec l'operateur =</p>
+          <p>1) À l'initialisation d'un objet, avec l'opérateur =</p>
           <p><inline-code>Point p2 = anotherPoint;</inline-code></p>
           <p>2) Lorsqu'on passe un objet en paramètre par valeur à une fonction</p>
           <p><inline-code>Add(anotherPoint)</inline-code></p>
@@ -1270,9 +1263,7 @@
 
         <section>
           <h2>2.5 Constructeurs par copie</h2>
-          <b>
-            <p>Problème
-          </b> : 1 ou plusieurs des attributs sont des pointeurs (ou similaires)</p>
+          <p><b>Problème</b> : 1 ou plusieurs des attributs sont des pointeurs (ou similaires)</p>
 
           <pre style="width: 1600px;"><code
           class="c++"
@@ -1280,7 +1271,7 @@
           data-noescape
           style="font-size: 1.4em;"
           data-line-numbers="">
-          
+
           class Point
           {
           public:
@@ -1308,9 +1299,7 @@
 
         <section>
           <h2>2.5 Constructeurs par copie</h2>
-          <b>
-            <p>Problème
-          </b> : 1 ou plusieurs des attributs sont des pointeurs (ou similaires)</p>
+          <p><b>Problème</b> : 1 ou plusieurs des attributs sont des pointeurs (ou similaires)</p>
 
           <pre style="width: 1600px;"><code
           class="c++"
@@ -1336,38 +1325,36 @@
 
         <section>
           <h2>2.5 Constructeurs par copie</h2>
-          <b>
-            <p>Solution
-          </b> : copie en profondeur</p>
+          <p><b>Solution</b> : copie en profondeur</p>
 
           <pre style="width: 1600px;"><code
           class="c++"
           data-trim
           data-noescape
           style="font-size: 1.4em;"
-          data-line-numbers="5, 10, 11, 14-17, 21">
-          
+          data-line-numbers="12-17">
+
           class Point
           {
           public:
-            ...          
-            <b>Point(int x, int y, const char *name = "")</b>
+            ...
+            Point(int x, int y, const char *name = "")
             {
               this->x = x;
               this->y = y;
-          
-              <b>this->name = new char[strlen(name) + 1];</b>
-              <b>strcpy(this->name, name);</b>
+              this->name = new char[strlen(name) + 1];
+              strcpy(this->name, name);
             }
-            ...                    
-            <b>void setName(const char *name)</b>
-            {
-              <b>strcpy(this->name, name);</b>
-            }
-          
+            // ✅ Deep copy: allocate new memory, copy content
+            <b>Point(const Point &other) : x(other.x), y(other.y)</b>
+            <b>{</b>
+            <b>  this->name = new char[strlen(other.name) + 1];</b>
+            <b>  strcpy(this->name, other.name);</b>
+            <b>}</b>
+
           private:
-            ...          
-            <b>char *name = nullptr;</b>
+            ...
+            char *name = nullptr;
           };
         </code></pre>
         </section>
@@ -1383,7 +1370,7 @@
 
           auto a = Point(1, 1);
           Point b(2, 2);
-          Point c = 3;
+          Point c = 3; // ⛔ Implicit conversion
           auto d = new Point(4, 4);
           Point e;
           Point f[4];</code></pre>
@@ -1396,7 +1383,7 @@
           style="font-size: 2em;"
           data-line-numbers="">
 
-          std::cout << Point(10,0).distance(Point(3, 4));</code></pre>
+          std::println("Distance: {}", distance(Point(10,0), Point(3, 4)));</code></pre>
         </section>
 
         <section>
@@ -1418,7 +1405,7 @@
         </code></pre>
           <br>
           <p><b>A) 1 appel au constructeur standard</b></p>
-          <p>Cette expression crée l'objet p et l'initialise en rangeant dans p.x et p.y les valeurs 1 et 2
+          <p>Cette expression crée l'objet p et l'initialise en rangeant dans p.x et p.y les valeurs 1 et 2</p>
         </section>
 
         <section>
@@ -1443,7 +1430,7 @@
           <p>- crée un objet p (constructeur par défaut)</p>
           <p>- crée un point anonyme de coordonnées (1,2)</p>
           <p>- affecte les valeurs des attributs du point anonyme aux attributs de p</p>
-          <p>⚠️ Risque si l'opérateur <inline-code>=</inline-code> n'est pas surchargé pour des copie en profondeur !
+          <p>⚠️ Risque si l'opérateur <inline-code>=</inline-code> n'est pas surchargé pour une copie en profondeur !
           </p>
         </section>
 
@@ -1477,12 +1464,12 @@
         </section>
 
         <section>
-          <h2>Remarques / Rappels</h2>
+          <h2>2.5 Remarques / Rappels</h2>
           <p>⚠️ Le constructeur par défaut fourni par le compilateur <highlight>n'est plus disponible</highlight> si le
-            programmeur a défini un constructeur </p>
+            programmeur a défini un constructeur</p>
           <p>Si un constructeur a des valeurs par défaut pour ses paramètres, celles-ci doivent figurer dans la
-            déclaration de la classe (fichier d'interface : <inline-code>classe.h)</inline-code></p>
-          <p>⚠️ Quand il faut redéfinir le constructeur par défaut (copie en profondeur)</p>
+            déclaration de la classe (fichier d'interface : <inline-code>classe.h</inline-code>)</p>
+          <p>⚠️ Il faut redéfinir le constructeur par copie quand une copie en profondeur est nécessaire</p>
           <p>La déclaration d'un tableau d'objets génère autant d'appels au constructeur par défaut que d'éléments dans
             le tableau</p>
         </section>
@@ -1520,7 +1507,7 @@
           <p>1 seul destructeur</p>
           <p>Destructeur par défaut généré par le compilateur (trivial)</p>
           <p>Permet au programmeur de détruire proprement un objet (libérer la mémoire, fermer les flux, stopper les
-            threads, etc.</p>
+            threads, etc.)</p>
         </section>
 
         <section>
@@ -1647,7 +1634,7 @@
           <p><inline-code>pt</inline-code> est constant donc il ne doit pas être modifié par
             <inline-code>getX()</inline-code>
           </p>
-          <p>⇒ la qualification <inline-const>const</inline-const> de <inline-code>getX()</inline-code> est
+          <p>⇒ la qualification <inline-code>const</inline-code> de <inline-code>getX()</inline-code> est
             indispensable</p>
           <br>
           <p>
@@ -1815,7 +1802,7 @@
             {
               public:
                 ...
-                <b>static GetNbPoints() {return nbPoints;}</b>
+                <b>static int GetNbPoints() {return nbPoints;}</b>
 
               private:
                 int x{0}, y{0}; // Unique to each object
@@ -1836,7 +1823,7 @@
             int main()
             {
               ...
-              std::cout << Point::GetNbPoints(); << std::endl;
+              std::println("Nombre de points: {}", Point::GetNbPoints());
             }
           </code></pre>
         </section>
@@ -1919,7 +1906,7 @@
         <section>
           <h2>2.8 Classes et fonctions <span style="text-transform: lowercase;"><inline-code>friend</inline-code></span>
           </h2>
-          <p>2) Une classe amie doit être déclarée dans la classe en hôte</p>
+          <p>2) Une classe amie doit être déclarée dans la classe hôte</p>
           <pre style="width: 1600px;"><code 
                 class="c++"
                 data-trim
@@ -1949,7 +1936,7 @@
                     {
                       Host h(16);
                       // ✅ OK: ZeFriend is a friend of Host
-                      std::cout << h.x << std::endl;
+                      std::println("Host x = {}", h.x);
                     }
                 };
               </code></pre>
@@ -1972,7 +1959,7 @@
 
         <section>
           <h2>2.10 =delete et =default</h2>
-          <p><inline-code>Point()=defaut</inline-code> force le compilateur à générer un constructeur par défaut</p>
+          <p><inline-code>Point()=default</inline-code> force le compilateur à générer un constructeur par défaut</p>
           <p><inline-code>Point()=delete</inline-code> empêche le compilateur de générer un constructeur par défaut</p>
           <br>
           <p>📌 Fonctionne aussi pour le constructeur par copie, et le destructeur</p>
@@ -1987,13 +1974,14 @@
                 { 
                   public:
                     A()=default;
-                    A(const A&);
+                    A(const A&) = delete; // No copy allowed
                     ~A()=default;
+                };
               </code></pre>
             </section>
 
             <section>
-              <h2>2.10 Delegating Constructors</h2>
+              <h2>2.10 Constructeurs délégués</h2>
               <p>Un constructeur peut appeler un autre constructeur avec des paramètres différents</p>
               <pre style="width: 1600px;"><code 
                 class="c++"
