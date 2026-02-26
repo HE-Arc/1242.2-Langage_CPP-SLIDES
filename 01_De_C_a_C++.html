@@ -154,14 +154,14 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
-            #include &#60;iostream&#62;
+            #include &#60;print&#62;
 
             int main()
             {
                 for (int i = 0; i < 3; ++i)
                 {
                     int x = i * 2;
-                    std::cout << x << std::endl;
+                    std::println("{}", x);
                 }
 
                 return 0;
@@ -455,19 +455,19 @@
             data-line-numbers="">
 
             int N = 0;
-            std::cout << "Entrez un chiffre entre 1 et 6 : " ;
-            while ( !( std::cin >> N ) || N < 1 || N > 6 )
+            std::cout << "Enter a number between 1 and 6: ";
+            while (!(std::cin >> N) || N < 1 || N > 6)
             {
-              if ( std::cin.fail() ) 
-              { 
-                std::cout << "Saisie incorrecte, recommencez : ";    
-                std::cin.clear(); 
-                std::cin.ignore(256, '\n' ); 
-              } 
+              if (std::cin.fail())
+              {
+                std::cout << "Wrong input, try again: ";
+                std::cin.clear();
+                std::cin.ignore(256, '\n');
+              }
               else
               {
-                std::cout << "Le chiffre n'est pas entre 1 et 6: ";
-              } 
+                std::cout << "The number is out of range: ";
+              }
             }</code></pre>
           <br>
           <h3>Affichage</h3>
@@ -734,8 +734,8 @@
 
             int main()
             {
-              std::cout << "Count: " << getRefOnCount()++  << std::endl;
-              std::cout << "Count: " << ++getRefOnCount() << std::endl;
+              std::println("Count: {}", getRefOnCount()++);
+              std::println("Count: {}", ++getRefOnCount());
             }
           </code></pre>
           <br>
@@ -965,7 +965,7 @@
             // See chapter on exceptions for more details
             catch (const std::bad_alloc &e)
             {
-              std::cout << "Memory allocation failed." << std::endl;
+              std::println("Memory allocation failed: {}", e.what());
             }
           </code></pre>
           <p><a href="https://en.cppreference.com/w/cpp/memory/new/operator_new">📚 new (cppreference)</a></p>
@@ -1072,9 +1072,10 @@
                   std::string x = "toto";
                   std::string y = x;
                   std::string z = x + "_" + y;
-                  std::cout << x << " " << y << " " << z << std::endl;
-                  std::cout << "cap: " << z.capacity() << std::endl; 
-                  std::cout << "size: " << z.size()     << std::endl;
+
+                  std::println("{} {} {}", x, y, z);
+                  std::println("cap: {}, size: {}", z.capacity(), z.size());
+
                   return 0;
                 }
               </code></pre>
@@ -1246,8 +1247,8 @@
                         int values[] = {10, 20, 26};
 
                         for (const auto& value : values) 
-                        { 
-                          cout << value << endl; 
+                        {
+                          std::println("{}", value);
                         }
                       </code></pre>
                       <br>
@@ -1404,23 +1405,22 @@
             data-line-numbers="">
             for (int item : myVector1)
             {
-              std::cout << item << " ";
+              std::print("{} ", item);
             }
             
             for (const int& item : myVector1)
             {
-              std::cout << item << " ";
+              std::print("{} ", item);
             }
             
             for (const auto& item : myVector1)
             {
-              std::cout << item << " ";
+              std::print("{} ", item);
             }
             
             for (int i = 0; i < (int)myVector1.size(); i++)
             {
-                std::cout << myVector1[i] << " (";
-                std::cout << myVector1.at(i) << ") ";
+              std::print("{} ({}) ", myVector1[i], myVector1.at(i));
             }</code></pre>
         </section>
 
@@ -1472,7 +1472,7 @@
               v.push_back("Conclusion");
               for(int i = 0; i < v.size(); ++i)
               {
-                std::cout << v[i] << std::endl;
+                std::println("{}", v[i]);
               }              
               return 0;
             }</code></pre>
@@ -1525,8 +1525,9 @@
             data-noescape
             style="font-size: 1.6em;"
             data-line-numbers="">
-            typedef std::vector&#60;float&#62; Line;
-            typedef std::vector&#60;Line&#62; Matrix;
+            using Line = std::vector&#60;double&#62;;
+            using Matrix = std::vector&#60;Line&#62;;
+
             Matrix m(5); 	// 5 lines
             for(int i = 0; i < 5; ++i)
             {
