@@ -871,16 +871,22 @@
                 style="font-size: 1.8em;"
                 data-line-numbers="">
                 
-                int minimum(int a, int b)
-                { 
-                  return a < b ? a : b;
-                } 
-                
-                int minimum(int a, int b, int c)
+                int add(int a, int b)
                 {
-                  return minimum(a, minimum(b, c));
+                  return a + b;
                 }
-              </code></pre>
+                int add(int a, int b, int c)
+                {
+                  return a + b + c;
+                }
+                double add(double a, double b)
+                {
+                  return a + b;
+                }
+                double add(double a, double b, double c)
+                {
+                  return a + b + c;
+                }</code></pre>
         </section>
       </section>
 
