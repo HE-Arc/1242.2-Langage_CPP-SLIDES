@@ -42,7 +42,7 @@
           </div>
           <div class="col-right">
             <p>4. Surcharge de <inline-code>=</inline-code></p>
-            <p>5. Autres surcharges (<inline-code>++</inline-code>, <inline-code>--</inline-code>, ...)</p>
+            <p>5. Autres surcharges (<inline-code>++</inline-code>, <inline-code>--</inline-code>, <inline-code>()</inline-code>, ...)</p>
             <p>6. Bonnes pratiques</p>
           </div>
         </div>
@@ -78,7 +78,7 @@
             
             Complex c1(2,3), c2(1,1), c3;
             c3 = c1 + c2;
-            std::cout << c1 << std::endl;
+            c1.show();
           </code></pre>
           <br>
           <p>On ne peut pas redéfinir les opérateurs sur les types primitifs</p>
@@ -274,9 +274,9 @@
             style="font-size: 2em;"
             data-line-numbers="">
 
-            ostream& operator<<(ostream &s, const Point &p)
+            std::ostream& operator<<(std::ostream &s, const Point &p)
             {
-              return s << '(' << p.X() << ',' << p.Y() << ')';
+              return s << '(' << p.m_x << ',' << p.m_y << ')';
             }
           </code></pre>
           <p>L'opérande de gauche est une référence sur le flux <inline-code>ostream&</inline-code></p>
@@ -290,8 +290,8 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
-            cout << p1 << p2 << endl; 
-            operator<<(operator<<(operator<<(cout, p1), p2), endl);
+            std::cout << p1 << p2 << '\n';
+            operator<<(operator<<(operator<<(std::cout, p1), p2), '\n');
                                   |-----------------| ostream&
                       |---------------------------------| ostream&
             |---------------------------------------------------| ostream&
@@ -308,12 +308,13 @@
             style="font-size: 2em;"
             data-line-numbers="">
 
-            void main() 
+            int main()
             {
               Point p;
-              std::cout << "Donner un point au format (x,y) : ";
+              std::print("Enter a point in format (x,y): ");
               std::cin >> p;
-              std::cout << "Le point est : " << p << std::endl;
+              std::cout << "Point entered: " << p << '\n';
+              return 0;
             }
           </code></pre>
           <p>On veut que l'utilisateur respecte un format prédéfini :</p>
@@ -340,22 +341,22 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
-            istream& operator>>(istream &i, Point &p)
+            std::istream& operator>>(std::istream &in, Point &p)
             {
               char c;
-              i >> c;
+              in >> c;
               if (c == '(')
               {
-                i >> p.x >> c;
+                in >> p.m_x >> c;
                 if (c == ',')
                 {
-                  i >> p.y >> c;
+                  in >> p.m_y >> c;
                   if (c == ')')
-                    return i;
+                    return in;
                 }
               }
-              std::cerr << "Erreur de lecture." << std::endl;
-              return i;
+              in.setstate(std::ios::failbit);
+              return in;
             }
           </code></pre>
         </section>
@@ -377,15 +378,16 @@
             style="font-size: 2em;"
             data-line-numbers="">
 
-            void main()
+            int main()
             {
               NamedPoint pt(1, 4, "P1"), copyPt;
 
-              // ⚠️ Constructeur par copie
-              NamedPoint copyPt2 = p;
-              
-              // ⚠️ Affectation
+              // ⚠️ Copy constructor
+              NamedPoint copyPt2 = pt;
+
+              // ⚠️ Assignment
               copyPt = pt;
+              return 0;
             }
           </code></pre>
         </section>
@@ -401,15 +403,17 @@
 
             class NamedPoint
             {
-              public:
-                NamedPoint(int = 0, int = 0, char* = nullptr);
-                NamedPoint(const NamedPoint &);
-                ~NamedPoint();
+            public:
+              NamedPoint(int = 0, int = 0, const char* = "?");
+              NamedPoint(const NamedPoint &);
+              virtual ~NamedPoint();
+              NamedPoint& operator=(const NamedPoint &);
 
-              private:
-                int x, y;
-                char* name;
-            };           
+            private:
+              int m_x{0};
+              int m_y{0};
+              char* m_name{nullptr};
+            };
           </code></pre>
         </section>
         
@@ -426,17 +430,18 @@
             NamedPoint& NamedPoint::operator=(const NamedPoint &p)
             {
               // ✅ Avoid self-assignment
-              if (this != &p)
+              if (this == &p)
               {
-                x = p.x;
-                y = p.y;
-                if(name != 0)
-                  delete [] name;
-                  
-                name = new char[strlen(p.name)+1];
-                strcpy(name, p. name);
+                return *this;
               }
-              
+
+              m_x = p.m_x;
+              m_y = p.m_y;
+              delete[] m_name;
+              m_name = nullptr;
+              m_name = new char[strlen(p.m_name) + 1];
+              strcpy_s(m_name, strlen(p.m_name) + 1, p.m_name);
+
               return *this;
             }
           </code></pre>
@@ -459,13 +464,16 @@
 
             class Point
             {
-              int x, y;
-              ...
-              // Conversion int → Point Constructeur
-              Point(int a) {x = a; y = 0;}
-              
-              // Conversion Point → int   Surcharge op
-              operator int(){return abs(x) + abs(y);}
+            public:
+              // Conversion int → Point
+              Point(int a) : m_x(a), m_y(0) {}
+
+              // Conversion Point → int: Manhattan distance
+              operator int() const { return std::abs(m_x) + std::abs(m_y); }
+
+            private:
+              int m_x{0};
+              int m_y{0};
             };
           </code></pre>
         </section>
@@ -480,26 +488,73 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
-            class Point
+            class Counter
             {
-              ...
-              // ⚠️ Pré-incrémentation
-              Point& operator++()
+            public:
+              Counter(int x);
+
+              // Returns reference: no copy, usable as lvalue
+              Counter& operator++()
               {
-                x++; y++;
+                ++m_x;
                 return *this;
               }
-              
-              // ⚠️ Post-incrémentation
-              Point operator++(int)
+
+              // Dummy int parameter distinguishes post from pre
+              Counter operator++(int)
               {
-                Point tmp(*this);
-                x++; y++;
-                return tmp;
+                Counter temp(*this);
+                ++m_x;
+                return temp;
               }
+
+            private:
+              int m_x{0};
             };
           </code></pre>
         </section>
+
+        <section>
+          <h2>3.5 Autres surcharges</h2>
+          <p>Les foncteurs — <inline-code>operator()</inline-code></p>
+          <p>Un objet appelable comme une fonction, mais qui porte son propre état</p>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            class Linear
+            {
+            public:
+              Linear(double a, double b) : m_a(a), m_b(b) {}
+
+              double operator()(double x) const
+              {
+                return m_a * x + m_b;
+              }
+
+            private:
+              double m_a{0};
+              double m_b{0};
+            };
+          </code></pre>
+          <pre style="width: 1600px;"><code
+            class="c++"
+            data-trim
+            data-noescape
+            style="font-size: 1.8em;"
+            data-line-numbers="">
+
+            Linear f(2, 1);   // f(x) = 2x + 1
+            Linear g(-1, 0);  // g(x) = -x
+
+            std::println("f(4) = {}", f(4));  // 9
+            std::println("g(7) = {}", g(7));  // -7
+          </code></pre>
+        </section>
+
       </section>
 
       <!----------          THE RULE OF THREE          ---------->
@@ -507,10 +562,15 @@
 
         <section>
           <h2>3.6 Bonnes pratiques</h2>
-          <h3>Où surcharger les opérateurs ?</h3>
+          <h3>Surcharger comme membres</h3>
+          <p>✅ <inline-code>operator=</inline-code> (obligatoire)</p>
+          <p>✅ <inline-code>operator[] * 2</inline-code> (obligatoire)</p>          
+          <p>✅ <inline-code>operator++</inline-code> et <inline-code>operator--</inline-code> (recommandé)</p>
+          <h3>Surcharger comme non-membres</h3>
+          <p>✅ <inline-code>operator<<</inline-code> et <inline-code>operator>></inline-code> (obligatoire)</p>
+          <p>✅ les opérateurs de comparaison (recommandé)</p>
           <br>
-          
-
+          <p><a href="https://he-arc.github.io/1242.2-Langage_CPP/posts/surcharge_des_operateurs/">📚 Surcharge des opérateurs (HE-ARC)</a></p>
         </section>
 
         <section>
@@ -521,7 +581,6 @@
         </section>
       
       </section>
-
 
     </div>
   </div>
