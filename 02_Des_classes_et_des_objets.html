@@ -1802,7 +1802,7 @@
             {
               public:
                 ...
-                <b>static int GetNbPoints() {return nbPoints;}</b>
+                <b>static int getNbPoints() {return nbPoints;}</b>
 
               private:
                 int x{0}, y{0}; // Unique to each object
@@ -1823,7 +1823,7 @@
             int main()
             {
               ...
-              std::println("Nombre de points: {}", Point::GetNbPoints());
+              std::println("Nombre de points: {}", Point::getNbPoints());
             }
           </code></pre>
         </section>
