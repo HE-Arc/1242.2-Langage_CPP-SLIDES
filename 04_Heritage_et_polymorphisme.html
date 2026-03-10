@@ -846,19 +846,16 @@
                     virtual ~Animal() = default;
                     <b>virtual</b> std::string id() const { return "animal"; }
                 };
-
                 class Cat : public Animal
                 {
                 public:
                     std::string id() const <b>override</b> { return "cat"; }
                 };
-
                 class StrayCat : public Cat
                 {
                 public:
                     std::string id() const <b>override</b> { return "stray cat"; }
                 };
-
                 class Dog : public Animal
                 {
                 public:
