@@ -117,7 +117,7 @@
         <section>
           <h2>4.1 Exemples</h2>
           <p><b>Exemple de classe de base : <inline-code><highlight>Circle</highlight></inline-code></b></p>
-          <pre style="width: 1600px;"><code 
+          <pre style="width: 1700px;"><code 
             class="c++"
             data-trim
             data-noescape
@@ -130,13 +130,13 @@
             class Circle
             {
               public:
-                Circle(double _r=0) : r(_r){}
-                double getRadius() const {return r;}
-                void setRadius(double _r) {r=_r;}
-                double surface() {return r*r*3.14;}
+                Circle(double r=0) : m_r(r){}
+                double getRadius() const {return m_r;}
+                void setRadius(double r) {m_r=r;}
+                double surface() const {return m_r*m_r*std::numbers::pi;}
 
               private:
-                double r{0};
+                double m_r{0};
             };
           </code></pre>
         </section>
@@ -160,11 +160,11 @@
             {
               public:
                 Cylinder(double=0, double=0);
-                double surface();
-                double volume();
+                double surface() const;
+                double volume() const;
 
               private:
-                double h{0};
+                double m_h{0};
             };
           </code></pre>
         </section>
@@ -176,9 +176,9 @@
             membres de la classe <inline-code>Circle</inline-code>, avec :
           </p>
           <ul>
-            <li>1 attribut supplémentaire <b><inline-code>h</inline-code></b> (hauteur du cylindre)</li>
+            <li>1 attribut supplémentaire <b><inline-code>m_h</inline-code></b> (hauteur du cylindre)</li>
             <li>1 nouvelle méthode <b><inline-code>volume()</inline-code></b></li>
-            <li>1 méthode redéfinie <b><inlinde-code>surface()</inlinde-code></b> (formule différente)</li>
+            <li>1 méthode redéfinie <b><inline-code>surface()</inline-code></b> (formule différente)</li>
           </ul>
           <p>La méthode <inline-code>surface()</inline-code> a été redéfinie (pas une surcharge)</p>
           <br>
@@ -191,7 +191,7 @@
         <section>
           <h2>4.1 Exemples</h2>
           <p><b>Implémentation de la classe <highlight>Cylinder</highlight></b></p>
-          <pre style="width: 1600px;"><code 
+          <pre style="width: 1700px;"><code 
             class="c++"
             data-trim
             data-noescape
@@ -202,25 +202,21 @@
             #include "cylinder.h"
 
             Cylinder::Cylinder(double radius, double height)
-                <b>: Circle(radius)</b>
+                <b>: Circle(radius), m_h(height)</b>
             {
-                h=height;
             }
 
-            double Cylinder::surface()
+            double Cylinder::surface() const
             {
-                double r = this->getRadius(); // Circle::r is private
-                return 2 * 3.14 * r * (r + h);
+                double r = this->getRadius(); // Circle::m_r is private
+                return 2 * std::numbers::pi * r * (r + m_h);
             }
             </code></pre>
         </section>
 
         <section>
           <h2>4.1 Remarques</h2>
-          <p>Dans la méthode <inline-code>surface()</inline-code> de <inline-code>Cylinder</inline-code>, la variable
-            locale <inline-code>r</inline-code> masque l'attribut du même nom (hérité de
-            <inline-code>Circle</inline-code>).</p>
-          <p>Comme l'attribut <inline-code>r</inline-code> a été déclaré <highlight>private</highlight> dans
+          <p>Comme l'attribut <inline-code>m_r</inline-code> a été déclaré <highlight>private</highlight> dans
             <inline-code>Circle</inline-code>, la classe <inline-code>Cylinder</inline-code> n'a pas accès à ce membre
             (bien qu'il soit présent, car hérité de <inline-code>Circle</inline-code>).</p>
           <p>Un droit d'accès supplémentaire a été introduit pour pallier ce problème : <highlight>protected</highlight>
@@ -257,7 +253,7 @@
         <section>
           <h2>4.2 Exemples</h2>
           <p><b>Nouvelle classe de base <inline-code><highlight>Circle</highlight></inline-code></b></p>
-          <pre style="width: 1600px;"><code 
+          <pre style="width: 1700px;"><code 
             class="c++"
             data-trim
             data-noescape
@@ -270,13 +266,13 @@
             class Circle
             {
               public:
-                Circle(double _r=0) : r(_r){}
-                double getRadius() const {return r;}
-                void setRadius(double _r) {r=_r;}
-                double surface() {return r*r*3.14;}
+                Circle(double r=0) : m_r(r){}
+                double getRadius() const {return m_r;}
+                void setRadius(double r) {m_r = r;}
+                double surface() const {return m_r*m_r*std::numbers::pi;}
 
               <b>protected:</b>
-                double r{0};
+                double m_r{0};
             };
           </code></pre>
         </section>
@@ -284,7 +280,7 @@
         <section>
           <h2>4.2 Exemples</h2>
           <p><b>Nouvelle implémentation de la classe <inline-code><highlight>Cylinder</highlight></inline-code></b></p>
-          <pre style="width: 1600px;"><code 
+          <pre style="width: 1700px;"><code 
             class="c++"
             data-trim
             data-noescape
@@ -295,14 +291,14 @@
             #include "cylinder.h"
 
             Cylinder::Cylinder(double radius, double height)
-                <b>: Circle(radius)</b>
+                <b>: Circle(radius), m_h(height)</b>
             {
-                h=height;
             }
 
-            double Cylinder::surface()
+            double Cylinder::surface() const
             {
-                <b>return 2 * 3.14 * r * (r + h);</b> // r is now accessible
+              // m_r is now accessible
+              <b>return 2 * std::numbers::pi * m_r * (m_r + m_h);</b> 
             }
             </code></pre>
         </section>
@@ -470,9 +466,9 @@
             // Cylinder.cpp
             #include "cylinder.h"
 
-            Cylinder::Cylinder(double _r, double _h) <highlight>: Circle(_r)</highlight>
+            Cylinder::Cylinder(double r, double h) <highlight>: Circle(r)</highlight>
             {
-              this->h = _h;
+              m_h = h;
             }
           </code></pre>
           <p>Appel <error>implicite</error> des constructeurs de base</p>
@@ -486,11 +482,10 @@
             // Cylinder.cpp
             #include "cylinder.h"
 
-            Cylinder::Cylinder(double _r, double _h) // Call to Circle()
-            {
-              
-              this->r = _r; // ⛔ r is private in Circle 
-              this->h = _h;
+            Cylinder::Cylinder(double r, double h) // Call to Circle()
+            {              
+              m_r = r; // ⛔ r is private in Circle 
+              m_h = h;
             }
           </code></pre>
         </section>
@@ -553,7 +548,7 @@
                   Base(const Base&) = default;
                   Base &operator=(const Base&) = default;
                 private:
-                  int b{0};
+                  int m_b{0};
                 };
                 
                 class Derived : public Base
@@ -563,7 +558,7 @@
                   Derived(const Derived&) = default;
                   Derived &operator=(const Derived&) = default;
                 private:
-                  int d{0};
+                  int m_d{0};
                 };
                 </code></pre>
             </div>
@@ -735,67 +730,63 @@
 
         <section>
           <h2>4.6 Exemple introductif</h2>
-          <div class="container">
-            <div class="col-left">
-              <pre style="width: 800px;"><code 
+              <pre style="width: 1200px;"><code 
                 class="c++"
                 data-trim
                 data-noescape
-                style="font-size: 1.5em;"
+                style="font-size: 1.4em;"
                 data-line-numbers="">
-
                 class Animal
                 {
                 public:
-                  void MakeSound() const
-                  {
-                    std::cout << "..." << std::endl;
-                  }
-                };                
+                    virtual ~Animal() = default;
+                    std::string id() const { return "animal"; }
+                };
+
                 class Cat : public Animal
                 {
                 public:
-                  void MakeSound() const
-                  {
-                    std::cout << "meow" << std::endl;
-                  }
-                };                
+                    std::string id() const { return "cat"; }
+                };
+
+                class StrayCat : public Cat
+                {
+                public:
+                    std::string id() const { return "stray cat"; }
+                };
+
                 class Dog : public Animal
                 {
                 public:
-                  void MakeSound() const
-                  {
-                    std::cout << "woof" << std::endl;
-                  }
-                };</code></pre>
-            </div>
-            <div class="col-right">
-              <pre style="width: 1000px;"><code 
+                    std::string id() const { return "dog"; }
+                };
+              </code></pre>
+        </section>
+        
+        <section>
+          <h2>4.6 Exemple introductif</h2>
+              <pre style="width: 1800px;"><code 
                 class="c++"
                 data-trim
                 data-noescape
-                style="font-size: 1.5em;"
+                style="font-size: 1.7em;"
                 data-line-numbers="">
 
                 int main()
                 {
-                  auto animal = new Animal;
-                  auto cat = new Cat;
-                  auto dog = new Dog;
-                
-                  std::vector&#60;Animal *&#62; animals = {animal, cat, dog};
-                
-                  for (const auto &animal : animals)
+                  ...
+
+                  std::vector&#60;Animal*&#62; pA = { new Animal, new Dog, new Cat, new StrayCat };
+                  for (auto p : pA)
                   {
-                    animal-><b>MakeSound();</b>
+                      std::println("{}", p->id());
                   }
                 
                   return 0;
                 }
             </code></pre>
+            <br>
               <p><b>Quelle est la sortie de ce programme ?</b></p>
-            </div>
-          </div>
         </section>
 
         <section>
@@ -808,12 +799,13 @@
             style="font-size: 1.6em;"
             data-line-numbers="">
 
-            ...
-            ...
-            ...
+            animal
+            animal
+            animal
+            animal
           </code></pre>
           <p>Le type statique est <inline-code>Animal *</inline-code> donc on appelle la méthode
-            <inline-code>Animal::MakeSound()</inline-code> 3 fois de suite</p>
+            <inline-code>Animal::id()</inline-code> 4 fois de suite</p>
           <p>Le <highlight>polymorphisme</highlight> permet de résoudre ce problème et d'accéder automatiquement aux
             méthodes des classes dérivées en utilisant le type dynamique</p>
         </section>
@@ -841,9 +833,7 @@
 
         <section>
           <h2>4.6 Polymorphisme</h2>
-          <div class="container">
-            <div class="col-left">
-              <pre style="width: 900px;"><code 
+              <pre style="width: 1600px;"><code 
                 class="c++"
                 data-trim
                 data-noescape
@@ -853,48 +843,27 @@
                 class Animal
                 {
                 public:
-                  <b>virtual ~Animal() = default;</b>
-                  <b>virtual</b> void MakeSound() const {...}
+                    virtual ~Animal() = default;
+                    <b>virtual</b> std::string id() const { return "animal"; }
                 };
-                
+
                 class Cat : public Animal
                 {
                 public:
-                  <b>virtual ~Cat() = default;</b>
-                  void MakeSound() const <b>override</b> {...}
+                    std::string id() const <b>override</b> { return "cat"; }
                 };
-                
+
+                class StrayCat : public Cat
+                {
+                public:
+                    std::string id() const <b>override</b> { return "stray cat"; }
+                };
+
                 class Dog : public Animal
                 {
                 public:
-                  <b>virtual ~Dog() = default;</b>
-                  void MakeSound() const <b>override</b> {...}
+                    std::string id() const <b>override</b> { return "dog"; }
                 };</code></pre>
-            </div>
-            <div class="col-right">
-              <pre style="width: 1000px;"><code 
-                class="c++"
-                data-trim
-                data-noescape
-                style="font-size: 1.5em;"
-                data-line-numbers="">
-
-                int main()
-                {
-                  auto animal = new Animal;
-                  auto cat = new Cat;
-                  auto dog = new Dog;
-                
-                  std::vector&#60;Animal *&#62; animals = {animal, cat, dog};
-                
-                  for (const auto &animal : animals)
-                  {
-                    animal-><b>MakeSound();</b>
-                  }
-                
-                  return 0;
-                }
-            </code></pre>
               <p><b>Le programme principal (<inline-code>int main(){...}</inline-code> reste le même</b></p>
             </div>
           </div>
@@ -910,9 +879,10 @@
             style="font-size: 1.6em;"
             data-line-numbers="">
 
-            ...
-            meow
-            woof
+            animal
+            dog
+            cat
+            straycat
           </code></pre>
           <p>Le polymorphisme est un point essentiel de la POO (avec l'abstraction de données et l'héritage)</p>
           <p>Il permet d'appeler la méthode d'un objet sans se soucier de son type statique, et qu'elle s'adapte au type
