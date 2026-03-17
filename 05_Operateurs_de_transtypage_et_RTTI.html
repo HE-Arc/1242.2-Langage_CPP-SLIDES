@@ -21,7 +21,7 @@
 <body>
   <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
   <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
-  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+  <p id="course-infos">1242.2 Langage C++ - 2025-2026</p>
 
   <div class="reveal">
     <div class="slides">
@@ -94,15 +94,15 @@
             style="font-size: 2em;"
             data-line-numbers="">
             int i = 100;
-            char c = static_cast&#60;char&#62;(i); // int -> char
+            auto c = static_cast&#60;char&#62;(i); // int -> char
               
-              float f = 100.0f;
-              i = static_cast&#60;int&#62;(f); // float -> int
-                
-              class Base{};
-              class Deri : public Base{};
-              Der  *d = new Deri;
-              Base *b = static_cast&#60;Base*&#62;(d); // Deri* -> Base*
+            auto f = 100.0f;
+            i = static_cast&#60;int&#62;(f); // float -> int
+              
+            class Base{};
+            class Deri : public Base{};
+            auto d = new Deri;
+            auto b = static_cast&#60;Base*&#62;(d); // Deri* -> Base*
           </code></pre>
           <br>
           <p><success>✅ évite les warning des conversions implicites</success></p>
@@ -144,10 +144,13 @@
             data-noescape
             style="font-size: 2em;"
             data-line-numbers="">
-            float *pf=&f;
-            double *pd=&d;
+            
+            auto f = 99.0f;
+            auto pf = &f;
+            auto d = 99.0;
+            auto pd = &d;
             pd = static_cast&#60;double*&#62; (pf); // ⛔ error
-            pd = reinterpret_cas&#60;double*&#62;v(pf); // ✅ ok
+            pd = reinterpret_cast&#60;double*&#62;(pf); // ✅ ok
           </code></pre>
           <br>
           <p><success>✅ <inline-code>reinterpret_cast</inline-code> sert aux conversions* entre types de familles différentes (p.ex. entier vers pointeur)</success></p>
@@ -158,21 +161,22 @@
         <section>
           <h2>5.3 <inline-code>reinterpret_cast</inline-code></h2>
 
-          <pre style="width: 1600px;"><code 
+          <pre style="width: 1700px;"><code 
             class="c++"
             data-trim
             data-noescape
             style="font-size: 2em;"
             data-line-numbers="">
-            int i;
-            char *ptr = reinterpret_cast&#60;char*&#62;(i); // int -> char*
-            char &ref = reinterpret_cast&#60;char&&#62;(i); // int -> char&
-            float *pf = reinterpret_cast&#60;float*&#62;(pd); // double* -> float*
+            
+            int i = 99;
+            auto ptr = reinterpret_cast&#60;char*&#62;(i); // int -> char*
+            auto ref = reinterpret_cast&#60;char&&#62;(i); // int -> char&
+            auto pf = reinterpret_cast&#60;float*&#62;(pd); // double* -> float*
           </code></pre>
           <br>
           <p><error>⛔ <inline-code>reinterpret_cast</inline-code> est peu portable. Son usage est peu recommandé !</error></p>
           <br>
-          <p>Utile pour scanner de la mémoire (scanner un range de int avec reinterpret_cast&#60;char*&#62;(adr) pour voir byte par byte le codage, faire un désassembleur, déc)</p>
+          <p>Utile pour scanner de la mémoire (scanner un range de <inline-code>int</inline-code> avec <inline-code>reinterpret_cast&#60;char*&#62;(adr)</inline-code> pour voir byte par byte le codage, faire un désassembleur, etc.)</p>
         </section>
 
       </section>
@@ -192,11 +196,11 @@
             data-line-numbers="">
             class A{};
             const A *cptr;
-            A *ptr = const_cast&#60;A*&#62;(cptr); // const A* -> A*
+            auto ptr = const_cast&#60;A*&#62;(cptr); // const A* -> A*
             
             A a;
             const A &cref = a;
-            A &ref = const_cast&#60;A&&#62;(cref); // const A& -> A&
+            auto ref = const_cast&#60;A&&#62;(cref); // const A& -> A&
             </code></pre>
           <p>Opérateur peu utile, car :</p>
           <p>- la conversion non-const ⇒ const est implicite</p>
@@ -249,22 +253,25 @@
             data-line-numbers="">
             Product *products[100];
             
-            for (int i = 0; i < 100; i++)
+            for (auto i = 0; i < 100; ++i)
             {
-              Liquor *ptrLiquor = dynamic_cast&#60;Liquor*&#62;(products[i]);
+              auto ptrLiquor = dynamic_cast&#60;Liquor*&#62;(products[i]);
                 
-              if (nullptr != ptrLiquor)
-                cout << ptrLiquor->degree() << endl;
-              
+              if (ptrLiquor != nullptr)
+              {
+                std::println("{}", ptrLiquor->degree());
+              }              
               else
-                cout << products[i]->name();
+              {
+                std::println("{}", products[i]->name());
+              }
             }
           </code></pre>
         </section>
 
         <section>
           <h2>5.5 <inline-code>dynamic_cast</inline-code> - Commentaires</h2>
-          <p><inline-code>dynamic_cast</inline-code> identifie à l'exécution le type réel de l'expression reçue par RTTI -RunTime Type Information-</p>
+          <p><inline-code>dynamic_cast</inline-code> identifie à l'exécution le type réel de l'expression reçue par RTTI (RunTime Type Information)</p>
           <br>
           <p><inline-code>dynamic_cast</inline-code> peut facilement être utilisé à tort, signe d'une mauvaise conception :</p>
           <p>- La fonction que l'on écrit ne travaille en fait pas sur la classe de base, mais seulement sur certaines classes dérivées bien identifiées</p>
@@ -280,13 +287,13 @@
 
         <section>
           <h2>5.6 RTTI</h2>
-          <p><inline-code>RTTI</inline-code> - RunTime Type Information</p>
+          <p><inline-code>RTTI</inline-code> : RunTime Type Information</p>
           <p>Permet de déterminer le type d'une variable à l'exécution (runtime)</p>
           <p>Le mécanisme RTTI contient :</p>
           <p>- Le mot-clé de conversion <inline-code>dynamic_cast</inline-code></p>
           <p>- L'opérateur <inline-code>typeid</inline-code> de la classe <inline-code>type_info</inline-code></p>
           <br>
-          <p><warning>⚠️ Note :</warning> avec certains compilateurs, le support RTTI est une option à activer</p>
+          <p><warning>⚠️ Note :</warning> certains compilateurs embarqués désactivent le RTTI par défaut pour économiser la mémoire flash.</p>
         </section>
 
         <section>
@@ -338,11 +345,11 @@
 
       <section>
         <h2>5.6 Opérateur typeid vs dynamic_cast</h2>
-        <p><inline-code>typeid</inline-code> est utilisé pour vérifier le type d'un objet à l'exécution</p>
-        <p><inline-code>dynamic_cast</inline-code> est utilisé pour convertir un pointeur ou une référence d'une classe de base en une classe dérivée</p>
+        <p><inline-code>typeid</inline-code> → vérifie le type <b>exact</b> d'un objet à l'exécution</p>
+        <p><inline-code>dynamic_cast</inline-code> → vérifie si un objet est compatible avec un type cible ("IS-A")</p>
         <br>
-        <p><inline-code>typeid</inline-code> est plus rapide que <inline-code>dynamic_cast</inline-code></p>
-        <p><inline-code>dynamic_cast</inline-code> est plus sûr que <inline-code>typeid</inline-code></p>
+        <p><inline-code>typeid</inline-code> est plus rapide</p>
+        <p><inline-code>dynamic_cast</inline-code> est plus sûr</p>
 
         <pre style="width: 1600px;"><code 
           class="c++"
@@ -350,12 +357,9 @@
           data-noescape
           style="font-size: 2em;"
           data-line-numbers="">
-          if (typeid(*ptr) == typeid(Chien)) {
-            Chien *c = dynamic_cast&#60;Chien*&#62;(ptr);
-            if (c) {
-              // ptr est un Chien
-            }
-          }
+          if (typeid(*ptr) == typeid(Chien)) {...}
+          
+          if (auto c = dynamic_cast&#60;Chien*&#62;(ptr)) {...}
       </section>
 
     </div>
