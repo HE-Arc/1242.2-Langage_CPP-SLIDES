@@ -327,16 +327,17 @@
           style="font-size: 2em;"
           data-line-numbers="">
           class Animal { public: virtual ~Animal(){}};
-          class Mammifere : public Animal {};
-          class Chien : public Mammifere {};
-          class Caniche : public Chien {};
+          class Mammal : public Animal {};
+          class Dog : public Mammal {};
+          class Poodle : public Dog {};
           
-          int main() {
-            Animal *ptr = new Caniche;
+          int main()
+          {
+            Animal *ptr = new Poodle;
             typeid(ptr).name(); // ⇒ P6Animal
-            typeid(*ptr).name(); // ⇒ 7Caniche
-            typeid(*ptr) == typeid(Chien); // ⇒ Faux
-            typeid(*ptr) == typeid(Caniche); // ⇒ Vrai
+            typeid(*ptr).name(); // ⇒ 7Poodle
+            typeid(*ptr) == typeid(Dog); // ⇒ false
+            typeid(*ptr) == typeid(Poodle); // ⇒ true
 
             return 0;
           }
@@ -357,9 +358,10 @@
           data-noescape
           style="font-size: 2em;"
           data-line-numbers="">
-          if (typeid(*ptr) == typeid(Chien)) {...}
+          if (typeid(*ptr) == typeid(Dog)) {...}
           
-          if (auto c = dynamic_cast&#60;Chien*&#62;(ptr)) {...}
+          if (auto c = dynamic_cast&#60;Dog*&#62;(ptr)) {...}
+        </code></pre>
       </section>
 
     </div>
