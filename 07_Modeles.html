@@ -21,7 +21,7 @@
 <body>
   <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
   <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
-  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+  <p id="course-infos">1242.2 Langage C++ - 2025-2026</p>
 
   <div class="reveal">
     <div class="slides">
@@ -73,7 +73,7 @@
           <h2>7.1 Introduction</h2>
           <p>Un modèle est un code qui est indépendant du type de données</p>
           <p>Il prend un ou plusieurs types en paramètres</p>
-          <p>⇒  Code générique (généricité)</p>
+          <p>⇒  Code générique</p>
           <br>
           <h3>Définition</h3>
           <pre style="width: 1600px;"><code 
@@ -100,7 +100,7 @@
           <h2>7.1 Introduction</h2>
           <p>Un modèle est un code qui est indépendant du type de données</p>
           <p>Il prend un ou plusieurs types en paramètres</p>
-          <p>⇒  Code générique (généricité)</p>
+          <p>⇒  Code générique</p>
           <br>
           <h3>Utilisation (instanciations)</h3>
           <pre style="width: 1600px;"><code 
@@ -109,9 +109,9 @@
             data-noescape
             style="font-size: 2em;"
             data-line-numbers="">
-            CList&#60;int&#62; lstInt(3); // Instantiation with int
-            CList&#60;Figure&#62; lstFigure(5); // Instantiation with Figure
-            CList&#60;Figure*&#62; lstPtrFigure(7); // Instantiation with Figure*
+            CList&#60;int&#62; lint(3); // Instantiation with int
+            CList&#60;Figure&#62; lfig(5); // Instantiation with Figure
+            CList&#60;Figure*&#62; lpfig(7); // Instantiation with Figure*
           </code></pre>
         </section>
 
@@ -205,7 +205,7 @@
           <h3>Commentaires</h3>
           <p>Le type de retour peut être un type générique</p>
           <p>Les opérateurs utilisés dans le modèle de fonction doivent être définis par les classes (types) utilisées</p>
-          <p>Le modèle de fonction est instancié par le compilateur, en fonction des appels</p>
+          <p>Le modèle de fonction est instancié <highlight>à la compilation</highlight>, en fonction des appels</p>
           <p>Le compilateur cherche une correspondance absolue des types : il ne réalise pas de conversions implicites</p>
         </section>
 
@@ -229,18 +229,18 @@
             template&#60;typename T&#62;
             void f(int)
             {
-              cout << "Non template" << endl;
-            }            
+              std::println("Non template");
+            }
             template&#60;typename T&#62;
             void f(T)
             {
-              cout << "Template" << endl;
-            }                        
+              std::println("Template");
+            }
             template&#60;&#62; // Total specialization
             void f&#60;int&#62;(int)
             {
-              cout << "Spécialisation f&#60;int&#62;" << endl;
-            }            
+              std::println("Specialization f&#60;int&#62;");
+            }
             int main()
             {
               f(1); // Prints "Non template"
@@ -358,7 +358,7 @@
                 template&#60;typename T&#62;
                 void Point&#60;T&#62;::show()
                 {
-                  cout << x << " " << y << endl;
+                  std::println("{} {}", x, y);
                 }
               </code></pre>    
             </div>
@@ -369,17 +369,14 @@
                 data-noescape
                 style="font-size: 1.6em;"
                 data-line-numbers="">
-                #include &#60;iostream&#62;
                 #include "Point.h"
-                
-                using namespace std;
-                
+
                 int main()
-                {                  
+                {
                   Point&#60;int&#62; ptInt(3,5);
                   // "3 5"
                   ptInt.show();
-                  
+
                   Point&#60;char&#62; ptChar('d','y');
                   // "d y"
                   ptChar.show();
@@ -408,9 +405,9 @@
                   template&#60;&#62;
                   void Point&#60;char&#62;::show()
                   {
-                    cout << (int)x << " "
-                         << (int)y << endl;
-                  }            
+                    std::println("{} {}", static_cast&#60;int&#62;(x),
+                                         static_cast&#60;int&#62;(y));
+                  }
     
                   ...
                 </code></pre>
@@ -422,21 +419,18 @@
                   data-noescape
                   style="font-size: 1.6em;"
                   data-line-numbers="">
-                  #include &#60;iostream&#62;
                   #include "Point.h"
-                  
-                  using namespace std;
-                  
+
                   int main()
-                  {                  
+                  {
                     Point&#60;int&#62; ptInt(3,5);
                     // "3 5"
                     ptInt.show();
-                    
+
                     Point&#60;char&#62; ptChar('d','y');
                     // "100 121"
                     ptChar.show();
-  
+
                     Point&#60;double&#62; ptDbl(3.5,2.3);
                     // "3.5 2.3"
                     ptDbl.show();
@@ -487,10 +481,10 @@
                 style="font-size: 2em;"
                 data-line-numbers="">
                 template&#60;typename T, int taille&#62;
-                class CustomArray
+                class Array
                 {
                   public:
-                    CustomArray() {};
+                    Array() {};
                     T getAt(int pos) const ;
                     void setAt(int pos, T val);
                     int getSize() const {return taille;}
@@ -510,7 +504,7 @@
                 style="font-size: 2em;"
                 data-line-numbers="">
                 template&#60;typename T, int taille&#62;
-                T CustomArray&#60;T,taille&#62;::getAt(int pos) const
+                T Array&#60;T,taille&#62;::getAt(int pos) const
                 {
                   if (pos >= 0 && pos < taille)
                     return tab[pos];
@@ -518,7 +512,7 @@
                 }
                 
                 template&#60;typename T, int taille&#62;
-                void CustomArray&#60;T,taille&#62;::setAt(int pos, T val)
+                void Array&#60;T,taille&#62;::setAt(int pos, T val)
                 {
                   if (pos >= 0 && pos < taille) tab[pos]=val;
                 }
@@ -533,23 +527,24 @@
                 data-noescape
                 style="font-size: 1.8em;"
                 data-line-numbers="">
-                #include "CustomArray.h"
+                #include &#60;print&#62;
+                #include "Array.h"
                 int main()
                 {
-                  CustomArray&#60;double, 5> t1;
-                  typedef CustomArray&#60;int, 7> tabIntTy;
+                  Array&#60;double, 5> t1;
+                  using tabIntTy = Array&#60;int, 7&#62;;
                   tabIntTy t2;
-                  
-                  for (int i =- 1; i <= t1.getSize(); i++)
+
+                  for (int i = -1; i <= t1.getSize(); i++)
                   {
                     t1.setAt(i, i/2.);
-                    cout << t1.getAt(i) << "\t";
+                    std::print("{}\t", t1.getAt(i));
                   }
-                  
-                  for (int i =- 1; i <= t2.getSize(); i++)
+
+                  for (int i = -1; i <= t2.getSize(); i++)
                   {
                     t2.setAt(i, i/2);
-                    cout << t2.getAt(i) << "\t";
+                    std::print("{}\t", t2.getAt(i));
                   }
                   
                   return 0;
