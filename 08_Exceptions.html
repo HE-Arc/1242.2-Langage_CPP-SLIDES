@@ -62,48 +62,39 @@
                 data-trim
                 data-noescape
                 style="font-size: 1.8em;"
-                data-line-numbers="2, 9, 10, 11">
-                // Computes f(x) = 1/x^2
-                #define ERROR -1
-                int main()
-                {
-                  int x = 0;
-                  double result = ERROR;
-                  cin >> x;
-                  result = f(x);
-                  if (ERROR == result)
-                    cout << "erreur";
-                  else 
-                    cout << result;
+                data-line-numbers="3, 7-8">
+                // f(x) = x^2, for x > 0
+                // Else, returns an error code
+                #define ERROR_CODE -1
 
-                  return 0;
+                int f(int x)
+                {
+                  if (x <= 0)
+                    return ERROR_CODE;
+                    
+                    return x*x;
                 }
               </code></pre>
             </div>
             <div class="col-right">
-              <pre style="width: 800;"><code
+              <pre style="width: 1200;"><code
                 class="c++"
                 data-trim
                 data-noescape
                 style="font-size: 1.8em;"
-                data-line-numbers="4-8, 13, 14, 16, 17">
-                double f(int x)
+                data-line-numbers="7-10">
+                int main()
                 {
-                 double res = ERROR;
-                 if (false == inv(x, res)) {
-                   cout << "inversion error";
-                   return ERROR;
-                 }
-                 else 
-                   return res*res; // (1/x)^2
-                }
-                bool inv(int n, double &res)
-                {
-                  if (n==0) return false;
-                  else {
-                    res = 1.0 / n;
-                    return true;
-                  }
+                  int x = 0;
+                  int result = ERROR_CODE;
+                  cin >> x;
+                  result = f(x);
+                  if (result == ERROR_CODE)
+                    std::println("Error");
+                  else 
+                    std::println(result);
+
+                  return 0;
                 }
               </code></pre>
             </div>
@@ -128,46 +119,47 @@
                 data-trim
                 data-noescape
                 style="font-size: 1.8em;"
-                data-line-numbers="8, 10, 11-13">
-                // Computes f(x) = 1/x^2
-
-                int main()
-                {
-                  int x = 0;
-                  double result = -1;
-                  cin >> x;
-                  try {
-                    result = f(x);
-                  }
-                  catch (...) {
-                    cout << "erreur";
-                  }
-                  
-                  cout << result;
-                }
-              </code></pre>
-            </div>
-            <div class="col-right">
-              <pre style="width: 800;"><code
-                class="c++"
-                data-trim
-                data-noescape
-                style="font-size: 1.8em;"
                 data-line-numbers="8">
-                double f(int x)
+                // f(x) = x^2, for x > 0
+                // Else, throws an exception
+                #define ERROR_CODE -1
+
+                int f(int x)
                 {
-                 double res = inv(x);
-                 return res*res;
-                }
-                double inv(int x)
-                {
-                  if (x==0) throw(0);
-                  
-                  return 1./x;
+                  if (x <= 0)
+                    throw ERROR_CODE;
+                    
+                    return x*x;
                 }
               </code></pre>
               <p><inline-code><highlight>throw</highlight></inline-code> : lance une exception</p>
               <p><inline-code><highlight>catch</highlight></inline-code> : récupère une exception</p>
+            </div>
+            <div class="col-right">
+              <pre style="width: 1000;"><code
+                class="c++"
+                data-trim
+                data-noescape
+                style="font-size: 1.7em;"
+                data-line-numbers="6-13">
+
+                int main()
+                {
+                  int x = 0;
+                  int result = -1;
+                  cin >> x;
+                  try
+                  {
+                    result = f(x);
+                  }
+                  catch (...)
+                  {
+                    std::println("Error caught");
+                  }
+
+                  std::println(result);
+                }
+              </code></pre>
             </div>
           </div>          
         </section>
@@ -183,12 +175,11 @@
           <p><highlight>Exception</highlight> : signal logiciel, accompagné de données (int, string, ..., objet).
             Une exception est souvent un objet de la classe <inline-code><highlight>std::exception</highlight></inline-code> ou d'une classe dérivée</p>
           <p>Lorsqu'une exception est lancée (avec <inline-code><highlight>throw</highlight></inline-code>), le traitement en cours est <highlight>interrompu</highlight></p>
-          <p>L'exception remonte les fonctions appelantes jusqu'à être récupérée (avec <inline-code><highlight>catch</highlight></inline-code>)</p>
-          <p>Si elle n'est pas récupérée, alors le programme se termine</p>
+          <p>L'exception remonte les fonctions appelantes jusqu'à être attrapée (avec <inline-code><highlight>catch</highlight></inline-code>)</p>
+          <p>Si elle n'est pas attrapée, alors le programme se termine</p>
           <br>
-          <h3>Remarques</h3>
+          <h3>Avantages</h3>
           <p>Les exceptions permettent de séparer le traitement d'erreur du reste du code</p>
-          <p>Une exception n'est pas forcément une erreur (fonctionnement non prévu)</p>
         </section>
 
         <section>
@@ -217,15 +208,15 @@
               <b>try</b>
               {
                 if (diviseur == 0) <b>throw diviseur;</b>
-                cout << "Q:" << dividende/diviseur << endl;
+                std::println("Q: {}", dividende/diviseur);
               }
-              <b>catch (int &d)</b> // Exception handler for int              
+              <b>catch (int &d)</b> // Exception handler for int
               { 
-                cout << "Division par " << d << endl; 
+                std::println("Division par {}", d); 
               }
               <b>catch (...)</b> // Exception handler for all other types
               { 
-                cout << "Autre erreur" << endl; 
+                std::println("Another error"); 
               }
 
               return 0;
@@ -301,26 +292,26 @@
             data-line-numbers="">
 
             try {
-              ...
+              // Instructions
             }
             catch (int except1) { // Handle int exceptions
-              ...
+              // Instructions
             }
             catch (std::string except2) { // Handle string exceptions
-              ...
+              // Instructions
             }
             catch (std::exception &except3) { // Handle std::exception exceptions
-              ...
+              // Instructions
             }
             catch (...) { // Handle all other exceptions
-              ...
+              // Instructions
             }            
             </code></pre>
         </section>
 
         <section>
           <h2>8.3 Le mot-clef <span style="text-transform: lowercase;"><inline-code><highlight>throw</highlight></inline-code></span></h2>
-          <p><inline-code>throw</inline-code> peut envoyer des messages de n'importe quel type, y compris des objets</p>
+          <p><inline-code><highlight>throw</highlight></inline-code> peut envoyer des messages de n'importe quel type, y compris des objets</p>
           <pre style="width: 1400px;"><code 
             class="c++"
             data-trim
@@ -328,28 +319,29 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
+            // NOTE: no need for breaks here
             try { 
               switch(i) {
-                case 1: throw 2;          break;
-                case 2: throw "Erreur";   break;
-                case 3: throw objet;      break;
+                case 1: throw 2;
+                case 2: throw "Error!";
+                case 3: throw objet;
               }
             }
             catch(int x) {
-              cout << x;
+              std::println("Integer exception: {}", x);
             }
             catch(const char* str) {
-              cout << str;
+              std::println("String exception: {}", str);
             }
             catch(Classe &obj) {
-              cout << obj->afficher();
+              std::println("Object exception: {}", obj->print());
             }
           </code></pre>
         </section>
 
         <section>
           <h2>8.3 Gestionnaires d'exceptions</h2>
-          <p>Lorsqu'une exception de type T est levée, le compilateur cherche un gestionnaire :</p>
+          <p>Lorsqu'une exception de type <inline-code>T</inline-code> est levée, le compilateur cherche un gestionnaire :</p>
           <p>1. de type <inline-code><highlight>T</highlight></inline-code></p>
           <p>2. de superclasse de <inline-code><highlight>T</highlight></inline-code></p>
           <p>3. pointeur sur une classe dérivée</p>
@@ -383,7 +375,7 @@
           <p>Il faut utiliser l'instruction <inline-code><highlight>throw</highlight></inline-code> sans argument</p>
           <div class="container">
             <div class="col-left">
-              <pre style="width: 700px;"><code 
+              <pre style="width: 900px;"><code 
                 class="c++"
                 data-trim
                 data-noescape
@@ -396,7 +388,7 @@
                     throw n;
                   }
                   catch(int) {
-                    cout<<"foo \n";
+                    std::println("Caught in foo");
                     throw;
                   }
                 }
@@ -404,7 +396,7 @@
             </pre>
           </div>
           <div class="col-right">
-              <pre style="width: 700px;"><code 
+              <pre style="width: 900px;"><code 
                 class="c++"
                 data-trim
                 data-noescape
@@ -416,7 +408,7 @@
                     foo();
                   }
                   catch(int) {
-                    cout <<"main\n";
+                    std::println("Caught in main");
                     exit(-1);
                   }
                   
@@ -455,6 +447,8 @@
             // Might throw an exception if foo() may throw too
             void f4() noexcept(noexcept(foo())) { ... }
           </code></pre>
+
+          <inline-code><highlight>noexcept</highlight></inline-code> est un contrat : si une exception est levée, la fonction <inline-code><highlight>std::terminate()</highlight></inline-code> est appelée</p>
         </section>
 
       </section>
@@ -467,12 +461,13 @@
           <p>La bibliothèque standard définit des classes exceptions</p>
           <p>Leur superclasse commune est <inline-code><highlight>std::exception</highlight></inline-code></p>
           <p>Elle est définie dans le fichier d'en-tête <inline-code><highlight>stdexcept</highlight></inline-code></p>
-          <p>Elle comporte une méthode <inline-code>what()</inline-code> retournant une chaîne de caractères</p>
-          <p>Les exceptions personnalisées hériteront donc de <inline-code>exception</inline-code> et la méthode <inline-code>what()  </inline-code>what() sera redéfinie.</p>
+          <p>Elle comporte une méthode <inline-code><highlight>what()</highlight></inline-code> retournant une chaîne de caractères</p>
+          <p>Les exceptions personnalisées hériteront donc de <inline-code><highlight>std::exception</highlight></inline-code> et la méthode <inline-code><highlight>what()</highlight></inline-code> sera redéfinie.</p>
           <p>Double intérêt :</p>
           <p>1. Transmettre des informations (attributs, what())</p>
           <p>2. catch (const exception &e) plutôt que catch(...)</p>
-          <p>Les exceptions sont lancées par valeur et attrapées par référence</p>
+
+          <p><success>✅ Bonne pratique :</success> lancer les exceptions par valeur, et les attraper par référence</p>
           <p><a href="https://en.cppreference.com/w/cpp/error/exception">📚 Exceptions (cppreference)</a></p>
         </section>
 
@@ -518,19 +513,19 @@
 
             int main()
             {
-              try {  
-                cout << "bloc try 1" << endl;
+              try {
+                std::println("block try 1");
                 throw Exception1();
               }
-              catch(const Exception1 & e) { 
-                cout << e.what() << endl;
+              catch(const Exception1 & e) {
+                std::println("Caught Exception1: {}", e.what()); 
               }
               try { 
-                cout << "bloc try 2" << endl;
+                std::println("block try 2");
                 throw Exception2();
               }
               catch (const exception & e) {
-                cout << e.what() << endl;
+                std::println("Caught exception: {}", e.what());
               }
               return 0;
             }
