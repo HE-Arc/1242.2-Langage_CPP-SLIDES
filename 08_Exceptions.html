@@ -87,7 +87,7 @@
                 {
                   int x = 0;
                   int result = ERROR_CODE;
-                  cin >> x;
+                  std::cin >> x;
                   result = f(x);
                   if (result == ERROR_CODE)
                     std::println("Error");
@@ -104,9 +104,9 @@
         <section>
           <h2>8.1 Gestion des erreurs en C++</h2>
           <h3>Inconvénients</h3>
-          <p>Code de gestion d'erreurs mélanger au "vrai" code</p>
+          <p>Code de gestion d'erreurs mélangé au "vrai" code</p>
           <p>L'appelant doit savoir ce que signifient les codes d'erreurs retournés</p>
-          <p>Retouner une valeur et un code d'erreur en même temps</p>
+          <p>Retourner une valeur et un code d'erreur en même temps</p>
         </section>
       
         <section>
@@ -147,7 +147,7 @@
                 {
                   int x = 0;
                   int result = -1;
-                  cin >> x;
+                  std::cin >> x;
                   try
                   {
                     result = f(x);
@@ -157,7 +157,7 @@
                     std::println("Error caught");
                   }
 
-                  std::println(result);
+                  std::println("result: {}", result);
                 }
               </code></pre>
             </div>
@@ -334,7 +334,7 @@
               std::println("String exception: {}", str);
             }
             catch(Classe &obj) {
-              std::println("Object exception: {}", obj->print());
+              std::println("Object exception: {}", obj.print());
             }
           </code></pre>
         </section>
@@ -409,7 +409,7 @@
                   }
                   catch(int) {
                     std::println("Caught in main");
-                    exit(-1);
+                    // Now continue and end the program
                   }
                   
                   return 0;
@@ -480,11 +480,10 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
-            #include &#60;iostream&#62;
+            #include &#60;print&#62;
             #include &#60;stdexcept&#62; // or #include &#60;exception&#62;
-            using namespace std;
             
-            class Exception1 : public exception {
+            class Exception1 : public std::exception {
               public:
               Exception1() noexcept {}
               const char* what() const noexcept override {
@@ -492,7 +491,7 @@
               }
             };
               
-            class Exception2 : public exception {
+            class Exception2 : public std::exception {
               public:
               Exception2() noexcept {}
               const char* what() const noexcept override {
@@ -524,7 +523,7 @@
                 std::println("block try 2");
                 throw Exception2();
               }
-              catch (const exception & e) {
+              catch (const std::exception & e) {
                 std::println("Caught exception: {}", e.what());
               }
               return 0;
