@@ -21,7 +21,7 @@
 <body>
   <img id="logo-hearc" src="./medias/logo_he-arc.png" alt="Logo HE-ARC">
   <img id="logo-hesso" src="./medias/logo_hes-so.png" alt="Logo HES-SO">
-  <p id="course-infos">1242.2 Langage C++ - 2024-2025</p>
+  <p id="course-infos">1242.2 Langage C++ - 2025-2026</p>
 
   <div class="reveal">
     <div class="slides">
@@ -59,16 +59,25 @@
           <h2>9.1 Vue d'ensemble</h2>
           <p>Ensemble de classes et de fonctions qui fournissent des fonctionnalités courantes</p>
           <p>Divisée en plusieurs parties, chacune ayant un but spécifique</p>
-          <p>Définie dans le namespace <inline-code><highlight>std</highlight></inline-code></p>
+          <p>Définie dans le namespace <inline-code>
+              <highlight>std</highlight>
+            </inline-code></p>
           <p>Incluse par défaut dans la plupart des compilateurs C++ modernes</p>
-          <p>Plus de 50 fichiers d'en-tête : <inline-code><highlight>iostream</highlight></inline-code>, <inline-code><highlight>vector</highlight></inline-code>, <inline-code><highlight>list</highlight></inline-code>, <inline-code><highlight>string</highlight></inline-code>, ...</p>
+          <p>Plus de 50 fichiers d'en-tête : <inline-code>
+              <highlight>iostream</highlight>
+            </inline-code>, <inline-code>
+              <highlight>vector</highlight>
+            </inline-code>, <inline-code>
+              <highlight>list</highlight>
+            </inline-code>, <inline-code>
+              <highlight>string</highlight>
+            </inline-code>, ...</p>
           <h3>En particulier</h3>
           <p>- La bibliothèque standard C</p>
           <p>- Gestion des exceptions</p>
           <p>- Gestion des flux</p>
           <p>- Gestion des chaînes de caractères</p>
           <p>- La bibliothèque standard template library (STL)</p>
-          <p>- Support pour le calcul numérique</p>
           <p>- Des codes éprouvés (algorithmes, ...)</p>
         </section>
 
@@ -96,22 +105,44 @@
           <p>- ...</p>
           <br>
           <!-- NOTE: we use html code here because auto-formating with << breaks the code -->
-          <p>Toutes ces classes redéfinissent les opérateurs <inline-code><highlight>&#60;&#60;</highlight></inline-code> et <inline-code><highlight>>></highlight></inline-code>
+          <p>Toutes ces classes redéfinissent les opérateurs <inline-code>
+              <highlight>&#60;&#60;</highlight>
+            </inline-code> et <inline-code>
+              <highlight>>></highlight>
+            </inline-code>
         </section>
 
         <section>
           <h2>9.2 Les fichiers</h2>
           <p>2 types de fichiers : texte (par défaut) ou binaire</p>
           <p>2 modes d'accès : séquentiel ou direct (random access)</p>
-          <p><inline-code><highlight></highlight>#include &#60;fstream&#62;</inline-code> ⇒ 3 classes :</p>
-          <p>- <inline-code><highlight>ifstream</highlight></inline-code> : entrée (lecture)</p>
-          <p>- <inline-code><highlight>ofstream</highlight></inline-code> : sortie (écriture)</p>
-          <p>- <inline-code><highlight>fstream</highlight></inline-code> : entrée/sortie (lecture/écriture)</p>
-          <p>L'ouverture peut se faire par l'appel du constructeur ou de la méthode <inline-code><highlight>open()</highlight></inline-code> ayant la même signature, seules les valeurs par défaut changent :</p>
-          <p><inline-code><highlight>ifstream::ifstream(const char* f, openmode mode = ios::in)</highlight></inline-code></p>
-          <p><inline-code><highlight>ofstream::ofstream(const char* f, openmode mode = ios::out)</highlight></inline-code></p>
-          <p><inline-code><highlight>fstream::fstream(const char* f, openmode mode = ios::in | ios::out)</highlight></inline-code></p>
-          <p>Fermeture avec la méthode <inline-code><highlight>close()</highlight></inline-code> ou automatiquement par le destructeur</p>
+          <p><inline-code>
+              <highlight>#include &#60;fstream&#62;</highlight>
+            </inline-code> ⇒ 3 classes :</p>
+          <p>- <inline-code>
+              <highlight>ifstream</highlight>
+            </inline-code> : entrée (lecture)</p>
+          <p>- <inline-code>
+              <highlight>ofstream</highlight>
+            </inline-code> : sortie (écriture)</p>
+          <p>- <inline-code>
+              <highlight>fstream</highlight>
+            </inline-code> : entrée/sortie (lecture/écriture)</p>
+          <p>L'ouverture peut se faire par l'appel du constructeur ou de la méthode <inline-code>
+              <highlight>open()</highlight>
+            </inline-code> ayant la même signature, seules les valeurs par défaut changent :</p>
+          <p><inline-code>
+              <highlight>ifstream::ifstream(const char* f, openmode mode = ios::in)</highlight>
+            </inline-code></p>
+          <p><inline-code>
+              <highlight>ofstream::ofstream(const char* f, openmode mode = ios::out)</highlight>
+            </inline-code></p>
+          <p><inline-code>
+              <highlight>fstream::fstream(const char* f, openmode mode = ios::in | ios::out)</highlight>
+            </inline-code></p>
+          <p>Fermeture avec la méthode <inline-code>
+              <highlight>close()</highlight>
+            </inline-code> ou automatiquement par le destructeur</p>
         </section>
 
         <section>
@@ -120,15 +151,32 @@
           <p>Le paramètre <inline-code>mode</inline-code> est un bitfield qui définit le mode d'ouverture du fichier</p>
           <p>On le combine avec l'opérateur bit à bit <inline-code>|</inline-code></p>
           <p><b>Exemple :</b> ouverture d'un fichier texte en écriture par ajout (à la fin)</p>
-          <p><inline-code><highlight>fstream fs("log.txt", ios::out | ios::app)</highlight></inline-code></p>
-          <br>
+          <p><inline-code>
+              <highlight>fstream fs("log.txt", ios::out | ios::app)</highlight>
+            </inline-code></p>
           <p><b>Modes</b></p>
-          <p>- <inline-code><highlight>ios::binary</highlight></inline-code> : mode binaire (mode texte par défaut)</p>
-          <p>- <inline-code><highlight>ios::in</highlight></inline-code> : lecture (défaut pour <inline-code><highlight>ifstream</highlight></inline-code>)</p>
-          <p>- <inline-code><highlight>ios::out</highlight></inline-code> : écriture (défaut pour <inline-code><highlight>ofstream</highlight></inline-code>)</p>
-          <p>- <inline-code><highlight>ios::app</highlight></inline-code> : ajout à la fin (append)</p>
-          <p>- <inline-code><highlight>ios::trunc</highlight></inline-code> : écrase le contenu précédent (truncate)</p>
-          <p>- <inline-code><highlight>ios::ate</highlight></inline-code> : position à la fin dès l'ouverture</p>
+          <p>- <inline-code>
+              <highlight>ios::binary</highlight>
+            </inline-code> : mode binaire (mode texte par défaut)</p>
+          <p>- <inline-code>
+              <highlight>ios::in</highlight>
+            </inline-code> : lecture (défaut pour <inline-code>
+              <highlight>ifstream</highlight>
+            </inline-code>)</p>
+          <p>- <inline-code>
+              <highlight>ios::out</highlight>
+            </inline-code> : écriture (défaut pour <inline-code>
+              <highlight>ofstream</highlight>
+            </inline-code>)</p>
+          <p>- <inline-code>
+              <highlight>ios::app</highlight>
+            </inline-code> : ajout à la fin (append)</p>
+          <p>- <inline-code>
+              <highlight>ios::trunc</highlight>
+            </inline-code> : écrase le contenu précédent (truncate)</p>
+          <p>- <inline-code>
+              <highlight>ios::ate</highlight>
+            </inline-code> : position à la fin dès l'ouverture</p>
         </section>
 
         <section>
@@ -154,7 +202,10 @@
             </inline-code></p>
           <br>
           <p>
-            <warning>⚠️ Attention :</warning> mode "binaire", vraiment ? voir <a href="https://stackoverflow.com/questions/14767857/unexpected-results-with-stdofstream-binary-write">(<< vs .write())</a></p>
+            <warning>⚠️ Attention :</warning> mode "binaire", vraiment ? voir <a
+              href="https://stackoverflow.com/questions/14767857/unexpected-results-with-stdofstream-binary-write">(<<
+                vs .write())</a>
+          </p>
         </section>
 
         <section>
@@ -194,7 +245,9 @@
           </p>
           <p>L'utilisation des flux pour accéder aux fichiers soulève les mêmes problématiques que pour la console</p>
           <p>En particulier, les caractères blancs sont considérés comme des séparateurs</p>
-          <p>On peut utiliser la fonction <inline-code><highlight>getline()</highlight></inline-code> pour lire une ligne entière</p>
+          <p>On peut utiliser la fonction <inline-code>
+              <highlight>getline()</highlight>
+            </inline-code> pour lire une ligne entière</p>
         </section>
 
         <section>
@@ -204,11 +257,21 @@
             <inline-code>badbit</inline-code>, <inline-code>failbit</inline-code> et <inline-code>eofbit</inline-code>
           </p>
           <p>On peut tester et manipuler l'état du flux avec les méthodes suivantes :</p>
-          <p>- <inline-code><highlight>good()</highlight></inline-code> : aucune erreur</p>
-          <p>- <inline-code><highlight>bad()</highlight></inline-code> : impossible d'extraire des données du flux</p>
-          <p>- <inline-code><highlight>fail()</highlight></inline-code> : échec de l'opération</p>
-          <p>- <inline-code><highlight>eof()</highlight></inline-code> : fin de fichier</p>
-          <p>- <inline-code><highlight>clear()</highlight></inline-code> : réinitialisation des bits d'état</p>
+          <p>- <inline-code>
+              <highlight>good()</highlight>
+            </inline-code> : aucune erreur</p>
+          <p>- <inline-code>
+              <highlight>bad()</highlight>
+            </inline-code> : impossible d'extraire des données du flux</p>
+          <p>- <inline-code>
+              <highlight>fail()</highlight>
+            </inline-code> : échec de l'opération</p>
+          <p>- <inline-code>
+              <highlight>eof()</highlight>
+            </inline-code> : fin de fichier</p>
+          <p>- <inline-code>
+              <highlight>clear()</highlight>
+            </inline-code> : réinitialisation des bits d'état</p>
         </section>
 
         <section>
@@ -249,40 +312,82 @@
 
         <section>
           <h2>9.2 E/S Formatées ou non-formatées</h2>
-          <p><inline-code><highlight>ios::binary</highlight></inline-code> ⇒ s'assure que les données sont lues ou écrites sans traduire à la volée des caractères spéciaux (ex. les caractères de fin de ligne \r\n)</p>
+          <p><inline-code>
+              <highlight>ios::binary</highlight>
+            </inline-code> ⇒ s'assure que les données sont lues ou écrites sans traduire à la volée des caractères
+            spéciaux (ex. les caractères de fin de ligne \r\n)</p>
           <!-- NOTE: we use html code here because auto-formating with << breaks the code -->
-          <p><inline-code><highlight>&#60;&#60;</highlight></inline-code> ⇒ Écriture formatée (pour les fichiers textuels)</p>
-          <p><inline-code><highlight>>></highlight></inline-code> ⇒ Lecture formatée (pour les fichiers textuels)</p>
-          <p>Méthode <inline-code><highlight>write()</highlight></inline-code> ⇒ Écriture non formatée (pour les fichiers binaires)</p>
+          <p><inline-code>
+              <highlight>&#60;&#60;</highlight>
+            </inline-code> ⇒ Écriture formatée (pour les fichiers textuels)</p>
+          <p><inline-code>
+              <highlight>>></highlight>
+            </inline-code> ⇒ Lecture formatée (pour les fichiers textuels)</p>
+          <p>Méthode <inline-code>
+              <highlight>write()</highlight>
+            </inline-code> ⇒ Écriture non formatée (pour les fichiers binaires)</p>
         </section>
 
         <section>
-          <h2>9.2 Méthodes de lecture de <span style="text-transform: lowercase;"><inline-code><highlight>std::istream</highlight></inline-code></span></h2>
+          <h2>9.2 Méthodes de lecture de <span style="text-transform: lowercase;"><inline-code>
+                <highlight>std::istream</highlight>
+              </inline-code></span></h2>
           <h3>Lecture formatée</h3>
-          <p><inline-code><highlight>istream &operator>>(...)</highlight></inline-code></p>
-          <p><inline-code><highlight>cin >> delta >> integer;</highlight></inline-code></p>
+          <p><inline-code>
+              <highlight>istream &operator>>(...)</highlight>
+            </inline-code></p>
+          <p><inline-code>
+              <highlight>cin >> delta >> integer;</highlight>
+            </inline-code></p>
           <h3>Lecture non formatée</h3>
-          <p><inline-code><highlight>.get</highlight></inline-code> : lecture d'un seul caractère</p>
-          <p><inline-code><highlight>.getline</highlight></inline-code> : lecture d'une suite de caractères</p>
-          <p><inline-code><highlight>.ignore</highlight></inline-code> : lecture de caractères «à fond perdu»</p>
-          <p><inline-code><highlight>.peek</highlight></inline-code> : donne le prochain caractère sans l'extraire</p>
-          <p><inline-code><highlight>.seekg</highlight></inline-code> : positionnement sur un flux</p>
-          <p><inline-code><highlight>.read</highlight></inline-code> : lecture de n caractères</p>
+          <p><inline-code>
+              <highlight>.get</highlight>
+            </inline-code> : lecture d'un seul caractère</p>
+          <p><inline-code>
+              <highlight>.getline</highlight>
+            </inline-code> : lecture d'une suite de caractères</p>
+          <p><inline-code>
+              <highlight>.ignore</highlight>
+            </inline-code> : lecture de caractères «à fond perdu»</p>
+          <p><inline-code>
+              <highlight>.peek</highlight>
+            </inline-code> : donne le prochain caractère sans l'extraire</p>
+          <p><inline-code>
+              <highlight>.seekg</highlight>
+            </inline-code> : positionnement sur un flux</p>
+          <p><inline-code>
+              <highlight>.read</highlight>
+            </inline-code> : lecture de n caractères</p>
         </section>
 
         <section>
-          <h2>9.2 Méthodes de lecture de <span style="text-transform: lowercase;"><inline-code><highlight>std::ostream</highlight></inline-code></span></h2>
+          <h2>9.2 Méthodes de lecture de <span style="text-transform: lowercase;"><inline-code>
+                <highlight>std::ostream</highlight>
+              </inline-code></span></h2>
           <h3>Écriture formatée</h3>
           <!-- NOTE: we use html code here because auto-formating with << breaks the code -->
-          <p><inline-code><highlight>ostream &operator&#60;&#60;(...)</highlight></inline-code></p>
-          <p><inline-code><highlight>cout << delta << integer;</highlight>
+          <p><inline-code>
+              <highlight>ostream &operator&#60;&#60;(...)</highlight>
+            </inline-code></p>
+          <p><inline-code>
+              <highlight>cout << delta << integer;</highlight>
             </inline-code></p>
           <h3>Écriture non formatée</h3>
-          <p><inline-code><highlight>.put</highlight></inline-code> : écriture d'un seul caractère</p>
-          <p><inline-code><highlight>.write</highlight></inline-code> : écriture du contenu du tampon</p>
-          <p><inline-code><highlight>.flush</highlight></inline-code> : vide le tampon de sortie</p>
-          <p><inline-code><highlight>.tellp</highlight></inline-code> : positionnement courant sur le flux</p>
-          <p><inline-code><highlight>.seekp</highlight></inline-code> : positionnement sur un flux</p>
+          <p><inline-code>
+              <highlight>.put</highlight>
+            </inline-code> : écriture d'un seul caractère</p>
+          <p><inline-code>
+              <highlight>.write</highlight>
+            </inline-code> : écriture du contenu du tampon</p>
+          <p><inline-code>
+              <highlight>.flush</highlight>
+            </inline-code> : vide le tampon de sortie</p>
+          <p><inline-code>
+              <highlight>.tellp</highlight>
+            </inline-code> : positionnement courant sur le flux</p>
+          <p><inline-code>
+              <highlight>.seekp</highlight>
+            </inline-code> : positionnement sur un flux</p>
         </section>
 
       </section>
@@ -292,15 +397,28 @@
       <section>
 
         <section>
-          <h2>9.3 Le flux <span style="text-transform: lowercase;"><inline-code><highlight>std::stringstream</highlight></inline-code></span></h2>
+          <h2>9.3 Le flux <span style="text-transform: lowercase;"><inline-code>
+                <highlight>std::stringstream</highlight>
+              </inline-code></span></h2>
           <p>Les flux peuvent être utilisés pour lire et écrire des chaînes de caractères</p>
-          <p><inline-code><highlight></highlight>#include &#60;sstream&#62;</inline-code> ⇒ 3 classes :</p>
-          <p>- <inline-code><highlight>istringstream</highlight></inline-code> : entrée (lecture)</p>
-          <p>- <inline-code><highlight>ostringstream</highlight></inline-code> : sortie (écriture)</p>
-          <p>- <inline-code><highlight>stringstream</highlight></inline-code> : entrée/sortie (lecture/écriture)</p>
+          <p><inline-code>
+              <highlight>#include &#60;sstream&#62;</highlight>
+            </inline-code> ⇒ 3 classes :</p>
+          <p>- <inline-code>
+              <highlight>istringstream</highlight>
+            </inline-code> : entrée (lecture)</p>
+          <p>- <inline-code>
+              <highlight>ostringstream</highlight>
+            </inline-code> : sortie (écriture)</p>
+          <p>- <inline-code>
+              <highlight>stringstream</highlight>
+            </inline-code> : entrée/sortie (lecture/écriture)</p>
         </section>
 
-        <section><h2>9.3 La classe <span style="text-transform: lowercase;"><inline-code><highlight>std::string</highlight></inline-code></span></h2>
+        <section>
+          <h2>9.3 La classe <span style="text-transform: lowercase;"><inline-code>
+                <highlight>std::string</highlight>
+              </inline-code></span></h2>
           <p>La bibliothèque standard implémente une classe <inline-code>
               <highlight>std::string</highlight>
             </inline-code></p>
@@ -318,10 +436,28 @@
         </section>
 
         <section>
-          <h2>9.3 La classe 9.3 La classe <span style="text-transform: lowercase;"><inline-code><highlight>std::string</highlight></inline-code></span></h2>
+          <h2>9.3 La classe <span style="text-transform: lowercase;"><inline-code>
+                <highlight>std::string</highlight>
+              </inline-code></span></h2>
           <p><b>Opérateurs</b></p>
           <p>
-            Affectation : <inline-code><highlight>=</highlight></inline-code>, Concaténation : <inline-code><highlight>+</highlight></inline-code> et <inline-code><highlight>+=</highlight></inline-code>, Comparaisons : <inline-code><highlight>==</highlight></inline-code> <inline-code><highlight>&lt;</highlight></inline-code> <inline-code><highlight>&gt;</highlight></inline-code> <inline-code><highlight>&lt;=</highlight></inline-code> <inline-code><highlight>&gt;=</highlight></inline-code></p>
+            Affectation : <inline-code>
+              <highlight>=</highlight>
+            </inline-code>, Concaténation : <inline-code>
+              <highlight>+</highlight>
+            </inline-code> et <inline-code>
+              <highlight>+=</highlight>
+            </inline-code>, Comparaisons : <inline-code>
+              <highlight>==</highlight>
+            </inline-code> <inline-code>
+              <highlight>&lt;</highlight>
+            </inline-code> <inline-code>
+              <highlight>&gt;</highlight>
+            </inline-code> <inline-code>
+              <highlight>&lt;=</highlight>
+            </inline-code> <inline-code>
+              <highlight>&gt;=</highlight>
+            </inline-code></p>
           <p><b>Méthodes</b></p>
           <p>- <inline-code>
               <highlight>size()</highlight>
@@ -335,10 +471,20 @@
           <p>- <inline-code>
               <highlight>empty()</highlight>
             </inline-code> : vrai si la chaîne est vide, faux sinon</p>
-          <p>- <inline-code><highlight>find()</highlight></inline-code> : position de la chaîne <inline-code>s</inline-code> dans la chaîne courante à partir de<inline-code>pos</inline-code></p>
-          <p>- <inline-code><highlight>substr()</highlight></inline-code> : sous-chaîne de longueur <inline-code>length</inline-code> à partir de<inline-code>start</inline-code></p>
-          <p>- <inline-code><highlight>at()</highlight></inline-code> : accès à un caractère par son index</p>
-          <p>- <inline-code><highlight>c_str()</highlight></inline-code> : renvoie un pointeur vers le tableau de caractères</p>
+          <p>- <inline-code>
+              <highlight>find()</highlight>
+            </inline-code> : position de la chaîne <inline-code>s</inline-code> dans la chaîne courante à partir
+            de<inline-code>pos</inline-code></p>
+          <p>- <inline-code>
+              <highlight>substr()</highlight>
+            </inline-code> : sous-chaîne de longueur <inline-code>length</inline-code> à partir
+            de<inline-code>start</inline-code></p>
+          <p>- <inline-code>
+              <highlight>at()</highlight>
+            </inline-code> : accès à un caractère par son index</p>
+          <p>- <inline-code>
+              <highlight>c_str()</highlight>
+            </inline-code> : renvoie un pointeur vers le tableau de caractères</p>
         </section>
 
         <section>
@@ -377,7 +523,7 @@
 
         <section>
           <h2>9.3 Conversions avec les flux de chaîne</h2>
-          <pre style="width: 1400px;"><code
+          <pre style="width: 1000px;"><code
               class="c++"
               data-trim
               data-noescape
@@ -390,15 +536,15 @@
               
               int main()
               {
-                  std::ostringstream toto;
-                  toto << 10;
-                  auto texte = toto.str();
-                  
-                  std::istringstream titi("10");
-                  int nombre;
-                  titi >> nombre;
-              
-                  return 0;
+                std::ostringstream toto;
+                toto << 10;
+                auto texte = toto.str();
+                
+                std::istringstream titi("10");
+                int nombre;
+                titi >> nombre;
+            
+                return 0;
               }
             </code></pre>
         </section>
@@ -455,11 +601,14 @@
             supprimer un élément en un endroit explicitement choisi.</p>
           <p><inline-code>
               <highlight>vector</highlight>
-            </inline-code>, <inline-code>
+            </inline-code>,
+            <inline-code>
               <highlight>list</highlight>
-            </inline-code>, <inline-code>
+            </inline-code>,
+            <inline-code>
               <highlight>deque</highlight>
-            </inline-code>, ...</p>
+            </inline-code>, ...
+          </p>
           <br>
           <p><b>Conteneurs associatifs</b></p>
           <p>Conteneurs dont les éléments sont identifiés par une clé et ordonnés suivant celle-ci. Pour insérer un
@@ -498,15 +647,33 @@
 
         <section>
           <h2>9.4 Méthodes courantes</h2>
-          <p><inline-code><highlight>clear()</highlight></inline-code> : vide le conteneur</p>
-          <p><inline-code><highlight>size()</highlight></inline-code> : retourne le nombre d'éléments</p>
-          <p><inline-code><highlight>empty()</highlight></inline-code> : teste si le conteneur est vide</p>
-          <p><inline-code><highlight>push_back(...)</highlight></inline-code> : ajoute un élément à la fin</p>
-          <p><inline-code><highlight>push_front(...)</highlight></inline-code> : ajoute un élément au début</p>
-          <p><inline-code><highlight>front()</highlight></inline-code> : renvoie le 1er élément</p>
-          <p><inline-code><highlight>pop_front()</highlight></inline-code> : supprime le premier élément</p>
-          <p><inline-code><highlight>insert()</highlight></inline-code> : insère un élément</p>
-          <p><inline-code><highlight>erase()</highlight></inline-code> : supprime un élément</p>
+          <p><inline-code>
+              <highlight>clear()</highlight>
+            </inline-code> : vide le conteneur</p>
+          <p><inline-code>
+              <highlight>size()</highlight>
+            </inline-code> : retourne le nombre d'éléments</p>
+          <p><inline-code>
+              <highlight>empty()</highlight>
+            </inline-code> : teste si le conteneur est vide</p>
+          <p><inline-code>
+              <highlight>push_back(...)</highlight>
+            </inline-code> : ajoute un élément à la fin</p>
+          <p><inline-code>
+              <highlight>push_front(...)</highlight>
+            </inline-code> : ajoute un élément au début</p>
+          <p><inline-code>
+              <highlight>front()</highlight>
+            </inline-code> : renvoie le 1er élément</p>
+          <p><inline-code>
+              <highlight>pop_front()</highlight>
+            </inline-code> : supprime le premier élément</p>
+          <p><inline-code>
+              <highlight>insert()</highlight>
+            </inline-code> : insère un élément</p>
+          <p><inline-code>
+              <highlight>erase()</highlight>
+            </inline-code> : supprime un élément</p>
         </section>
 
         <section>
@@ -574,7 +741,7 @@
             style="font-size: 1.7em;"
             data-line-numbers="">
 
-            #include &#60;iostream&#62;
+            #include &#60;print&#62;
             #include &#60;array&#62;
             
             int main()
@@ -584,8 +751,8 @@
             
               for (int i = 0; i < a1.size(); ++i)
               {
-                std::cout << a1[i] << std::endl; // ⚠️ no range check
-                std::cout << a1.at(i) << std::endl; // ✅ range check (throws exception)
+                std::println("{}", a1[i]); // ⚠️ no range check
+                std::println("{}", a1.at(i)); // ✅ range check (throws exception)
               }
             
               return 0;
@@ -596,14 +763,20 @@
         <section>
           <h2>9.4 Destruction</h2>
           <h3>Faut-il effacer ce qui est stocké dans un vecteur ?</h3>
-          <p>⇒ Tout dépend de la nature de ce qui est stocké dans le <inline-code>std::vector</inline-code></p>
+          <p>⇒ Tout dépend de la nature de ce qui est stocké dans le <inline-code>
+              <highlight>std::vector</highlight>
+            </inline-code></p>
           <br>
           <p><b>Objets</b></p>
           <p>Les objets sont détruits lors du retrait (pop), ou lorsque le vecteur est détruit</p>
           <br>
           <p><b>Pointeurs</b></p>
-          <p>Les pointeurs sont détruits lorsque le vecteur est détruit <b><warning>mais pas la mémoire allouée !</warning></b></p>
-          <p>⇒ Il faut <inline-code>delete</inline-code> chaque pointeur stocké, sinon il y aura une fuite de mémoire.</p>
+          <p>Les pointeurs sont détruits lorsque le vecteur est détruit <b>
+              <warning>mais pas la mémoire allouée !</warning>
+            </b></p>
+          <p>⇒ Il faut <inline-code>
+              <highlight>delete</highlight>
+            </inline-code> chaque pointeur stocké, sinon il y aura une fuite de mémoire.</p>
         </section>
 
         <section>
@@ -618,10 +791,10 @@
           <br>
           <p>La définition d'un type intermédiaire peut augmenter la lisibilité :</p>
           <p><inline-code>
-              <highlight>typedef std::list&#60;std::string&#62; list_string;</highlight>
+              <highlight>using list_string = std::list<std::string>;</highlight>
             </inline-code></p>
           <p><inline-code>
-              <highlight>typedef std::vector&#60;list_string&#62; vector_list_string;</highlight>
+              <highlight>using vector_list_string = std::vector<list_string>;</highlight>
             </inline-code></p>
         </section>
 
@@ -635,19 +808,18 @@
             style="font-size: 1.8em;"
             data-line-numbers="">
 
-            #include &#60;iostream&#62;
             #include &#60;vector&#62;
 
-            typedef vector&#60;double&#62; Line;
-            typedef vector&#60;Line&#62; Matrix;
-            
+            using Line = std::vector<double>;
+            using Matrix = std::vector<Line>;
+
             Matrix m(5); // 5 rows of size 0 initially
-            for(int i=0; i<5; i++)
+            for(auto i = 0; i < 5; ++i)
             {
               m[i].resize(5); // rows are now of size 5
-              for(int j=0; j<5; j++)
+              for(auto j = 0; j < 5; ++j)
               {
-                if (i==j) m[i][j] = 1;
+                if (i == j) m[i][j] = 1;
                 else m[i][j] = 0;
               }
             }
@@ -686,11 +858,23 @@
         <section>
           <h2>9.5 Les itérateurs</h2>
           <h3>Déclarations</h3>
-          <p><inline-code><highlight>std::vector&#60;double&#62;::iterator it;</highlight></inline-code></p>
+          <p><inline-code>
+              <highlight>std::vector&#60;double&#62;::iterator it;</highlight>
+            </inline-code></p>
           <br>
-          <p>Un itérateur peut s'initialiser grâce aux méthodes <inline-code><highlight>begin()</highlight></inline-code>, <inline-code><highlight>end()</highlight></inline-code>, ou <inline-code><highlight>find()</highlight></inline-code> :</p>
-          <p>1) <inline-code><highlight>std::vector&#60;double&#62;::iterator it(vect.begin());</highlight></inline-code></p>
-          <p>2) <inline-code><highlight>auto it = vect.begin();</highlight></inline-code></p>
+          <p>Un itérateur peut s'initialiser grâce aux méthodes <inline-code>
+              <highlight>begin()</highlight>
+            </inline-code>, <inline-code>
+              <highlight>end()</highlight>
+            </inline-code>, ou <inline-code>
+              <highlight>find()</highlight>
+            </inline-code> :</p>
+          <p>1) <inline-code>
+              <highlight>std::vector&#60;double&#62;::iterator it(vect.begin());</highlight>
+            </inline-code></p>
+          <p>2) <inline-code>
+              <highlight>auto it = vect.begin();</highlight>
+            </inline-code></p>
         </section>
 
         <section>
@@ -699,7 +883,7 @@
             class="c++"
             data-trim
             data-noescape
-            style="font-size: 1.8em;"
+            style="font-size: 1.6em;"
             data-line-numbers="">
 
             #include &#60;iostream&#62;
@@ -711,16 +895,15 @@
             
               std::list&#60;int&#62;::iterator it;
               for (it = lst.begin(); it != lst.end(); ++it)
-                std::cout << *it << std::endl; // *it = each element
+                std::println("{}", *it); // *it = each element
               
-              // C++11
-              auto it = lst.begin();
-              for (; it != lst.end(); ++it)
-                std::cout << *it << std::endl;
+              // C++11              
+              for (auto it = lst.begin(); it != lst.end(); ++it)
+                std::println("{}", *it); // *it = each element
 
               // C++11 range-based for loop
               for (auto &elem : lst)
-                std::cout << elem << std::endl; // elem = each element
+                std::println("{}", elem); // elem = each element
             }
           </code></pre>
         </section>
@@ -731,13 +914,24 @@
 
         <section>
           <h2>9.6 Conteneurs associatifs</h2>
-          <p>Les conteneurs associatifs sont des conteneurs qui stockent des éléments sous forme de paires clé/valeur</p>
+          <p>Les conteneurs associatifs sont des conteneurs qui stockent des éléments sous forme de paires clé/valeur
+          </p>
           <p>Les clés permettent d'accéder aux valeurs</p>
           <p>Les conteneurs associatifs sont ordonnés selon la clé</p>
           <br>
-          <p><inline-code><highlight>std::map</highlight></inline-code>, <inline-code><highlight>std::multimap</highlight></inline-code>, <inline-code><highlight>std::set</highlight></inline-code>, <inline-code><highlight>std::multiset</highlight></inline-code>, ...</p>
+          <p><inline-code>
+              <highlight>std::map</highlight>
+            </inline-code>, <inline-code>
+              <highlight>std::multimap</highlight>
+            </inline-code>, <inline-code>
+              <highlight>std::set</highlight>
+            </inline-code>, <inline-code>
+              <highlight>std::multiset</highlight>
+            </inline-code>, ...</p>
           <br>
-          <p>Ces conteneurs utilisent <inline-code><highlight>std::pair&#60;T1, T2&#62;</highlight></inline-code> pour stocker les paires clé/valeur</p>
+          <p>Ces conteneurs utilisent <inline-code>
+              <highlight>std::pair&#60;T1, T2&#62;</highlight>
+            </inline-code> pour stocker les paires clé/valeur</p>
         </section>
 
         <section>
@@ -864,14 +1058,15 @@
             // Not needed in practice,
             // because it is implicit when using e.g. <inline-code>&#60;vector&#62;</inline-code>
             #include &#60;pair&#62;
-            #include &#60;iostream&#62;
+            #include &#60;print&#62;
             #include &#60;string&#62;
             
             int main()
             {
-              auto p =  std::make_pair(8, "coeur");
-              std::cout << p.first << ' ' << p.second << std::endl;
-              
+              auto p = std::make_pair(8, "coeur");
+
+              std::println("{} {}", p.first, p.second);
+
               return 0;
             }
           </code></pre>
@@ -879,29 +1074,28 @@
 
         <section>
           <h2>9.6 Exemple</h2>
-          <pre style="width: 1600px;"><code
+          <pre style="width: 1800px;"><code
             class="c++"
             data-trim
             data-noescape
             style="font-size: 1.7em;"
             data-line-numbers="">
 
-            #include &#60;iostream&#62;
+            #include &#60;print&#62;
             #include &#60;map&#62;
             
             int main()
             {
-              std::multimap<std::string, double> notes;
+              std::multimap&#60;std::string, double&#62; notes;
             
               // ⚠️ Indices do not work with multimap!
               // moyenne["Informatique"] = 5.5;
               
-              notes.insert(std::pair<std::string, double>	("Informatique", 5.5));
-              notes.insert(std::pair<std::string, double>	("Informatique", 4.0)); 
+              notes.insert(std::pair&#60;std::string, double&#62;("Informatique", 5.5));
+              notes.insert(std::pair&#60;std::string, double&#62;("Informatique", 4.0)); 
             
               for (auto it = notes.begin(); it != notes.end(); ++it)
-                std::cout << "En " << it->first << ", j'ai " << it->second <<
-                     " de moyenne." << std::endl;
+                std::println("En {}, j'ai {} de moyenne.", it->first, it->second);
 
               return 0;              
             }
@@ -923,19 +1117,31 @@
         <section>
           <h2>9.7 Les smart pointers</h2>
           <p>Les smart pointers sont des classes qui gèrent la mémoire de manière automatique</p>
-          <p>Utiliser <inline-code><highlight>#include &#60;memory&#62;</highlight></inline-code></p>
-          <p>Définis dans le namespace <inline-code><highlight>std</highlight></inline-code></p>
+          <p>Utiliser <inline-code>
+              <highlight>#include &#60;memory&#62;</highlight>
+            </inline-code></p>
+          <p>Définis dans le namespace <inline-code>
+              <highlight>std</highlight>
+            </inline-code></p>
           <p>Gérer la mémoire de manière plus sûre et plus efficace que les pointeurs bruts</p>
           <br>
-          <p><inline-code><highlight>std::unique_ptr</highlight></inline-code> : pointeur unique. Lorsque le <inline-code>unique_ptr</inline-code> devient hors de portée, l'objet pointé est également détruit</p>
-          <p><inline-code><highlight>std::shared_ptr</highlight></inline-code> : pointeur partagé. Plusieurs <inline-code>shared_ptr</inline-code> peuvent pointer vers le même objet. Lorsque le dernier <inline-code>shared_ptr</inline-code> devient hors de portée, l'objet pointé est également détruit</p>
-          <p><inline-code><highlight>std::weak_ptr</highlight></inline-code> : pointeur faible. Il permet de référencer un objet sans en prendre possession. Il est utilisé pour éviter les références circulaires entre <inline-code>shared_ptr</inline-code></p>
+          <p><inline-code>
+              <highlight>std::unique_ptr</highlight>
+            </inline-code> : pointeur unique. Lorsque le <inline-code>unique_ptr</inline-code> devient hors de portée,
+            l'objet pointé est également détruit</p>
+          <p><inline-code>
+              <highlight>std::shared_ptr</highlight>
+            </inline-code> : pointeur partagé. Plusieurs <inline-code>shared_ptr</inline-code> peuvent pointer vers le
+            même objet. Lorsque le dernier <inline-code>shared_ptr</inline-code> devient hors de portée, l'objet pointé
+            est également détruit</p>
+          <p><inline-code>
+              <highlight>std::weak_ptr</highlight>
+            </inline-code> : pointeur faible. Il permet de référencer un objet sans en prendre possession. Il est
+            utilisé pour éviter les références circulaires entre <inline-code>shared_ptr</inline-code></p>
         </section>
 
         <section>
-          <h2>Exemple avec les <span style="text-transform: lowercase;"><inline-code>
-                <highlight>unique_ptr</highlight>
-              </inline-code></span> </h2>
+          <h2>9.7 Exemple avec les <span style="text-transform: lowercase;"><inline-code><highlight>unique_ptr</highlight></inline-code></span></h2>
 
           <pre style="width: 1600px;"><code
               class="c++"
@@ -944,7 +1150,7 @@
               style="font-size: 1.6em;"
               data-line-numbers="">
 
-              #include &#60;iostream&#62;
+              #include &#60;print&#62;
               #include &#60;memory&#62;
               
               int main()
@@ -952,25 +1158,23 @@
                 // Raw pointers
                 {
                   auto ptr = new int(5); // dynamic allocation
-                  std::cout << *ptr; // 5
+                  std::println("{}", *ptr); // 5
                   delete ptr; // ⚠️ free memory to avoid memory leak
                   ptr = nullptr; // avoid dangling pointer  
                 }
-
                 // Smart pointers
                 {
                   auto s_ptr = std::unique_ptr<int>(new int(5)); // dynamic allocation
-                  std::cout << *s_ptr; // 5
-                  // ✅ No need to delete, memory is automatically freed when ptr goes out of scope
+                  std::println("{}", *s_ptr); // 5
+                  // ✅ Memory is automatically freed when ptr goes out of scope
                 }
 
                 return 0;
-              }
-            </code></pre>
+              }</code></pre>
         </section>
 
         <section>
-          <h2>Exemple avec les <span style="text-transform: lowercase;"><inline-code><highlight>unique_ptr</highlight></inline-code></span></h2>
+          <h2>9.7 Exemple avec les <span style="text-transform: lowercase;"><inline-code><highlight>unique_ptr</highlight></inline-code></span></h2>
 
           <pre style="width: 1600px;"><code
               class="c++"
@@ -979,30 +1183,31 @@
               style="font-size: 1.6em;"
               data-line-numbers="">
 
-              #include &#60;iostream&#62;
+              #include &#60;print&#62;
               #include &#60;memory&#62;
               
               int main()
               {
                 // Smart pointers
                 {
-                  auto s_ptr = std::unique_ptr<int>(new int(5)); // dynamic allocation
-                  std::cout << *s_ptr; // 5
+                  auto s_ptr = std::unique_ptr&#60;int&#62;(new int(5)); // dynamic allocation
+                  std::println("{}", *s_ptr); // 5
 
                   // ⛔ error: use of deleted function...
-                  auto s_ptr1 = std::unique_ptr<int>(s_ptr);
+                  auto s_ptr1 = std::unique_ptr&#60;int&#62;(s_ptr);
 
                   // ⛔ error: use of deleted function...
                   auto s_ptr2 = s_ptr; // ⛔ error: use of deleted function...
                 }
 
                 return 0;
-              }
-            </code></pre>
+              }</code></pre>
         </section>
 
         <section>
-          <h2>Exemple avec les <span style="text-transform: lowercase;"><inline-code><highlight>shared_ptr</highlight></inline-code></span></h2>
+          <h2>9.7 Exemple avec les <span style="text-transform: lowercase;"><inline-code>
+                <highlight>shared_ptr</highlight>
+              </inline-code></span></h2>
 
           <pre style="width: 1600px;"><code
               class="c++"
@@ -1032,12 +1237,11 @@
                 }
 
                 return 0;
-              }
-            </code></pre>
+              }</code></pre>
         </section>
 
         <section>
-          <h2>Particularité des <span style="text-transform: lowercase;"><inline-code>
+          <h2>9.7 Particularité des <span style="text-transform: lowercase;"><inline-code>
                 <highlight>shared_ptr</highlight>
               </inline-code></span> </h2>
           <p>On ne peut pas affecter directement une adresse à un <inline-code>shared_ptr</inline-code>. Il faut
@@ -1061,9 +1265,7 @@
         </section>
 
         <section>
-          <h2>Exemple avec les <span style="text-transform: lowercase;"><inline-code>
-                <highlight>shared_ptr</highlight>
-              </inline-code></span> </h2>
+          <h2>9.7 Exemple avec les <span style="text-transform: lowercase;"><inline-code><highlight>shared_ptr</highlight></inline-code></span></h2>
 
           <pre style="width: 1600px;"><code
               class="c++"
@@ -1072,7 +1274,7 @@
               style="font-size: 1.6em;"
               data-line-numbers="">
 
-              #include &#60;iostream&#62;
+              #include &#60;print&#62;
               #include &#60;memory&#62;
 
               int main()
@@ -1092,8 +1294,7 @@
                 ...
                 return 0;
               }
-              // 📌 circle has 0 reference and is deleted                
-            </code></pre>
+              // 📌 circle has 0 reference and is deleted</code></pre>
         </section>
 
       </section>
