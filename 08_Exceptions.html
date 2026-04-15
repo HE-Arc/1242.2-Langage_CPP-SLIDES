@@ -38,7 +38,7 @@
           <div class="col-left">
             <p>1. Gestion des erreurs</p>
             <p>2. Principe des exceptions</p>
-            <p>3. <inline-code><highlight>Try</highlight></inline-code>, <inline-code><highlight>catch</highlight></inline-code> et <inline-code><highlight>throw</highlight></inline-code></p>
+            <p>3. <inline-code><highlight>try</highlight></inline-code>, <inline-code><highlight>catch</highlight></inline-code> et <inline-code><highlight>throw</highlight></inline-code></p>
           </div>
           <div class="col-right">
             <p>4. Relance d'exceptions</p>
@@ -114,11 +114,11 @@
           <h3>Les exceptions</h3>
           <div class="container">
             <div class="col-left">
-              <pre style="width: 800;"><code
+              <pre style="width: 700;"><code
                 class="c++"
                 data-trim
                 data-noescape
-                style="font-size: 1.8em;"
+                style="font-size: 1.6em;"
                 data-line-numbers="8">
                 // f(x) = x^2, for x > 0
                 // Else, throws an exception
@@ -133,14 +133,14 @@
                 }
               </code></pre>
               <p><inline-code><highlight>throw</highlight></inline-code> : lance une exception</p>
-              <p><inline-code><highlight>catch</highlight></inline-code> : récupère une exception</p>
+              <p><inline-code><highlight>catch</highlight></inline-code> : attrape une exception</p>
             </div>
             <div class="col-right">
-              <pre style="width: 1000;"><code
+              <pre style="width: 1200;"><code
                 class="c++"
                 data-trim
                 data-noescape
-                style="font-size: 1.7em;"
+                style="font-size: 1.5em;"
                 data-line-numbers="6-13">
 
                 int main()
@@ -409,7 +409,7 @@
                   }
                   catch(int) {
                     std::println("Caught in main");
-                    // Now continue and end the program
+                    // Now end the program
                   }
                   
                   return 0;
@@ -516,14 +516,14 @@
                 std::println("block try 1");
                 throw Exception1();
               }
-              catch(const Exception1 & e) {
+              catch(const Exception1 &e) {
                 std::println("Caught Exception1: {}", e.what()); 
               }
               try { 
                 std::println("block try 2");
                 throw Exception2();
               }
-              catch (const std::exception & e) {
+              catch (const std::exception &e) {
                 std::println("Caught exception: {}", e.what());
               }
               return 0;
