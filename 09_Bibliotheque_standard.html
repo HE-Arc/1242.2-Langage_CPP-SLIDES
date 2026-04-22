@@ -1164,7 +1164,7 @@
                 }
                 // Smart pointers
                 {
-                  auto s_ptr = std::unique_ptr<int>(new int(5)); // dynamic allocation
+                  auto s_ptr = std::unique_ptr&#60;int&#62;(new int(5)); // dynamic allocation
                   std::println("{}", *s_ptr); // 5
                   // ✅ Memory is automatically freed when ptr goes out of scope
                 }
@@ -1197,7 +1197,7 @@
                   auto s_ptr1 = std::unique_ptr&#60;int&#62;(s_ptr);
 
                   // ⛔ error: use of deleted function...
-                  auto s_ptr2 = s_ptr; // ⛔ error: use of deleted function...
+                  auto s_ptr2 = s_ptr;
                 }
 
                 return 0;
@@ -1290,7 +1290,7 @@
                   // 📌 circle has now 2 references (sp2 and sp1)
                   ...
                 }
-                // 📌 circle has 1 reference (sp2) 
+                // 📌 circle has 1 reference (sp1) 
                 ...
                 return 0;
               }
