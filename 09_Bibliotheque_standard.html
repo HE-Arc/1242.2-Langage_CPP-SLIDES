@@ -810,8 +810,8 @@
 
             #include &#60;vector&#62;
 
-            using Line = std::vector<double>;
-            using Matrix = std::vector<Line>;
+            using Line = std::vector&#60;double&#62;;
+            using Matrix = std::vector&#60;Line&#62;;
 
             Matrix m(5); // 5 rows of size 0 initially
             for(auto i = 0; i < 5; ++i)
@@ -980,7 +980,7 @@
               moyenne["Informatique"] = 5.5;
               moyenne["Physique"] = 4.5;
               
-              // if->first to access the key, if->second to access the value
+              // it->first to access the key, it->second to access the value
               for (auto it = moyenne.begin(); it != moyenne.end(); ++it)
                 std::cout << "En " << it->first << ", j'ai " << it->second <<
                            " de moyenne." << std::endl ;
